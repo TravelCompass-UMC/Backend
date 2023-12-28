@@ -20,7 +20,7 @@
 ## Issue 컨벤션
 * 기능과 관련된 Issue인 경우
   * **Projects**에서 Issue를 생성합니다. (Projects의 Assigness에도 본인을 태그해주세요.)
-  * Development에 작업한 브랜치를 연결합니다. (PR의 머지가 성공적으로 수행된 경우 해당 Issue를 자동으로 close 해줍니다.)
+  * Development에 작업할 브랜치를 연결합니다. (PR의 머지가 성공적으로 수행된 경우 해당 Issue를 자동으로 close 해줍니다.)
 * Assigness에 본인을 태그합니다.
 * 적절한 Labels을 붙입니다.
 
