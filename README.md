@@ -18,7 +18,7 @@
 > 꼭 이슈와 칸반보드를 연동합시다!
 
 ## Issue 컨벤션
-* **Projects**에서 Issue를 생성합니다.
+* **Projects**에서 Issue를 생성합니다. (Projects의 Assigness에도 본인을 태그해주세요.)
 * Assigness에 본인을 태그합니다.
 * 적절한 Labels을 붙입니다.
 * Development에 작업한 브랜치를 연결합니다. (PR의 머지가 성공적으로 수행된 경우 해당 Issue를 자동으로 close 해줍니다.)
