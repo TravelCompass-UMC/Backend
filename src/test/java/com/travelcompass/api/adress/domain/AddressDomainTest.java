@@ -19,6 +19,7 @@ class AddressDomainTest {
                 .sidoCode("서울시")
                 .sigunguCode("마포구")
                 .umdCode("동교동")
+                .legalDongCode(1)
                 .build();
 
         //when
@@ -28,6 +29,7 @@ class AddressDomainTest {
         assertThat(address1.getSigunguCode()).isEqualTo("마포구");
         assertThat(address1.getUmdCode()).isEqualTo("동교동");
         assertThat(address1.getRiCode()).isNull();
+        assertThat(address1.getLegalDongCode()).isEqualTo(1);
         System.out.println("테스트1 성공");
     }
 
@@ -45,6 +47,7 @@ class AddressDomainTest {
                 .sigunguCode("진도군")
                 .umdCode("지산면")
                 .riCode("지산리")
+                .legalDongCode(2)
                 .build();
 
         //when
@@ -56,6 +59,7 @@ class AddressDomainTest {
         assertThat(address2.getUmdCode()).isEqualTo("지산면");
         assertThat(address2.getRiCode()).isNotNull();
         assertThat(address2.getRiCode()).isEqualTo("지산리");
+        assertThat(address2.getLegalDongCode()).isEqualTo(2);
         System.out.println("테스트2 성공");
     }
 }
