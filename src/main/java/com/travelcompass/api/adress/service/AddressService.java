@@ -18,7 +18,7 @@ public class AddressService {
 
     public Address findAddressByCode(Integer code){
         Address address = repository.findById(code).orElseThrow(
-                () -> new GeneralException(ErrorCode.ADDRESS_NOT_FOUND)
+                () -> GeneralException.of(ErrorCode.ADDRESS_NOT_FOUND)
         );
         return address;
     }
