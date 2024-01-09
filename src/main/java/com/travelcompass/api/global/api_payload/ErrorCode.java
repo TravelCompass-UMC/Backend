@@ -12,7 +12,7 @@ public enum ErrorCode implements BaseCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "서버 에러, 서버 개발자에게 문의하세요."),
 
     // Address
-    ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, "Address_404", "주소를 찾을 수 없습니다.")
+    ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, "ADDRESS_404", "주소를 찾을 수 없습니다.")
     ;
 
     private final HttpStatus httpStatus;
