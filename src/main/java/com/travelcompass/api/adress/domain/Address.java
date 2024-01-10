@@ -29,14 +29,11 @@ public class Address {
     @Nullable
     private String riCode;
 
-    private Integer legalDongCode;
-
-    public Address(Integer addressCode, String sidoCode, String sigunguCode, String umdCode, String riCode, Integer legalDongCode) {
+    public Address(Integer addressCode, String sidoCode, String sigunguCode, String umdCode, String riCode) {
         this.addressCode = addressCode;
         this.sidoCode = sidoCode;
         this.sigunguCode = sigunguCode;
         this.umdCode = umdCode;
         this.riCode = riCode;
-        this.legalDongCode = legalDongCode;
     }
 }

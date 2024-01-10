@@ -35,10 +35,10 @@ public class AddressServiceTest {
     void findAddressByCode(){
         //given
         Address address1 = Address.builder().addressCode(1).sidoCode("서울시")
-                .sigunguCode("마포구").umdCode("동교동").legalDongCode(1).build();
+                .sigunguCode("마포구").umdCode("동교동").build();
 
         Address address2 = Address.builder().addressCode(2).sidoCode("전라남도")
-                .sigunguCode("진도군").umdCode("지산면").riCode("지산리").legalDongCode(2).build();
+                .sigunguCode("진도군").umdCode("지산면").riCode("지산리").build();
 
         Mockito.when(addressRepository.findById(1)).thenReturn(Optional.ofNullable(address1));
         Mockito.when(addressRepository.findById(2)).thenReturn(Optional.ofNullable(address2));
