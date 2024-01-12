@@ -1,6 +1,6 @@
 package com.travelcompass.api.location.domain;
 
-import com.travelcompass.api.adress.domain.Address;
+import com.travelcompass.api.address.domain.Address;
 import com.travelcompass.api.global.entity.BaseEntity;
 import com.travelcompass.api.region.domain.Region;
 import jakarta.persistence.Entity;
