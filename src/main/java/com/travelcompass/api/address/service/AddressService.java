@@ -1,7 +1,7 @@
-package com.travelcompass.api.adress.service;
+package com.travelcompass.api.address.service;
 
-import com.travelcompass.api.adress.domain.Address;
-import com.travelcompass.api.adress.repository.AddressRepository;
+import com.travelcompass.api.address.domain.Address;
+import com.travelcompass.api.address.repository.AddressRepository;
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
 import lombok.RequiredArgsConstructor;

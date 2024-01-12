@@ -1,8 +1,8 @@
-package com.travelcompass.api.adress;
+package com.travelcompass.api.address;
 
-import com.travelcompass.api.adress.domain.Address;
-import com.travelcompass.api.adress.repository.AddressRepository;
-import com.travelcompass.api.adress.service.AddressService;
+import com.travelcompass.api.address.domain.Address;
+import com.travelcompass.api.address.repository.AddressRepository;
+import com.travelcompass.api.address.service.AddressService;
 import com.travelcompass.api.global.exception.GeneralException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

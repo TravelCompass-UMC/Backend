@@ -1,4 +1,4 @@
-package com.travelcompass.api.adress.domain;
+package com.travelcompass.api.address.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

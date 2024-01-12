@@ -1,4 +1,4 @@
-package com.travelcompass.api.adress.domain;
+package com.travelcompass.api.address.domain;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
