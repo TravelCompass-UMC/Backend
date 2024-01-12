@@ -16,6 +16,9 @@ public enum ErrorCode implements BaseCode {
 
     // Region
     REGION_NOT_FOUND(HttpStatus.NOT_FOUND, "REGION_404", "지역을 찾을 수 없습니다."),
+
+    // Location
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "LOCATION_404", "장소를 찾을 수 없습니다."),
     ;
 
     private final HttpStatus httpStatus;
