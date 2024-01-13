@@ -43,7 +43,7 @@ class RegionServiceTest {
     }
 
     @Test
-    @DisplayName("findRegionById - Region 못 찾은 경우 GeneralException 발생")
+    @DisplayName("findRegionById - Region 못 찾은 경우 REGION_NOT_FOUND 에러 발생")
     void region_찾기_실패() {
         // given
         when(regionRepository.findById(anyLong())).thenReturn(Optional.empty());
