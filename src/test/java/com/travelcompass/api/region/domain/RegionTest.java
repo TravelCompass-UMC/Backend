@@ -9,7 +9,7 @@ class RegionTest {
 
     @Test
     @DisplayName("Region 객체가 생성되었는지 확인하는 테스트")
-    void createRegion() {
+    void region_객체_생성_확인() {
         // given
         Region region = Region.builder()
                 .id(1L)
