@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class RegionTest {
 
     @Test
-    @DisplayName("Region 객체가 생성되었는지 확인하는 테스트")
+    @DisplayName("Region 객체 생성 확인")
     void region_객체_생성_확인() {
         // given
         Region region = Region.builder()
