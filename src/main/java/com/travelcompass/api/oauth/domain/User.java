@@ -3,10 +3,12 @@ package com.travelcompass.api.oauth.domain;
 import com.travelcompass.api.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users")
 @Getter
+@Setter
 // 단순 아이디 비밀번호 외에 소셜 로그인을 통해 계정을 생성해보자.
 public class User extends BaseEntity {
     @Id
