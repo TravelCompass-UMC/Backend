@@ -1,8 +1,8 @@
-package com.travelcompass.api.global.service;
+package com.travelcompass.api.oauth.service;
 
 import com.travelcompass.api.global.entity.CustomUserDetails;
 import com.travelcompass.api.global.entity.UserEntity;
-import com.travelcompass.api.global.repository.UserRepository;
+import com.travelcompass.api.oauth.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.travelcompass.api.global.oauth;
+package com.travelcompass.api.oauth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

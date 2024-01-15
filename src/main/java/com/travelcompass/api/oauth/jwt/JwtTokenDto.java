@@ -1,4 +1,4 @@
-package com.travelcompass.api.global.jwt;
+package com.travelcompass.api.oauth.jwt;
 
 import lombok.Data;
 

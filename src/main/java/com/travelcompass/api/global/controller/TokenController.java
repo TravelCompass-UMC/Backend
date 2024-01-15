@@ -1,8 +1,8 @@
 package com.travelcompass.api.global.controller;
 
-import com.travelcompass.api.global.jwt.JwtRequestDto;
-import com.travelcompass.api.global.jwt.JwtTokenDto;
-import com.travelcompass.api.global.jwt.JwtTokenUtils;
+import com.travelcompass.api.oauth.jwt.JwtRequestDto;
+import com.travelcompass.api.oauth.jwt.JwtTokenDto;
+import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

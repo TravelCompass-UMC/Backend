@@ -1,7 +1,7 @@
-package com.travelcompass.api.global.oauth;
+package com.travelcompass.api.oauth;
 
 import com.travelcompass.api.global.entity.CustomUserDetails;
-import com.travelcompass.api.global.jwt.JwtTokenUtils;
+import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +15,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Base64;
 
 @Slf4j
 @Component

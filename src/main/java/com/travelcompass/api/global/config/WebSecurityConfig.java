@@ -1,8 +1,8 @@
 package com.travelcompass.api.global.config;
 
-import com.travelcompass.api.global.jwt.JwtTokenFilter;
-import com.travelcompass.api.global.oauth.OAuth2SuccessHandler;
-import com.travelcompass.api.global.oauth.OAuth2UserServiceImpl;
+import com.travelcompass.api.oauth.jwt.JwtTokenFilter;
+import com.travelcompass.api.oauth.OAuth2SuccessHandler;
+import com.travelcompass.api.oauth.OAuth2UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,4 +1,4 @@
-package com.travelcompass.api.global.repository;
+package com.travelcompass.api.oauth.repository;
 
 import com.travelcompass.api.global.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
