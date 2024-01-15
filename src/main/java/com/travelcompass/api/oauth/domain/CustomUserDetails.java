@@ -1,4 +1,4 @@
-package com.travelcompass.api.global.entity;
+package com.travelcompass.api.oauth.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,7 +59,7 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public static CustomUserDetails fromEntity(UserEntity entity) {
+    public static CustomUserDetails fromEntity(User entity) {
         return CustomUserDetails.builder()
                 .id(entity.getId())
                 .username(entity.getUsername())
@@ -70,8 +70,8 @@ public class CustomUserDetails implements UserDetails {
                 .build();
     }
 
-    public UserEntity newEntity() {
-        UserEntity entity = new UserEntity();
+    public User newEntity() {
+        User entity = new User();
         entity.setUsername(username);
         entity.setPassword(password);
         entity.setEmail(email);

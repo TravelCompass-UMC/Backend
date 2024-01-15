@@ -1,8 +1,9 @@
 package com.travelcompass.api.oauth.jwt;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class JwtTokenDto {
     private String token;
 }
