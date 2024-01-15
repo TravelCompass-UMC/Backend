@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 // 단순 아이디 비밀번호 외에 소셜 로그인을 통해 계정을 생성해보자.
@@ -21,7 +20,7 @@ public class User extends BaseEntity {
     private String password; //encoding된 소셜 비밀번호
 
     private String email;
-    //닉네임 추가?
+    private String nickname;
 
     // 소셜 로그인 제공자 문자값
     private String provider;

@@ -19,6 +19,10 @@ public enum ErrorCode implements BaseCode {
 
     // Location
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "LOCATION_404", "장소를 찾을 수 없습니다."),
+
+    // Oauth
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "OAUTH_404", "존재하지 않는 회원입니다."),
+
     ;
 
     private final HttpStatus httpStatus;

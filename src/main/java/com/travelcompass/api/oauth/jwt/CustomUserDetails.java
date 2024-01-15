@@ -1,5 +1,6 @@
-package com.travelcompass.api.oauth.domain;
+package com.travelcompass.api.oauth.jwt;
 
+import com.travelcompass.api.oauth.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

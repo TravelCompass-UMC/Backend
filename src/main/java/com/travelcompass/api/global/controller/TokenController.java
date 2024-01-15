@@ -30,7 +30,7 @@ public class TokenController {
         this.jwtTokenUtils = jwtTokenUtils;
     }
 
-    @PostMapping("/issue")
+    @PostMapping("/issue") //토큰 생성
     public JwtTokenDto issueJwt(@RequestBody JwtRequestDto dto) {
         UserDetails userDetails
                 = manager.loadUserByUsername(dto.getUsername());

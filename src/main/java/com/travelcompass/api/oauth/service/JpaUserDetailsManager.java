@@ -1,6 +1,8 @@
 package com.travelcompass.api.oauth.service;
 
-import com.travelcompass.api.oauth.domain.CustomUserDetails;
+import com.travelcompass.api.global.api_payload.ErrorCode;
+import com.travelcompass.api.global.exception.GeneralException;
+import com.travelcompass.api.oauth.jwt.CustomUserDetails;
 import com.travelcompass.api.oauth.domain.User;
 import com.travelcompass.api.oauth.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +37,20 @@ public class JpaUserDetailsManager implements UserDetailsManager {
 
     @Override
     // 실제로 Spring Security 내부에서 사용하는 반드시 구현해야 정상동작을 기대할 수 있는 메소드
+    public UserDetails loadUserByUsername(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> GeneralException.of(ErrorCode.USER_NOT_FOUND)
+        );
+        return CustomUserDetails.fromEntity(user);
+    }
+    /*
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser
-                = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
         if (optionalUser.isEmpty())
             throw new UsernameNotFoundException(username);
         return CustomUserDetails.fromEntity(optionalUser.get());
     }
+     */
 
     @Override
     // 새로운 사용자를 저장하는 메소드 (선택)

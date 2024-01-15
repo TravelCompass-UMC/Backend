@@ -1,6 +1,5 @@
 package com.travelcompass.api.oauth.jwt;
 
-import com.travelcompass.api.oauth.domain.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

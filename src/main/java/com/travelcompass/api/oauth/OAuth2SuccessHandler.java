@@ -1,6 +1,6 @@
 package com.travelcompass.api.oauth;
 
-import com.travelcompass.api.oauth.domain.CustomUserDetails;
+import com.travelcompass.api.oauth.jwt.CustomUserDetails;
 import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
