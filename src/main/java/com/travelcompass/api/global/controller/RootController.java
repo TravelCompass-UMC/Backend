@@ -1,4 +1,4 @@
-package com.travelcompass.api.web.controller;
+package com.travelcompass.api.global.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,7 +1,7 @@
-package com.travelcompass.api.adress.repository;
+package com.travelcompass.api.address.repository;
 
 
-import com.travelcompass.api.adress.domain.Address;
+import com.travelcompass.api.address.domain.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

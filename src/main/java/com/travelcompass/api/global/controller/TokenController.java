@@ -1,4 +1,4 @@
-package com.travelcompass.api.web.controller;
+package com.travelcompass.api.global.controller;
 
 import com.travelcompass.api.global.jwt.JwtRequestDto;
 import com.travelcompass.api.global.jwt.JwtTokenDto;
