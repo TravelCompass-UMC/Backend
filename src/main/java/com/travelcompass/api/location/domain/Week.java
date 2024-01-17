@@ -17,4 +17,13 @@ public enum Week {
     Week(String kor) {
         this.kor = kor;
     }
+
+    public static Week getWeek(String kor) {
+        for (Week week : Week.values()) {
+            if (week.getKor().equals(kor)) {
+                return week;
+            }
+        }
+        return null;
+    }
 }
