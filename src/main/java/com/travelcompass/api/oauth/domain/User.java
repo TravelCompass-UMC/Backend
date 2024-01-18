@@ -2,14 +2,14 @@ package com.travelcompass.api.oauth.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-// 단순 아이디 비밀번호 외에 소셜 로그인을 통해 계정을 생성해보자.
-public class User extends BaseEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,13 +17,17 @@ public class User extends BaseEntity {
     // DB 제약사항 추가
     @Column(nullable = false, unique = true)
     private String username;
-    private String password; //encoding된 소셜 비밀번호
+    private String password;
 
     private String email;
     private String nickname;
+    private String profile_image;
 
-    // 소셜 로그인 제공자 문자값
+    // Naver, Kakao 등 소셜 로그인 제공자 문자값
     private String provider;
-    // Naver,에서 사용자를 식별하기 위해 제공한 값
+    // Naver, Kakao 등에서 사용자를 식별하기 위해 제공한 값
     private String providerId;
+
+    @Builder.Default
+    private Boolean isDeleted = false;
 }

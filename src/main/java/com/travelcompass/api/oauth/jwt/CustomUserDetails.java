@@ -6,9 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -20,6 +23,8 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     @Getter
     private String email;
+    private String nickname;
+    private String profile_image;
     @Getter
     private String provider;
     @Getter
@@ -27,7 +32,11 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        // 현재 유저당 부여되는 권한은 하나임으로 하나만 추가함
+        // 여러 Role 부여시 User의 Role 필드 수정 필요
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("USER"));
+        return authorities;
     }
 
     @Override
@@ -66,6 +75,8 @@ public class CustomUserDetails implements UserDetails {
                 .username(entity.getUsername())
                 .password(entity.getPassword())
                 .email(entity.getEmail())
+                .nickname(entity.getNickname())
+                .profile_image(entity.getProfile_image())
                 .provider(entity.getProvider())
                 .providerId(entity.getProviderId())
                 .build();
@@ -76,6 +87,8 @@ public class CustomUserDetails implements UserDetails {
         entity.setUsername(username);
         entity.setPassword(password);
         entity.setEmail(email);
+        entity.setNickname(nickname);
+        entity.setProfile_image(profile_image);
         entity.setProvider(provider);
         entity.setProviderId(providerId);
         return entity;
@@ -88,6 +101,9 @@ public class CustomUserDetails implements UserDetails {
                 ", username='" + username + '\'' +
                 ", password='[PROTECTED]'" +
                 ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", profile_image='" + profile_image + '\'' +
+
                 '}';
     }
 }

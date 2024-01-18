@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
+//사용자가 정상적인 인증 이후 사용자 데이터를 조회하고 처리
 @Slf4j
 @Service
 public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
@@ -21,7 +21,7 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String registrationId = userRequest
                 .getClientRegistration()
-                // application.yml에 등록한 id가 나옴
+                // application.yaml에 등록한 id
                 .getRegistrationId();
         String nameAttribute = "";
         // 사용할 데이터를 다시 정리하는 목적의 Map
@@ -30,15 +30,17 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
         // Naver 로직
         if (registrationId.equals("naver")) {
             attributes.put("provider", "naver");
-            // 받은 사용자 데이터를 정리
+
+            // 받은 사용자 데이터를 정리 - attributes 사용
             Map<String, Object> responseMap = oAuth2User.getAttribute("response");
             attributes.put("id", responseMap.get("id"));
             attributes.put("email", responseMap.get("email"));
+            attributes.put("profile_image", responseMap.get("profile_image"));
             attributes.put("nickname", responseMap.get("nickname"));
             nameAttribute = "email";
         }
-
         log.info(attributes.toString());
+
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("USER")),
                 attributes,
