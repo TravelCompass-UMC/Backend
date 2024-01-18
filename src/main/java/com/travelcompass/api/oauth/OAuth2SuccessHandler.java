@@ -1,7 +1,12 @@
 package com.travelcompass.api.oauth;
 
+import com.travelcompass.api.oauth.jwt.JwtDto;
 import com.travelcompass.api.oauth.jwt.CustomUserDetails;
 import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
+import com.travelcompass.api.oauth.jwt.RefreshToken;
+import com.travelcompass.api.oauth.repository.RefreshTokenRedisRepository;
+import com.travelcompass.api.oauth.utils.IpUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,25 +20,24 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
 @Slf4j
 @Component
-// OAuth2 통신이 성공적으로 끝났을 때, 사용하는 클래스
-// JWT를 활용한 인증 구현하고 있기 때문에 ID Provider에게 받은 정보를 바탕으로 JWT를 발급하는 역할을 하는 용도
-// JWT를 발급하고 클라이언트가 저장할 수 있도록 특정 URL로 리다이렉트 시킴
-public class OAuth2SuccessHandler
-        // 인증 성공 후 특정 URL로 리다이렉트 시키고 싶을 때 활용할 수 있는
-        // successHandler
-        extends SimpleUrlAuthenticationSuccessHandler {
+// OAuth2 통신이 성공적으로 끝났을 때 사용됨
+// ID Provider에게 받은 정보를 바탕으로 JWT를 발급
+// + 클라이언트가 저장할 수 있도록 특정 URL로 리다이렉트
+public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenUtils tokenUtils;
     private final UserDetailsManager userDetailsManager;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     public OAuth2SuccessHandler(
             JwtTokenUtils tokenUtils,
-            UserDetailsManager userDetailsManager
+            UserDetailsManager userDetailsManager,
+            RefreshTokenRedisRepository refreshTokenRedisRepository
     ) {
         this.tokenUtils = tokenUtils;
         this.userDetailsManager = userDetailsManager;
+        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
 
     @Override
@@ -43,14 +47,13 @@ public class OAuth2SuccessHandler
             HttpServletResponse response,
             Authentication authentication
     ) throws IOException, ServletException {
-        // OAuth2UserServiceImpl에서 반환한 DefaultOAuth2User
-        // 가 저장된다.
+        // OAuth2UserServiceImpl에서 반환한 DefaultOAuth2User가 저장
         OAuth2User oAuth2User
                 = (OAuth2User) authentication.getPrincipal();
-        // 소셜 로그인을 한 새로운 사용자를 우리의 UserEntity로 전환하기 위한 작업
-        // username: Email을 @ 기준으로 나누고,
-        //     ID Provider(Naver) 같은 값을 추가하여 조치
+        // 소셜 로그인을 한 새로운 사용자를 우리의 UserEntity로 전환
         String email = oAuth2User.getAttribute("email");
+        String nickname = oAuth2User.getAttribute("nickname");
+        String profile_image = oAuth2User.getAttribute("profile_image");
         String provider = oAuth2User.getAttribute("provider");
         String username
                 = String.format("{%s}%s", provider, email.split("@")[0]);
@@ -62,20 +65,37 @@ public class OAuth2SuccessHandler
                     .username(username)
                     .password(providerId)
                     .email(email)
+                    .nickname(nickname)
+                    .profile_image(profile_image)
                     .provider(provider)
                     .providerId(providerId)
                     .build());
         }
 
-        // 데이터베이스에서 사용자 회수
+        // JWT 생성 - access & refresh
         UserDetails details
                 = userDetailsManager.loadUserByUsername(username);
-        String jwt = tokenUtils.generateToken(details); //JWT 생성
+        JwtDto jwt = tokenUtils.generateToken(details);
+        log.info("accessToken: {}", jwt.getAccessToken());
+        log.info("refreshToken: {} ", jwt.getRefreshToken());
 
-        // 목적지 URL 설정
-        // 우리 서비스의 Frontend 구성에 따라 유연하게 대처
+        // 유효기간 초단위 설정 후 redis에 refresh token save
+        Claims refreshTokenClaims = tokenUtils.parseClaims(jwt.getRefreshToken());
+        Long validPeriod
+                = refreshTokenClaims.getExpiration().toInstant().getEpochSecond()
+                - refreshTokenClaims.getIssuedAt().toInstant().getEpochSecond();
+        refreshTokenRedisRepository.save(
+                RefreshToken.builder()
+                        .id(username)
+                        .ip(IpUtil.getClientIp(request))
+                        .ttl(validPeriod)
+                        .refreshToken(jwt.getRefreshToken())
+                        .build()
+        );
+
+        // 목적지 URL 설정 - 토큰 던짐
         String targetUrl = String.format(
-                "http://localhost:8080/token/val?token=%s", jwt
+                "http://localhost:8080/token/val?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
         );
         // 실제 Redirect 응답 생성
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
