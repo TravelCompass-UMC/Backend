@@ -33,14 +33,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         // JWT가 포함되어 있으면 포함되어 있는 헤더를 요청
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
+        String authHeader
+                = request.getHeader(HttpHeaders.AUTHORIZATION);
         // authHeader가 null이 아니면서 "Bearer " 로 구성되어 있어야 정상적인 인증 정보
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             // JWT를 회수하여 JWT가 정상적인 JWT인지를 판단
             String token = authHeader.split(" ")[1];
             if (jwtTokenUtils.validate(token)) {
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                // Security 공식 문서
+                SecurityContext context
+                        = SecurityContextHolder.createEmptyContext();
                 // JWT에서 사용자 이름을 가져오기
                 String username = jwtTokenUtils
                         .parseClaims(token)
@@ -66,4 +68,3 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-
