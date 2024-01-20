@@ -24,9 +24,11 @@ public class PlanLocation extends BaseEntity {
     private LocalTime arrival;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plan_id")
     private  Plan plan;
 
     private Long travelDay;

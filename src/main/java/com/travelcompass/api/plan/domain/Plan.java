@@ -31,6 +31,7 @@ public class Plan extends BaseEntity {
     private PlanVehicle vehicle;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
     private Region region;
 
 }

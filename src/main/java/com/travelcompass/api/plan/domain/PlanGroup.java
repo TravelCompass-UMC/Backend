@@ -21,9 +21,11 @@ public class PlanGroup extends BaseEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plan_id")
     private Plan plan;
 
     private String inviteCode; // 초대를 위한 유니크한 코드

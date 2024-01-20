@@ -16,5 +16,6 @@ public class ViewCount {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plan_id")
     private Plan plan;
 }
