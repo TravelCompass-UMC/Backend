@@ -10,6 +10,13 @@ public enum SuccessCode implements BaseCode {
     // Common
     OK(HttpStatus.OK, "COMMON_200", "Success"),
     CREATED(HttpStatus.CREATED, "COMMON_201", "Created"),
+
+    // User
+    USER_CREATED(HttpStatus.CREATED, "USER_201", "회원가입이 완료되었습니다."),
+    USER_LOGOUT_SUCCESS(HttpStatus.OK, "USER_200", "로그아웃 되었습니다."),
+    //USER_PASSWORD_CHANGE_SUCCESS(HttpStatus.OK, "USER_200", "비밀번호가 변경되었습니다."),
+    USER_DELETE_SUCCESS(HttpStatus.OK, "USER_200", "회원탈퇴가 완료되었습니다."),
+
     ;
 
     private final HttpStatus httpStatus;

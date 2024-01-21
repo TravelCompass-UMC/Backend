@@ -1,8 +1,10 @@
-package com.travelcompass.api.global.service;
+package com.travelcompass.api.oauth.service;
 
-import com.travelcompass.api.global.entity.CustomUserDetails;
-import com.travelcompass.api.global.entity.UserEntity;
-import com.travelcompass.api.global.repository.UserRepository;
+import com.travelcompass.api.global.api_payload.ErrorCode;
+import com.travelcompass.api.global.exception.GeneralException;
+import com.travelcompass.api.oauth.jwt.CustomUserDetails;
+import com.travelcompass.api.oauth.domain.User;
+import com.travelcompass.api.oauth.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,39 +18,33 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-// UserDetailsManager의 구현체로 만들면, Spring Security Filter에서 사용자 정보 회수에 활요할 수 있다.
 public class JpaUserDetailsManager implements UserDetailsManager {
+    // UserDetailsManager의 구현체로 만들면, Spring Security Filter에서 사용자 정보 회수에 활요할 수 있음
     private final UserRepository userRepository;
-
 
     public JpaUserDetailsManager(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
-        createUser(CustomUserDetails.builder()
-                .username("user")
-                .password(passwordEncoder.encode("asdf"))
-                .email("user@naver.com")
-                .build());
     }
 
     @Override
-    // UserDetailsService.loadUserByUsername(String)
     // 실제로 Spring Security 내부에서 사용하는 반드시 구현해야 정상동작을 기대할 수 있는 메소드
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> optionalUser
-                = userRepository.findByUsername(username);
-        if (optionalUser.isEmpty())
-            throw new UsernameNotFoundException(username);
-        return CustomUserDetails.fromEntity(optionalUser.get());
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));;
+        /*if(user.getIsDeleted()){
+            log.info("회원 없음");
+            throw new GeneralException(ErrorCode.USER_NOT_FOUND);
+        }*/
+        return CustomUserDetails.fromEntity(user);
     }
 
     @Override
-    // 새로운 사용자를 저장하는 메소드 (선택)
+    // 새로운 사용자를 저장하는 메소드
     public void createUser(UserDetails user) {
         log.info("try create user: {}", user.getUsername());
-        // 사용자가 (이미) 있으면 생성할 수 없다.
+        // 사용자가 (이미) 있으면 생성할수 없다.
         if (this.userExists(user.getUsername()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         try {
@@ -61,11 +57,12 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     }
 
     @Override
-    // 계정이름을 가진 사용자가 존재하는지 확인하는 메소드 (선택)
+    // 계정이름을 가진 사용자가 존재하는지 확인하는 메소드
     public boolean userExists(String username) {
         log.info("check if user: {} exists", username);
         return this.userRepository.existsByUsername(username);
     }
+
     @Override
     public void updateUser(UserDetails user) {
     }
@@ -74,5 +71,6 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     }
     @Override
     public void changePassword(String oldPassword, String newPassword) {
+
     }
 }
