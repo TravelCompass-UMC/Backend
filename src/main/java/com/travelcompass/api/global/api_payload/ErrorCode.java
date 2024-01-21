@@ -21,16 +21,14 @@ public enum ErrorCode implements BaseCode {
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "LOCATION_404", "장소를 찾을 수 없습니다."),
 
     // User
-    WRONG_PASSWORD(HttpStatus.NOT_FOUND, "USER_404", "비밀번호가 일치하지 않습니다."),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_404", "존재하지 않는 회원입니다."),
-    UNMATCHED_PASSWORD(HttpStatus.NOT_FOUND, "USER_404", "비밀번호 확인이 일치하지 않습니다."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4041", "존재하지 않는 회원입니다."),
 
     // Jwt
-    TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_403", "권한 정보가 없는 토큰입니다."),
-    IP_NOT_MATCHED(HttpStatus.FORBIDDEN, "JWT_404", "리프레시 토큰의 IP주소가 일치하지 않습니다."),
-    TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_404", "유효하지 않은 토큰입니다."),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_401", "토큰 유효기간이 만료되었습니다."),
-    WRONG_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "JWT_404", "일치하는 리프레시 토큰이 없습니다.");
+    WRONG_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "JWT_4041", "일치하는 리프레시 토큰이 없습니다."),
+    IP_NOT_MATCHED(HttpStatus.FORBIDDEN, "JWT_4042", "리프레시 토큰의 IP주소가 일치하지 않습니다."),
+    TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_4043", "유효하지 않은 토큰입니다."),
+    TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4031", "권한 정보가 없는 토큰입니다."),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4011", "토큰 유효기간이 만료되었습니다.")
 
     ;
 
