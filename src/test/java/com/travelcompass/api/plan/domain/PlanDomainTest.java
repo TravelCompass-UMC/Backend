@@ -1,8 +1,8 @@
 package com.travelcompass.api.plan.domain;
 
 
-import com.travelcompass.api.global.entity.UserEntity;
 import com.travelcompass.api.location.domain.Location;
+import com.travelcompass.api.oauth.domain.User;
 import com.travelcompass.api.region.domain.Region;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +56,7 @@ public class PlanDomainTest {
                 .region(region)
                 .build();
 
-        UserEntity user = new UserEntity();
+        User user = new User();
 
         PlanGroup planGroup = PlanGroup.builder()
                 .id(1L).name("제주팟").inviteCode("abcd").plan(plan).user(user).build();
