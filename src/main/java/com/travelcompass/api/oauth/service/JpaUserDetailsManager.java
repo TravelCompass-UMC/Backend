@@ -27,13 +27,6 @@ public class JpaUserDetailsManager implements UserDetailsManager {
             PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
-        createUser(CustomUserDetails.builder()
-                .username("user")
-                .password(passwordEncoder.encode("asdf"))
-                .email("user@gmail.com")
-                .nickname("nick")
-                .profile_image("profile_url")
-                .build());
     }
 
     @Override

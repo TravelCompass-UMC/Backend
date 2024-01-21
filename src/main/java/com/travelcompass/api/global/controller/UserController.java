@@ -19,10 +19,8 @@ public class UserController {
     private final JwtTokenUtils jwtTokenUtils;
 
     // 로그아웃
-    @DeleteMapping("/logout")
-    public ApiResponse<Integer> logout(
-            HttpServletRequest request
-    ) {
+    @DeleteMapping("/logout") //Post
+    public ApiResponse<Integer> logout(HttpServletRequest request) {
         userService.logout(request);
         return ApiResponse.onSuccess(SuccessCode.USER_LOGOUT_SUCCESS, 1);
     }
