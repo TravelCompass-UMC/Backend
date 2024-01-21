@@ -1,7 +1,7 @@
 package com.travelcompass.api.plan.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
-import com.travelcompass.api.global.entity.UserEntity;
+import com.travelcompass.api.oauth.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ public class PlanGroup extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id")
