@@ -26,6 +26,8 @@ public class Plan extends BaseEntity {
 
     private LocalDate endDate;
 
+    private String inviteCode; // 초대를 위한 유니크한 코드
+
     @Enumerated(EnumType.STRING)
     private PlanVehicle vehicle;
 

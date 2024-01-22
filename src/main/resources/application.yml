@@ -33,10 +33,10 @@ spring:
               - email
               - profile_image
 
-  version: 1.0.4
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
 jwt:
   secret: ${JWT_SECRET}
