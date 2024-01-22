@@ -58,13 +58,14 @@ public class PlanDomainTest {
 
         User user = new User();
 
-        PlanGroup planGroup = PlanGroup.builder()
-                .id(1L).name("제주팟").inviteCode("abcd").plan(plan).user(user).build();
+        PlanUser planUser = PlanUser.builder()
+                .id(1L).plan(plan).user(user).build();
+                //.id(1L).name("제주팟").plan(plan).user(user).build();
         //then
-        assertThat(planGroup.getId()).isEqualTo(1L);
-        assertThat(planGroup.getPlan()).isEqualTo(plan);
-        assertThat(planGroup.getUser()).isEqualTo(user);
-        assertThat(planGroup).isInstanceOf(PlanGroup.class);
+        assertThat(planUser.getId()).isEqualTo(1L);
+        assertThat(planUser.getPlan()).isEqualTo(plan);
+        assertThat(planUser.getUser()).isEqualTo(user);
+        assertThat(planUser).isInstanceOf(PlanUser.class);
     }
 
     @Test
