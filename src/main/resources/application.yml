@@ -22,21 +22,26 @@ spring:
           # 서비스 제공자 식별자
           naver:
             # 서비스 제공자측에 저희가 어떤 서비스인지 인증하기 위한 값
-            client-id: 3tVKSO15tNGbkeZJf8eE # ${CLIENT_ID}
-            client-secret: zHvANLwWHH # ${CLIENT_SECRET}
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver # ${REDIRECT_URL} #Call Back url
+            client-id: 3tVKSO15tNGbkeZJf8eE #서비스 제공자측에 저희가 어떤 서비스인지 인증하기 위한 값
+            client-secret: zHvANLwWHH
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver #왜 환경변수 처리하면 안됨
             authorization-grant-type: authorization_code # 어떤 방식으로 access token을 받을지 정의
             client-authentication-method: client_secret_post # Client Id, Client Secret를 요청의 어디에 포함할지 정의. Body
             client-name: Naver
             scope:
               - nickname
               - email
+              - profile_image
 
-server:
-  port: 8080
+  version: 1.0.4
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
 jwt:
-  secret: aaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaesasdfqve
+  secret: ${JWT_SECRET}
+  accessExpirationTime: ${JWT_EXPIRATION}
+  refreshExpirationTime: ${JWT_REFRESH_EXPIRATION}
 
 springdoc:
   swagger-ui:
@@ -45,19 +50,8 @@ springdoc:
     disabled: true
   use-fqn: true
 
-cloud:
-  aws:
-    s3:
-      bucket: ${aws.s3.bucket}
-      path:
-        location: location
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-    credentials:
-      accessKey: ${aws.s3.access-key}
-      secretKey: ${aws.s3.secret-key}
+server:
+  port: 8080
 
 ---
 

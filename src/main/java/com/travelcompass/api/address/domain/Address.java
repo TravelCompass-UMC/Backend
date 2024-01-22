@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class Address {
-
     @Id
     @Column(name = "ADDRESS_CODE")
     private Integer addressCode;
