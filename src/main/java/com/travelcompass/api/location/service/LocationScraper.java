@@ -1,9 +1,15 @@
 package com.travelcompass.api.location.service;
 
+import com.travelcompass.api.global.repository.UuidRepository;
+import com.travelcompass.api.global.s3.AmazonS3Manager;
 import com.travelcompass.api.location.domain.DayType;
 import com.travelcompass.api.location.dto.BusinessHoursDto;
 import com.travelcompass.api.location.dto.ReviewDto;
+import com.travelcompass.api.location.repository.LocationRepository;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -16,19 +22,30 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LocationScraper {
 
+    private final AmazonS3Manager s3Manager;
+
+    private final UuidRepository uuidRepository;
+
+    private final LocationRepository locationRepository;
+
     private static final String url = "https://pcmap.place.naver.com/place/";
     private static final String keyword = "11491438"; // 성산일출봉
 
     private WebDriver driver;
 
+    @Scheduled(fixedRate = 2 * 60 * 60 * 1000)
     public void scrapeLocations() {
         setUp();
 
@@ -48,7 +65,8 @@ public class LocationScraper {
         WebElement businessHoursElement = driver.findElement(
                 By.xpath("//div[@class='O8qbU pSavy']/div"));
         businessHoursElement.click();
-        Map<DayType, BusinessHoursDto> businessHoursDtoMap = scrapeBusinessHours(businessHoursElement);
+        Map<DayType, BusinessHoursDto> businessHoursDtoMap = scrapeBusinessHours(
+                businessHoursElement);
 
         // 전화 번호
         String tel = scrapeTel();
@@ -56,7 +74,7 @@ public class LocationScraper {
         /*
             `리뷰` 탭으로 이동
          */
-        driver.get(url + keyword + "/review");
+        driver.get(url + keyword + "/review/visitor?reviewSort=recent");
 
         // 리뷰
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
@@ -70,7 +88,8 @@ public class LocationScraper {
 
         // 사진
         String src = scrapePhotoSrc();
-        // TODO : S3에 src 업로드
+        MultipartFile multipartFile = downloadImage(src);
+
 
         tearDown();
     }
@@ -142,7 +161,7 @@ public class LocationScraper {
                 driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
             }
         } catch (Exception e) {
-            // 더 이상 리뷰가 없을 때
+            // 더 이상 리뷰가 없을 때 반복문 종료
         }
 
         return driver.findElements(
@@ -169,6 +188,22 @@ public class LocationScraper {
         return driver.findElement(
                         By.xpath("//div[@class='place_section_content']/div/div/div[1]/a/img"))
                 .getAttribute("src");
+    }
+
+    private MultipartFile downloadImage(String src) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<byte[]> response = restTemplate.getForEntity(new URI(src), byte[].class);
+            byte[] imageBytes = response.getBody();
+
+            if (imageBytes != null) {
+                return new CustomMultipartFile(imageBytes, "image", "image.jpeg",
+                        "jpeg", imageBytes.length);
+            }
+        } catch (URISyntaxException e) {
+            System.out.println("파일 다운로드 실패");
+        }
+        return null;
     }
 
     private void tearDown() {
