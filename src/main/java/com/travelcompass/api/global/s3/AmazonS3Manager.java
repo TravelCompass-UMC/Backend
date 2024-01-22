@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.travelcompass.api.global.config.AmazonConfig;
 import com.travelcompass.api.global.entity.Uuid;
-import com.travelcompass.api.global.repository.UuidRepository;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
