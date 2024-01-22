@@ -28,7 +28,7 @@ public class BusinessHours extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Week week;
+    private DayType dayType;
 
     private LocalTime openTime;
 

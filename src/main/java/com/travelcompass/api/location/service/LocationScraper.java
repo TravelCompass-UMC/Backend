@@ -1,6 +1,6 @@
 package com.travelcompass.api.location.service;
 
-import com.travelcompass.api.location.domain.Week;
+import com.travelcompass.api.location.domain.DayType;
 import com.travelcompass.api.location.dto.BusinessHoursDto;
 import com.travelcompass.api.location.dto.ReviewDto;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -48,7 +48,7 @@ public class LocationScraper {
         WebElement businessHoursElement = driver.findElement(
                 By.xpath("//div[@class='O8qbU pSavy']/div"));
         businessHoursElement.click();
-        Map<Week, BusinessHoursDto> businessHoursDtoMap = scrapeBusinessHours(businessHoursElement);
+        Map<DayType, BusinessHoursDto> businessHoursDtoMap = scrapeBusinessHours(businessHoursElement);
 
         // 전화 번호
         String tel = scrapeTel();
@@ -101,18 +101,18 @@ public class LocationScraper {
                 .findElement(By.xpath("div/a/span[1]")).getText();
     }
 
-    private Map<Week, BusinessHoursDto> scrapeBusinessHours(WebElement element) {
+    private Map<DayType, BusinessHoursDto> scrapeBusinessHours(WebElement element) {
         WebElement businessHoursElement = element.findElement(By.xpath("//div/a"));
 
         List<WebElement> businessHoursElements = businessHoursElement.findElements(
                 By.xpath("div[@class='w9QyJ']/div/span"));
 
-        Map<Week, BusinessHoursDto> businessHoursDtoMap = new HashMap<>();
+        Map<DayType, BusinessHoursDto> businessHoursDtoMap = new HashMap<>();
         for (WebElement e : businessHoursElements) {
             String weekString = e.findElement(By.xpath("span")).getText();
             String businessHours = e.findElement(By.xpath("div")).getText();
 
-            businessHoursDtoMap.put(Week.getWeek(weekString), splitBusinessHours(businessHours));
+            businessHoursDtoMap.put(DayType.getWeek(weekString), splitBusinessHours(businessHours));
         }
 
         return businessHoursDtoMap;
