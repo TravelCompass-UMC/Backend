@@ -1,34 +1,32 @@
-package com.travelcompass.api.plan.domain;
+package com.travelcompass.api.location.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
-import com.travelcompass.api.location.domain.Location;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanLocation extends BaseEntity {
+public class BusinessHours extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalTime arrival;
+    @Enumerated(EnumType.STRING)
+    private DayType dayType;
 
-    private Long travelDay;
+    private LocalDate openTime;
+
+    private LocalDate closeTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id")
-    private  Plan plan;
 }

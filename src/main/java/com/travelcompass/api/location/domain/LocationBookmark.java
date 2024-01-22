@@ -1,7 +1,7 @@
-package com.travelcompass.api.plan.domain;
+package com.travelcompass.api.location.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
-import com.travelcompass.api.location.domain.Location;
+import com.travelcompass.api.oauth.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,20 +15,16 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanLocation extends BaseEntity {
+public class LocationBookmark extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalTime arrival;
-
-    private Long travelDay;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id")
-    private  Plan plan;
 }
