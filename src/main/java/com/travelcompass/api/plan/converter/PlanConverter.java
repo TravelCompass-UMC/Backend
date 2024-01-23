@@ -1,16 +1,21 @@
 package com.travelcompass.api.plan.converter;
 
 import com.travelcompass.api.plan.domain.Plan;
+import com.travelcompass.api.plan.domain.PlanLocation;
 import com.travelcompass.api.plan.domain.PlanVehicle;
 import com.travelcompass.api.plan.dto.PlanRequestDto;
 import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
+import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
+import com.travelcompass.api.plan.dto.PlanResponseDto.SimplePlanLocationDto;
 import com.travelcompass.api.region.domain.Region;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class PlanConverter {
@@ -39,4 +44,16 @@ public class PlanConverter {
                 .build();
     }
 
+    public static SimplePlanLocationDto simplePlanLocationDto(PlanLocation planLocation){
+        return SimplePlanLocationDto.builder()
+                .id(planLocation.getId())
+                .arrival(LocalTime.parse(planLocation.getArrival()))
+                .travelDay(planLocation.getTravelDay())
+                .location(planLocation.getLocation())
+                .build();
+    }
+
+    public static List<SimplePlanLocationDto> planLocationListDto(List<PlanLocation> planLocationList){
+        return planLocationList.stream().map(PlanConverter::simplePlanLocationDto).collect(Collectors.toList());
+    }
 }
