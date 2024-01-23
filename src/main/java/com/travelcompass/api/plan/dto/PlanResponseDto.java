@@ -2,6 +2,7 @@ package com.travelcompass.api.plan.dto;
 
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
+import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
 import com.travelcompass.api.plan.domain.PlanVehicle;
@@ -10,6 +11,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -40,5 +42,24 @@ public class PlanResponseDto {
         private String region;
 
         private List<String> hashtag;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SimplePlanLocationDto{
+        private Long id;
+        private LocalTime arrival;
+        private Long travelDay;
+        private Location location;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlanLocationListDto{
+        List<PlanLocation> planLocations;
     }
 }
