@@ -50,6 +50,7 @@ public class PlanService {
         return plan;
     }
 
+    // 해쉬태그를 포함한 여행계획 상세정보 반환
     public DetailPlanResponseDto findPlan(Long planId){
         Plan plan = planRepository.findById(planId)
                 .orElseThrow( () -> GeneralException.of(ErrorCode.PLAN_NOT_FOUND));
@@ -57,11 +58,26 @@ public class PlanService {
         return PlanConverter.detailPlanResponseDto(plan, hashtagService.findHashtagNamesByPlan(plan));
     }
 
-    public List<SimplePlanLocationDto> findPlanLocationByDay(Long planId, Long day){
+    // 여행 day 일차의 계획 반환
+    public PlanLocationListDto findPlanLocationByDay(Long planId, Long day){
         Plan plan = planRepository.findById(planId)
                 .orElseThrow( () -> GeneralException.of(ErrorCode.PLAN_NOT_FOUND));
 
+        DetailPlanResponseDto detailPlanResponseDto = findPlan(planId);
         List<PlanLocation> planLocationList = planLocationRepository.findAllByPlanAndTravelDay(plan, day);
-        return PlanConverter.planLocationListDto(planLocationList);
+
+        return PlanConverter.planLocationListDto(planLocationList, detailPlanResponseDto);
     }
+
+    // 여행 모든 일차의 계획 반환
+    public PlanLocationListDto findPlanEveryDay(Long planId){
+        Plan plan = planRepository.findById(planId)
+                .orElseThrow( () -> GeneralException.of(ErrorCode.PLAN_NOT_FOUND));
+
+        DetailPlanResponseDto detailPlanResponseDto = findPlan(planId);
+        List<PlanLocation> planLocationList = planLocationRepository.findAllByPlan(plan);
+
+        return PlanConverter.planLocationListDto(planLocationList, detailPlanResponseDto);
+    }
+
 }
