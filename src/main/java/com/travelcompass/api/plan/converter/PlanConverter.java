@@ -53,7 +53,13 @@ public class PlanConverter {
                 .build();
     }
 
-    public static List<SimplePlanLocationDto> planLocationListDto(List<PlanLocation> planLocationList){
-        return planLocationList.stream().map(PlanConverter::simplePlanLocationDto).collect(Collectors.toList());
+    public static PlanLocationListDto planLocationListDto(List<PlanLocation> planLocationList, DetailPlanResponseDto plan){
+        List<SimplePlanLocationDto> locationDtos = planLocationList.stream()
+                .map(PlanConverter::simplePlanLocationDto).collect(Collectors.toList());
+
+        return PlanLocationListDto.builder()
+                .plan(plan)
+                .planLocations(locationDtos)
+                .build();
     }
 }
