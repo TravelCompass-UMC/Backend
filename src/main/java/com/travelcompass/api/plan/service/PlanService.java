@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.travelcompass.api.plan.dto.PlanResponseDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,4 +57,11 @@ public class PlanService {
         return PlanConverter.detailPlanResponseDto(plan, hashtagService.findHashtagNamesByPlan(plan));
     }
 
+    public List<SimplePlanLocationDto> findPlanLocationByDay(Long planId, Long day){
+        Plan plan = planRepository.findById(planId)
+                .orElseThrow( () -> GeneralException.of(ErrorCode.PLAN_NOT_FOUND));
+
+        List<PlanLocation> planLocationList = planLocationRepository.findAllByPlanAndTravelDay(plan, day);
+        return PlanConverter.planLocationListDto(planLocationList);
+    }
 }
