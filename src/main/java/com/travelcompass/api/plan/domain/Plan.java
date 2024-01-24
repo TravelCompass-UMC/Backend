@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -26,7 +27,9 @@ public class Plan extends BaseEntity {
 
     private LocalDate endDate;
 
-    private String inviteCode; // 초대를 위한 유니크한 코드
+    private UUID inviteCode; // 초대를 위한 유니크한 코드
+
+    private Long hits; // 조회수
 
     @Enumerated(EnumType.STRING)
     private PlanVehicle vehicle;

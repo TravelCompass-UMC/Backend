@@ -28,7 +28,14 @@ public enum ErrorCode implements BaseCode {
     IP_NOT_MATCHED(HttpStatus.FORBIDDEN, "JWT_4042", "리프레시 토큰의 IP주소가 일치하지 않습니다."),
     TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_4043", "유효하지 않은 토큰입니다."),
     TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4031", "권한 정보가 없는 토큰입니다."),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4011", "토큰 유효기간이 만료되었습니다.")
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4011", "토큰 유효기간이 만료되었습니다."),
+
+    // Plan
+    PLAN_NOT_FOUND(HttpStatus.NOT_FOUND, "PLAN_404", "여행계획을 찾을 수 없습니다."),
+    PLAN_LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND,"PLAN_4042","여행장소를 찾을 수 없습니다."),
+
+    //Hashtag
+    HASHTAG_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAG_404", "해시태그를 찾을 수 없습니다."),
 
     ;
 
