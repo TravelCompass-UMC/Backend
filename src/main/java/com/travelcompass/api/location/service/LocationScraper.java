@@ -3,6 +3,7 @@ package com.travelcompass.api.location.service;
 import com.travelcompass.api.global.entity.Uuid;
 import com.travelcompass.api.global.repository.UuidRepository;
 import com.travelcompass.api.global.s3.AmazonS3Manager;
+import com.travelcompass.api.location.domain.CustomMultipartFile;
 import com.travelcompass.api.location.domain.DayType;
 import com.travelcompass.api.location.dto.BusinessHoursDto;
 import com.travelcompass.api.location.dto.ReviewDto;
@@ -36,12 +37,17 @@ public class LocationScraper {
 
     private static final String url = "https://pcmap.place.naver.com/place/";
     private static final String keyword = "11491438"; // 성산일출봉
-    private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
     private final LocationRepository locationRepository;
+
+    private final AmazonS3Manager s3Manager;
+    private final LocationInfoService locationInfoService;
+    private final LocationImageService locationImageService;
+
+    // selenium driver 설정
     private WebDriver driver;
 
-    @Scheduled(fixedRate = 2 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 4 * 60 * 60 * 1000)
     public void scrapeLocations() {
         setUp();
 
@@ -68,7 +74,7 @@ public class LocationScraper {
         String tel = scrapeTel();
 
         /*
-            `리뷰` 탭으로 이동
+            `리뷰` 탭으로 이동 (최신순)
          */
         driver.get(url + keyword + "/review/visitor?reviewSort=recent");
 
