@@ -60,6 +60,7 @@ public class PlanResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PlanLocationListDto{
-        List<PlanLocation> planLocations;
+        DetailPlanResponseDto plan;
+        List<SimplePlanLocationDto> planLocations;
     }
 }
