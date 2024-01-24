@@ -39,7 +39,7 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers("/token/**", "/users/**")
+                        .requestMatchers("/token/**", "/users/**", "/regions/**", "/locations/**", "/plans/**", "/me/**", "/address/**")
                         .permitAll()
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
