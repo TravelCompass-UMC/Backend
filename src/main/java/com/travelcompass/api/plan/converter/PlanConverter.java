@@ -15,19 +15,20 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class PlanConverter {
 
-    public static Plan toPlan(CreatePlanDto request, Region region, String inviteCode){
+    public static Plan toPlan(CreatePlanDto request, Region region){
         return Plan.builder()
                 .title(request.getTitle())
                 .startDate(LocalDate.parse(request.getStartDate()))
                 .endDate(LocalDate.parse(request.getEndDate()))
                 .vehicle(PlanVehicle.valueOf(request.getVehicle()))
                 .region(region)
-                .inviteCode(inviteCode)
+                .inviteCode(UUID.randomUUID())
                 .build();
     }
 
@@ -37,7 +38,7 @@ public class PlanConverter {
                 .title(plan.getTitle())
                 .startDate(String.valueOf(plan.getStartDate()))
                 .endDate(String.valueOf(plan.getEndDate()))
-                .inviteCode(plan.getInviteCode())
+                .inviteCode(String.valueOf(plan.getInviteCode()))
                 .vehicle(String.valueOf(plan.getVehicle()))
                 .region(plan.getRegion().getName())
                 .hashtag(hashtag)
@@ -47,7 +48,7 @@ public class PlanConverter {
     public static SimplePlanLocationDto simplePlanLocationDto(PlanLocation planLocation){
         return SimplePlanLocationDto.builder()
                 .id(planLocation.getId())
-                .arrival(LocalTime.parse(planLocation.getArrival()))
+                .arrival(String.valueOf(planLocation.getArrival()))
                 .travelDay(planLocation.getTravelDay())
                 .location(planLocation.getLocation())
                 .build();
