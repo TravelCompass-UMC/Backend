@@ -50,6 +50,7 @@ dependencies {
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.json:json:20230227'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
