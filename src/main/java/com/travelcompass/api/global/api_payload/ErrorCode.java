@@ -20,6 +20,9 @@ public enum ErrorCode implements BaseCode {
     // Location
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "LOCATION_404", "장소를 찾을 수 없습니다."),
 
+    // LocationImage
+    LOCATION_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "LOCATION_IMAGE_404", "장소 이미지를 찾을 수 없습니다."),
+
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_4041", "존재하지 않는 회원입니다."),
 
@@ -28,8 +31,7 @@ public enum ErrorCode implements BaseCode {
     IP_NOT_MATCHED(HttpStatus.FORBIDDEN, "JWT_4042", "리프레시 토큰의 IP주소가 일치하지 않습니다."),
     TOKEN_INVALID(HttpStatus.FORBIDDEN, "JWT_4043", "유효하지 않은 토큰입니다."),
     TOKEN_NO_AUTH(HttpStatus.FORBIDDEN, "JWT_4031", "권한 정보가 없는 토큰입니다."),
-    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4011", "토큰 유효기간이 만료되었습니다.")
-
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "JWT_4011", "토큰 유효기간이 만료되었습니다."),
     ;
 
     private final HttpStatus httpStatus;
