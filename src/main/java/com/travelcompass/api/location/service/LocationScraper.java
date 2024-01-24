@@ -1,5 +1,6 @@
 package com.travelcompass.api.location.service;
 
+import com.travelcompass.api.global.entity.Uuid;
 import com.travelcompass.api.global.repository.UuidRepository;
 import com.travelcompass.api.global.s3.AmazonS3Manager;
 import com.travelcompass.api.location.domain.DayType;
@@ -7,7 +8,6 @@ import com.travelcompass.api.location.dto.BusinessHoursDto;
 import com.travelcompass.api.location.dto.ReviewDto;
 import com.travelcompass.api.location.repository.LocationRepository;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -31,18 +31,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class LocationScraper {
-
-    private final AmazonS3Manager s3Manager;
-
-    private final UuidRepository uuidRepository;
-
-    private final LocationRepository locationRepository;
 
     private static final String url = "https://pcmap.place.naver.com/place/";
     private static final String keyword = "11491438"; // 성산일출봉
-
+    private final AmazonS3Manager s3Manager;
+    private final UuidRepository uuidRepository;
+    private final LocationRepository locationRepository;
     private WebDriver driver;
 
     @Scheduled(fixedRate = 2 * 60 * 60 * 1000)
@@ -88,8 +84,11 @@ public class LocationScraper {
 
         // 사진
         String src = scrapePhotoSrc();
-        MultipartFile multipartFile = downloadImage(src);
+        MultipartFile image = downloadImage(src);
 
+        Uuid uuid = uuidRepository.save(Uuid.generateUuid());
+        String uploadedImageUrl = s3Manager.uploadFile(s3Manager.generateLocationKeyName(uuid),
+                image);
 
         tearDown();
     }
