@@ -85,4 +85,8 @@ public class UserService {
         return jwtDto;
     }
 */
+    public User findUserById(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
+    }
 }
