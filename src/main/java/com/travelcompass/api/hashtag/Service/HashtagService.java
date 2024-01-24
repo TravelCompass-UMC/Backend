@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +28,8 @@ public class HashtagService {
                 .orElseThrow(()-> GeneralException.of(ErrorCode.HASHTAG_NOT_FOUND));
     }
 
-    public List<String> findHashtagNamesByPlan(Plan plan){
+    public List<Hashtag> findHashtagsByPlan(Plan plan){
         List<HashtagPlan> hashtagPlans = hashtagPlanRepository.findAllByPlan(plan);
-        return HashtagConverter.toHashtagNames(hashtagPlans);
+        return hashtagPlans.stream().map(HashtagPlan::getHashtag).collect(Collectors.toList());
     }
 }
