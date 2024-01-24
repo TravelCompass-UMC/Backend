@@ -1,7 +1,5 @@
 package com.travelcompass.api.location.domain;
 
-import com.travelcompass.api.address.domain.Address;
-import com.travelcompass.api.global.entity.BaseEntity;
 import com.travelcompass.api.region.domain.Region;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,28 +21,25 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location extends BaseEntity {
+public class LocationInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String logicalName;
 
-    private String tel;
+    private String scrapingId;
 
-    private Double latitude; // 위도
+    @Enumerated(EnumType.STRING)
+    private LocationType locationType;
 
-    private Double longitude; // 경도
-
-    private String openHoursEtc; // 영업시간 추가정보
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ADDRESS_CODE")
-    private Address address;
 
 }
