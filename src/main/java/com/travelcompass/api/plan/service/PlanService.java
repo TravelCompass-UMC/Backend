@@ -41,10 +41,8 @@ public class PlanService {
     private final ViewCountRepository viewCountRepository;
 
     public Plan createPlan(CreatePlanDto requestDto, Long regionId, User user){
-        String randomCode = " "; // 실제로는 임의로 생성된 유니크한 초대코드 생성
-
         Region region = regionService.findRegionById(regionId);
-        Plan plan = PlanConverter.toPlan(requestDto, region, randomCode);
+        Plan plan = PlanConverter.toPlan(requestDto, region);
         planRepository.save(plan);
 
         PlanUser planUser = PlanUser.builder().plan(plan).user(user).build();
