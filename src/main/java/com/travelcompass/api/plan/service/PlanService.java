@@ -8,6 +8,7 @@ import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
 import com.travelcompass.api.plan.domain.PlanUser;
+import com.travelcompass.api.plan.domain.ViewCount;
 import com.travelcompass.api.plan.dto.PlanRequestDto;
 import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto;
@@ -15,6 +16,7 @@ import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
 import com.travelcompass.api.plan.repository.PlanLocationRepository;
 import com.travelcompass.api.plan.repository.PlanRepository;
 import com.travelcompass.api.plan.repository.PlanUserRepository;
+import com.travelcompass.api.plan.repository.ViewCountRepository;
 import com.travelcompass.api.region.domain.Region;
 import com.travelcompass.api.region.service.RegionService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class PlanService {
     private final PlanRepository planRepository;
     private final PlanUserRepository planUserRepository;
     private final PlanLocationRepository planLocationRepository;
+    private final ViewCountRepository viewCountRepository;
 
     public Plan createPlan(CreatePlanDto requestDto, Long regionId, User user){
         String randomCode = " "; // 실제로는 임의로 생성된 유니크한 초대코드 생성
@@ -78,6 +81,16 @@ public class PlanService {
         List<PlanLocation> planLocationList = planLocationRepository.findAllByPlan(plan);
 
         return PlanConverter.planLocationListDto(planLocationList, detailPlanResponseDto);
+    }
+
+    // 조회수 증가 시키고 조회수 반환
+    public Long increaseViewCount(Long planId){
+        Plan plan = planRepository.findById(planId)
+                .orElseThrow( () -> GeneralException.of(ErrorCode.PLAN_NOT_FOUND));
+
+        viewCountRepository.save(ViewCount.builder().build());
+
+        return viewCountRepository.countAllByPlan(plan);
     }
 
 }
