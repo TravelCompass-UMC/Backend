@@ -50,7 +50,7 @@ public class PlanResponseDto {
     @AllArgsConstructor
     public static class SimplePlanLocationDto{
         private Long id;
-        private LocalTime arrival;
+        private String arrival;
         private Long travelDay;
         private Location location;
     }
