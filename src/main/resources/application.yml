@@ -47,6 +47,8 @@ cloud:
   aws:
     s3:
       bucket: ${aws.s3.bucket}
+      path:
+        location: location
     region:
       static: ap-northeast-2
     stack:
