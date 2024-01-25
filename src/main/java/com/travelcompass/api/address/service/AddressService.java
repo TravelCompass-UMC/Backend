@@ -38,11 +38,10 @@ public class AddressService {
         return address;
     }
 
-    public Coordinates getCoordinate(){
+    public Coordinates getCoordinate(String address){
 
         // 요청에 담아보낼 API key와 address 생성
         String apiKey = "KakaoAK " + kakaoLocalKey;
-        String address = "서울시 강남구 테헤란로 131"; // 대체하여 사용
 
         // 요청 헤더에 만들기, Authorization 헤더 설정
         HttpHeaders httpHeaders = new HttpHeaders();
