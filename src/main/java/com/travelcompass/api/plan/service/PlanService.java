@@ -3,13 +3,18 @@ package com.travelcompass.api.plan.service;
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.hashtag.service.HashtagService;
+import com.travelcompass.api.location.domain.Location;
+import com.travelcompass.api.location.service.LocationService;
 import com.travelcompass.api.oauth.domain.User;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
 import com.travelcompass.api.plan.domain.PlanUser;
 import com.travelcompass.api.plan.domain.ViewCount;
+import com.travelcompass.api.plan.dto.PlanRequestDto;
 import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanDto;
+import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanLocationDto;
+import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanLocationListDto;
 import com.travelcompass.api.plan.repository.PlanLocationRepository;
 import com.travelcompass.api.plan.repository.PlanRepository;
 import com.travelcompass.api.plan.repository.PlanUserRepository;
@@ -21,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +34,7 @@ import java.util.List;
 public class PlanService {
 
     private final RegionService regionService;
-    private final HashtagService hashtagService;
+    private final LocationService locationService;
     private final PlanRepository planRepository;
     private final PlanUserRepository planUserRepository;
     private final PlanLocationRepository planLocationRepository;
@@ -41,6 +47,17 @@ public class PlanService {
         createNewPlanUser(plan, user);
 
         return plan;
+    }
+
+    public List<PlanLocation> createPlanLocations(CreatePlanLocationListDto requestDto, User user, Plan plan){
+        List<PlanLocation> planLocationList = requestDto.getPlanLocationDtos()
+                .stream()
+                .map(planLocationDto
+                        -> PlanConverter
+                        .toPlanLocation(planLocationDto, locationService.findLocationById(planLocationDto.getLocationId()), plan))
+                .toList();
+
+        return planLocationRepository.saveAll(planLocationList);
     }
 
     // 해쉬태그를 포함한 여행계획 상세정보 반환
