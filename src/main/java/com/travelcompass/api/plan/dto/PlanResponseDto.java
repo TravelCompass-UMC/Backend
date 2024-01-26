@@ -40,6 +40,9 @@ public class PlanResponseDto {
         private String inviteCode; // 초대를 위한 유니크한 코드
         private String vehicle;
         private String region;
+        private Long adultCount;
+        private Long childCount;
+        private Long hits;
 
         private List<String> hashtag;
     }
