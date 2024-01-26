@@ -41,4 +41,7 @@ public class Plan extends BaseEntity {
     @JoinColumn(name = "region_id")
     private Region region;
 
+    public void updateHits(Long hits) {
+        this.hits = hits;
+    }
 }
