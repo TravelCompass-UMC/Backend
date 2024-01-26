@@ -38,9 +38,7 @@ public class PlanService {
         Region region = regionService.findRegionByName(requestDto.getRegion());
         Plan plan = PlanConverter.toPlan(requestDto, region);
         planRepository.save(plan);
-
-        PlanUser planUser = PlanUser.builder().plan(plan).user(user).build();
-        planUserRepository.save(planUser);
+        createNewPlanUser(plan, user);
 
         return plan;
     }
