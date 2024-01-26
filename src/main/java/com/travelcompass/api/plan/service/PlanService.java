@@ -67,9 +67,7 @@ public class PlanService {
 
     // 조회수 증가 시키고 조회수 반환
     public Long increaseViewCount(Long planId){
-        Plan plan = planRepository.findById(planId)
-                .orElseThrow( () -> GeneralException.of(ErrorCode.PLAN_NOT_FOUND));
-
+        Plan plan = findPlanById(planId);
         viewCountRepository.save(ViewCount.builder().build());
 
         return viewCountRepository.countAllByPlan(plan);
