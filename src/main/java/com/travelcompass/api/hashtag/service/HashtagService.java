@@ -49,6 +49,6 @@ public class HashtagService {
 
         hashtagRepository.saveAll(newHashtags);
 
-        return tags.stream().map(HashtagConverter::toHashtag).collect(Collectors.toList());
+        return hashtagRepository.findByNameIn(tags);
     }
 }
