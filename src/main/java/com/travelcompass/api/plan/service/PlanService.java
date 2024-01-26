@@ -80,4 +80,9 @@ public class PlanService {
         return planUserRepository.save(PlanUser.builder().plan(plan).user(user).build());
     }
 
+    public Plan findPlanByInviteCode(String inviteCode){
+        return planRepository.findByInviteCode(inviteCode)
+                .orElseThrow(() -> GeneralException.of(ErrorCode.WRONG_INVITE_CODE));
+    }
+
 }
