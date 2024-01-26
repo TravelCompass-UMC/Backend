@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 public class PlanRequestDto {
@@ -20,5 +21,12 @@ public class PlanRequestDto {
         private String startDate;
         @NotNull
         private String endDate;
+
+        private String region;
+
+        private Long adultCount;
+        private Long childCount;
+
+        private List<String> hashtags;
     }
 }
