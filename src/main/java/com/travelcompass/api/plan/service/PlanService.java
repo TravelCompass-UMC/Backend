@@ -69,16 +69,12 @@ public class PlanService {
     }
 
     // 여행 day 일차의 계획 반환
-    public List<PlanLocation> findPlanLocationByDay(Long planId, Long day){
-        Plan plan = findPlanById(planId);
-
+    public List<PlanLocation> findPlanLocationByDay(Plan plan, Long day){
         return planLocationRepository.findAllByPlanAndTravelDay(plan, day);
     }
 
     // 여행 모든 일차의 계획 반환
-    public List<PlanLocation> findPlanEveryDay(Long planId){
-
-        Plan plan = findPlanById(planId);
+    public List<PlanLocation> findPlanEveryDay(Plan plan){
         return planLocationRepository.findAllByPlan(plan);
     }
 

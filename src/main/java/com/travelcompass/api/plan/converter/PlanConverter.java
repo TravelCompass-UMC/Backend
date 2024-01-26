@@ -69,7 +69,7 @@ public class PlanConverter {
                 .id(planLocation.getId())
                 .arrival(String.valueOf(planLocation.getArrival()))
                 .travelDay(planLocation.getTravelDay())
-                .location(planLocation.getLocation())
+                .locationId(planLocation.getLocation().getId())
                 .build();
     }
 

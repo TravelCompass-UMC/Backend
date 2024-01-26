@@ -54,8 +54,9 @@ public class PlanResponseDto {
     public static class SimplePlanLocationDto{
         private Long id;
         private String arrival;
+        private Long spendTime;
         private Long travelDay;
-        private Location location;
+        private Long locationId;
     }
 
     @Getter

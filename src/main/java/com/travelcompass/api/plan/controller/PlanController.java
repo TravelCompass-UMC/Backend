@@ -9,7 +9,10 @@ import com.travelcompass.api.oauth.jwt.CustomUserDetails;
 import com.travelcompass.api.oauth.service.UserService;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
+import com.travelcompass.api.plan.domain.PlanLocation;
+import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
+import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,7 +58,20 @@ public class PlanController {
         List<String> hashtagNames = hashtags.stream().map(Hashtag::getName).collect(Collectors.toList());
 
         return ApiResponse.onSuccess(SuccessCode.PLAN_INVITE_SUCCESS, PlanConverter.detailPlanResponseDto(plan, hashtagNames));
+    }
 
+    @GetMapping("/{plan-id}")
+    private ApiResponse<PlanLocationListDto> getAllPlanDetails(
+            @PathVariable(name = "plan-id") Long planId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ){
+        User user = userService.findUserById(customUserDetails.getId());
+        Plan plan = planService.findPlanById(planId);
+        List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
+        DetailPlanResponseDto planDto = PlanConverter.detailPlanResponseDto(plan, hashtags);
+
+        List<PlanLocation> planEveryDay = planService.findPlanEveryDay(plan);
+        return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS ,PlanConverter.planLocationListDto(planEveryDay, planDto));
     }
 
 }
