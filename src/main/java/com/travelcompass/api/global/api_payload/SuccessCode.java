@@ -17,6 +17,12 @@ public enum SuccessCode implements BaseCode {
     //USER_PASSWORD_CHANGE_SUCCESS(HttpStatus.OK, "USER_200", "비밀번호가 변경되었습니다."),
     USER_DELETE_SUCCESS(HttpStatus.OK, "USER_200", "회원탈퇴가 완료되었습니다."),
 
+    //Plan
+    PLAN_CREATED(HttpStatus.CREATED, "PLAN_2011", "여행계획이 생성되었습니다."),
+    PLAN_INVITE_SUCCESS(HttpStatus.CREATED, "PLAN_2012", "초대가 완료되었습니다."),
+    PLAN_VIEW_SUCCESS(HttpStatus.OK, "PLAN_2001", "조회가 완료되었습니다."),
+    PLAN_MODIFIED(HttpStatus.OK,"PLAN_2002", "수정이 완료되었습니다."),
+
     ;
 
     private final HttpStatus httpStatus;

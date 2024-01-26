@@ -33,6 +33,7 @@ public enum ErrorCode implements BaseCode {
     // Plan
     PLAN_NOT_FOUND(HttpStatus.NOT_FOUND, "PLAN_404", "여행계획을 찾을 수 없습니다."),
     PLAN_LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND,"PLAN_4042","여행장소를 찾을 수 없습니다."),
+    WRONG_INVITE_CODE(HttpStatus.NOT_FOUND, "PLAN_4043", "유효하지 않은 초대코드입니다."),
 
     //Hashtag
     HASHTAG_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAG_404", "해시태그를 찾을 수 없습니다."),
