@@ -29,4 +29,19 @@ public class PlanRequestDto {
 
         private List<String> hashtags;
     }
+
+    @Getter
+    @NoArgsConstructor
+    public static class CreatePlanLocationDto {
+        private Long locationId;
+        private String arrival;
+        private Long spendTime;
+        private Long travelDay;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class CreatePlanLocationListDto {
+        List<CreatePlanLocationDto> planLocationDtos;
+    }
 }
