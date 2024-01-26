@@ -77,4 +77,9 @@ public class PlanService {
         return viewCountRepository.countAllByPlan(plan);
     }
 
+    // 새로운 PlanUser 만들고 반환하는 메서드 추가
+    public PlanUser createNewPlanUser(Plan plan, User user){
+        return planUserRepository.save(PlanUser.builder().plan(plan).user(user).build());
+    }
+
 }
