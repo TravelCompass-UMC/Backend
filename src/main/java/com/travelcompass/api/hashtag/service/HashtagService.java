@@ -51,4 +51,17 @@ public class HashtagService {
 
         return hashtagRepository.findByNameIn(tags);
     }
+
+    // 해쉬태그들과 plan을 연결하기 위한 메서드
+    public List<HashtagPlan> createHashtagPlans(List<Hashtag> hashtags, Plan plan){
+        List<HashtagPlan> hashtagPlans = hashtags.stream()
+                .map(hashtag
+                        -> HashtagPlan.builder()
+                        .plan(plan)
+                        .hashtag(hashtag)
+                        .build())
+                .toList();
+
+        return hashtagPlanRepository.saveAll(hashtagPlans);
+    }
 }
