@@ -31,6 +31,7 @@ public class PlanController {
     private final PlanService planService;
     private final HashtagService hashtagService;
 
+    // plan 새로 만들기
     @PostMapping ("")
     public ApiResponse<PlanLocationListDto> createNewPlan(
             @RequestBody CreatePlanDto createPlanDto,
@@ -42,13 +43,30 @@ public class PlanController {
         hashtagService.createHashtagPlans(hashtags, plan);
         List<String> hashtagNames = hashtags.stream().map(Hashtag::getName).collect(Collectors.toList());
 
-        List<PlanLocation> planLocations = planService.createPlanLocations(createPlanDto.getPlanLocationListDto(), user, plan);
+        List<PlanLocation> planLocations = planService.createPlanLocations(createPlanDto.getPlanLocationListDto(), plan);
 
         return ApiResponse.onSuccess(
                 SuccessCode.PLAN_CREATED,
                 PlanConverter.planLocationListDto(planLocations, PlanConverter.detailPlanResponseDto(plan, hashtagNames)));
     }
 
+    // plan 수정하기
+    @PatchMapping("{plan-id}")
+    public ApiResponse<PlanLocationListDto> modifyMyPlan(
+            @PathVariable(name = "plan-id") Long planId,
+            @RequestBody CreatePlanDto createPlanDto,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ){
+        User user = userService.findUserById(customUserDetails.getId());
+        Plan plan = planService.editPlan(createPlanDto.getPlanReqDto(), planService.findPlanById(planId));
+        List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
+        List<PlanLocation> planLocations = planService.editPlanLocations(createPlanDto.getPlanLocationListDto(), plan);
+
+        return ApiResponse.onSuccess(SuccessCode.PLAN_MODIFIED,
+                PlanConverter.planLocationListDto(planLocations, PlanConverter.detailPlanResponseDto(plan, hashtags)));
+    }
+
+    // 초대코드로 초대하기
     @PostMapping("/{invite-code}")
     public ApiResponse<DetailPlanResponseDto> inviteUserToPlan(
             @PathVariable(name = "invite-code") String inviteCode,
@@ -63,6 +81,7 @@ public class PlanController {
         return ApiResponse.onSuccess(SuccessCode.PLAN_INVITE_SUCCESS, PlanConverter.detailPlanResponseDto(plan, hashtagNames));
     }
 
+    // 모든 일차 가져오기
     @GetMapping("/{plan-id}")
     private ApiResponse<PlanLocationListDto> getAllPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
@@ -77,6 +96,7 @@ public class PlanController {
         return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS ,PlanConverter.planLocationListDto(planEveryDay, planDto));
     }
 
+    // day 일차 가져오기
     @GetMapping("/{plan-id}/{day}")
     private ApiResponse<PlanLocationListDto> getDayPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
