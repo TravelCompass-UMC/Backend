@@ -43,5 +43,19 @@ public class PlanController {
         return ApiResponse.onSuccess(SuccessCode.PLAN_CREATED, PlanConverter.detailPlanResponseDto(plan, hashtagNames));
     }
 
+    @PostMapping("/{invite-code}")
+    public ApiResponse<DetailPlanResponseDto> inviteUserToPlan(
+            @PathVariable(name = "invite-code") String inviteCode,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ){
+        User user = userService.findUserById(customUserDetails.getId());
+        Plan plan = planService.findPlanByInviteCode(inviteCode);
+        planService.createNewPlanUser(plan, user);
+        List<Hashtag> hashtags = hashtagService.findHashtagsByPlan(plan);
+        List<String> hashtagNames = hashtags.stream().map(Hashtag::getName).collect(Collectors.toList());
+
+        return ApiResponse.onSuccess(SuccessCode.PLAN_INVITE_SUCCESS, PlanConverter.detailPlanResponseDto(plan, hashtagNames));
+
+    }
 
 }
