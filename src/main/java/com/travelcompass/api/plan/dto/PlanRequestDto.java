@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -12,7 +11,7 @@ public class PlanRequestDto {
 
     @Getter
     @NoArgsConstructor
-    public static class CreatePlanDto {
+    public static class PlanReqDto {
         @NotBlank
         private String title;
         @NotNull
@@ -43,5 +42,12 @@ public class PlanRequestDto {
     @NoArgsConstructor
     public static class CreatePlanLocationListDto {
         List<CreatePlanLocationDto> planLocationDtos;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class CreatePlanDto {
+        PlanReqDto planReqDto;
+        CreatePlanLocationListDto planLocationListDto;
     }
 }
