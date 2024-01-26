@@ -22,6 +22,8 @@ public class PlanLocation extends BaseEntity {
 
     private LocalTime arrival;
 
+    private Long spendTime;
+
     private Long travelDay;
 
     @ManyToOne(fetch = FetchType.LAZY)
