@@ -2,17 +2,14 @@ package com.travelcompass.api.plan.service;
 
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
-import com.travelcompass.api.hashtag.Service.HashtagService;
+import com.travelcompass.api.hashtag.service.HashtagService;
 import com.travelcompass.api.oauth.domain.User;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
 import com.travelcompass.api.plan.domain.PlanUser;
 import com.travelcompass.api.plan.domain.ViewCount;
-import com.travelcompass.api.plan.dto.PlanRequestDto;
 import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanDto;
-import com.travelcompass.api.plan.dto.PlanResponseDto;
-import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
 import com.travelcompass.api.plan.repository.PlanLocationRepository;
 import com.travelcompass.api.plan.repository.PlanRepository;
 import com.travelcompass.api.plan.repository.PlanUserRepository;
@@ -24,9 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.travelcompass.api.plan.dto.PlanResponseDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +34,8 @@ public class PlanService {
     private final PlanLocationRepository planLocationRepository;
     private final ViewCountRepository viewCountRepository;
 
-    public Plan createPlan(CreatePlanDto requestDto, Long regionId, User user){
-        Region region = regionService.findRegionById(regionId);
+    public Plan createPlan(CreatePlanDto requestDto, User user){
+        Region region = regionService.findRegionByName(requestDto.getRegion());
         Plan plan = PlanConverter.toPlan(requestDto, region);
         planRepository.save(plan);
 
