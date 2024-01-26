@@ -29,6 +29,9 @@ public class PlanConverter {
                 .vehicle(PlanVehicle.valueOf(request.getVehicle()))
                 .region(region)
                 .inviteCode(UUID.randomUUID())
+                .adultCount(request.getAdultCount())
+                .childCount(request.getChildCount())
+                .hits(0L)
                 .build();
     }
 
@@ -40,6 +43,9 @@ public class PlanConverter {
                 .endDate(String.valueOf(plan.getEndDate()))
                 .inviteCode(String.valueOf(plan.getInviteCode()))
                 .vehicle(String.valueOf(plan.getVehicle()))
+                .adultCount(plan.getAdultCount())
+                .childCount(plan.getChildCount())
+                .hits(plan.getHits())
                 .region(plan.getRegion().getName())
                 .hashtag(hashtag)
                 .build();

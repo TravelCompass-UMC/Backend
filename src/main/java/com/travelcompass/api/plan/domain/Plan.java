@@ -29,6 +29,9 @@ public class Plan extends BaseEntity {
 
     private UUID inviteCode; // 초대를 위한 유니크한 코드
 
+    private Long adultCount;
+    private Long childCount;
+
     private Long hits; // 조회수
 
     @Enumerated(EnumType.STRING)
