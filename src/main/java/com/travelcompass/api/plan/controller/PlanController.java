@@ -10,7 +10,6 @@ import com.travelcompass.api.oauth.service.UserService;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
-import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.service.PlanService;
@@ -33,17 +32,21 @@ public class PlanController {
     private final HashtagService hashtagService;
 
     @PostMapping ("")
-    public ApiResponse<DetailPlanResponseDto> createNewPlan(
+    public ApiResponse<PlanLocationListDto> createNewPlan(
             @RequestBody CreatePlanDto createPlanDto,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
         User user = userService.findUserById(customUserDetails.getId());
-        Plan plan = planService.createPlan(createPlanDto, user);
-        List<Hashtag> hashtags = hashtagService.createNewHashtags(createPlanDto.getHashtags());
+        Plan plan = planService.createPlan(createPlanDto.getPlanReqDto(), user);
+        List<Hashtag> hashtags = hashtagService.createNewHashtags(createPlanDto.getPlanReqDto().getHashtags());
         hashtagService.createHashtagPlans(hashtags, plan);
         List<String> hashtagNames = hashtags.stream().map(Hashtag::getName).collect(Collectors.toList());
 
-        return ApiResponse.onSuccess(SuccessCode.PLAN_CREATED, PlanConverter.detailPlanResponseDto(plan, hashtagNames));
+        List<PlanLocation> planLocations = planService.createPlanLocations(createPlanDto.getPlanLocationListDto(), user, plan);
+
+        return ApiResponse.onSuccess(
+                SuccessCode.PLAN_CREATED,
+                PlanConverter.planLocationListDto(planLocations, PlanConverter.detailPlanResponseDto(plan, hashtagNames)));
     }
 
     @PostMapping("/{invite-code}")
@@ -66,7 +69,7 @@ public class PlanController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
         User user = userService.findUserById(customUserDetails.getId());
-        Plan plan = planService.findPlanById(planId);
+        Plan plan = planService.increaseViewCount(planService.findPlanById(planId));
         List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
         DetailPlanResponseDto planDto = PlanConverter.detailPlanResponseDto(plan, hashtags);
 
@@ -81,7 +84,7 @@ public class PlanController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
         User user = userService.findUserById(customUserDetails.getId());
-        Plan plan = planService.findPlanById(planId);
+        Plan plan = planService.increaseViewCount(planService.findPlanById(planId));
         List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
         DetailPlanResponseDto planDto = PlanConverter.detailPlanResponseDto(plan, hashtags);
 
