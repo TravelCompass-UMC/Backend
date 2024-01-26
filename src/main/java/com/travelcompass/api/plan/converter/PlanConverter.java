@@ -1,14 +1,11 @@
 package com.travelcompass.api.plan.converter;
 
 import com.travelcompass.api.location.domain.Location;
-import com.travelcompass.api.location.service.LocationService;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
 import com.travelcompass.api.plan.domain.PlanVehicle;
-import com.travelcompass.api.plan.dto.PlanRequestDto;
-import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanDto;
+import com.travelcompass.api.plan.dto.PlanRequestDto.PlanReqDto;
 import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanLocationDto;
-import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.SimplePlanLocationDto;
@@ -24,7 +21,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class PlanConverter {
 
-    public static Plan toPlan(CreatePlanDto request, Region region){
+    public static Plan toPlan(PlanReqDto request, Region region){
         return Plan.builder()
                 .title(request.getTitle())
                 .startDate(LocalDate.parse(request.getStartDate()))

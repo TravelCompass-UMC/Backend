@@ -44,4 +44,15 @@ public class Plan extends BaseEntity {
     public void updateHits(Long hits) {
         this.hits = hits;
     }
+
+    public void modifyPlan(String title, String startDate, String endDate,
+                           Long adultCount, Long childCount, String vehicle
+    ){
+        this.title = title;
+        this.startDate = LocalDate.parse(startDate);
+        this.endDate = LocalDate.parse(endDate);
+        this.adultCount = adultCount;
+        this.childCount = childCount;
+        this.vehicle = PlanVehicle.valueOf(vehicle);
+    }
 }
