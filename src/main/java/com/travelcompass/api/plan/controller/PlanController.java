@@ -74,4 +74,19 @@ public class PlanController {
         return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS ,PlanConverter.planLocationListDto(planEveryDay, planDto));
     }
 
+    @GetMapping("/{plan-id}/{day}")
+    private ApiResponse<PlanLocationListDto> getDayPlanDetails(
+            @PathVariable(name = "plan-id") Long planId,
+            @PathVariable(name = "day") Long day,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ){
+        User user = userService.findUserById(customUserDetails.getId());
+        Plan plan = planService.findPlanById(planId);
+        List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
+        DetailPlanResponseDto planDto = PlanConverter.detailPlanResponseDto(plan, hashtags);
+
+        List<PlanLocation> planLocationByDay = planService.findPlanLocationByDay(plan, day);
+        return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS, PlanConverter.planLocationListDto(planLocationByDay, planDto));
+    }
+
 }
