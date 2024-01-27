@@ -1,16 +1,18 @@
 package com.travelcompass.api.oauth.jwt;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 
 @Builder
-@ToString
 @Getter
 @Setter
-public class JwtDto {
+public class OAuthResponseDto {
     private String accessToken;
     private String refreshToken;
 
-    public JwtDto(String accessToken, String refreshToken) {
+    public OAuthResponseDto(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
