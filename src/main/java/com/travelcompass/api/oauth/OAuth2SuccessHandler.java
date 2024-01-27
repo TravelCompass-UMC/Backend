@@ -1,9 +1,7 @@
 package com.travelcompass.api.oauth;
 
-import com.travelcompass.api.oauth.jwt.JwtDto;
-import com.travelcompass.api.oauth.jwt.CustomUserDetails;
-import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
-import com.travelcompass.api.oauth.jwt.RefreshToken;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.travelcompass.api.oauth.jwt.*;
 import com.travelcompass.api.oauth.repository.RefreshTokenRedisRepository;
 import com.travelcompass.api.oauth.utils.IpUtil;
 import io.jsonwebtoken.Claims;
@@ -18,8 +16,11 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 @Slf4j
 @Component
 // OAuth2 통신이 성공적으로 끝났을 때 사용됨
@@ -40,11 +41,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
 
-    @Override
+    //@Override
     // 인증 성공시 호출되는 메소드
-    public void onAuthenticationSuccess(
+    public OAuthResponseDto onAuthenticationSuccess(
             HttpServletRequest request,
-            HttpServletResponse response,
+            //HttpServletResponse response,
             Authentication authentication
     ) throws IOException, ServletException {
         // OAuth2UserServiceImpl에서 반환한 DefaultOAuth2User가 저장
@@ -60,7 +61,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String providerId = oAuth2User.getAttribute("id").toString();
 
         // 처음으로 소셜 로그인한 사용자를 데이터베이스에 등록
-        if(!userDetailsManager.userExists(username)) {
+        if(!userDetailsManager.userExists(username)) { //1. 최초 로그인인지 확인
             userDetailsManager.createUser(CustomUserDetails.builder()
                     .username(username)
                     .password(providerId)
@@ -75,7 +76,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // JWT 생성 - access & refresh
         UserDetails details
                 = userDetailsManager.loadUserByUsername(username);
-        JwtDto jwt = tokenUtils.generateToken(details);
+        JwtDto jwt = tokenUtils.generateToken(details); //2. access, refresh token 생성 및 발급
         log.info("accessToken: {}", jwt.getAccessToken());
         log.info("refreshToken: {} ", jwt.getRefreshToken());
 
@@ -93,11 +94,31 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                         .build()
         );
 
-        // 목적지 URL 설정 - 토큰 던짐
-        String targetUrl = String.format(
-                "http://localhost:8080/token/val?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
-        );
-        // 실제 Redirect 응답 생성
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        return new OAuthResponseDto(jwt.getAccessToken(), jwt.getRefreshToken());
+    }
+
+    @Override
+    // 인증 성공시 호출되는 메소드
+    public void onAuthenticationSuccess(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Authentication authentication
+    ) throws IOException, ServletException {
+        OAuthResponseDto oAuthResponseDto = onAuthenticationSuccess(request, authentication);
+
+        // 컨트롤러로 OAuthResponseDto 반환
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(objectMapper.writeValueAsString(oAuthResponseDto));
+
+        /*response.sendRedirect(UriComponentsBuilder.fromUriString("http://localhost:8080/login/oauth2/code/naver")
+        //react에서 로그인 성공 후 redirect 받을 페이지
+        //login/oauth2/code/naver 페이지에 accessToken, refreshToken등의 필요한 정보를 쿼리스트링 방식으로 보냄
+                .queryParam("accessToken", "accessToken")
+                .queryParam("refreshToken", "refreshToken")
+                .build()
+                .encode(StandardCharsets.UTF_8)
+                .toUriString());*/
     }
 }
