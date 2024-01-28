@@ -30,6 +30,10 @@ public class Location extends BaseEntity {
 
     private String name;
 
+    private Double star;
+
+    private String roadNameAddress;
+
     private String tel;
 
     private Double latitude; // 위도
@@ -42,8 +46,8 @@ public class Location extends BaseEntity {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ADDRESS_CODE")
-    private Address address;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ADDRESS_CODE")
+//    private Address address;
 
 }
