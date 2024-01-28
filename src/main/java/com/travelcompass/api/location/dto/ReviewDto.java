@@ -15,5 +15,5 @@ public class ReviewDto {
 
     String content;
 
-    String visitDate;
+    String reviewDate;
 }
