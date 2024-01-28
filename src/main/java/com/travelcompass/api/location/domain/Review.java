@@ -2,6 +2,7 @@ package com.travelcompass.api.location.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,11 @@ public class Review extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double score;
+    private String username;
+
+    private String content;
+
+    private LocalDate reviewDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
