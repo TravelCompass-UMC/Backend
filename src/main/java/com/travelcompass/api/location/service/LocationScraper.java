@@ -1,11 +1,15 @@
 package com.travelcompass.api.location.service;
 
 import com.travelcompass.api.global.entity.Uuid;
+import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.global.repository.UuidRepository;
 import com.travelcompass.api.global.s3.AmazonS3Manager;
 import com.travelcompass.api.location.domain.CustomMultipartFile;
 import com.travelcompass.api.location.domain.DayType;
+import com.travelcompass.api.location.domain.Location;
+import com.travelcompass.api.location.domain.LocationInfo;
 import com.travelcompass.api.location.dto.BusinessHoursDto;
+import com.travelcompass.api.location.dto.LocationScrapingDto;
 import com.travelcompass.api.location.dto.ReviewDto;
 import com.travelcompass.api.location.repository.LocationRepository;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -35,27 +39,69 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class LocationScraper {
 
-    private static final String url = "https://pcmap.place.naver.com/place/";
-    private static final String keyword = "11491438"; // 성산일출봉
+    private static final String BASE_URL = "https://pcmap.place.naver.com/place/";
+    private static final String HOME_TAB = "/home";
+    private static final String REVIEW_TAB = "/review/visitor?reviewSort=recent";
+    private static final String PHOTO_TAB = "/photo";
+
     private final UuidRepository uuidRepository;
     private final LocationRepository locationRepository;
 
     private final AmazonS3Manager s3Manager;
     private final LocationInfoService locationInfoService;
     private final LocationImageService locationImageService;
+    private final BusinessHoursService businessHoursService;
+    private final ReviewService reviewService;
 
     // selenium driver 설정
     private WebDriver driver;
 
-    @Scheduled(fixedRate = 4 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 6 * 60 * 60 * 1000)
     public void scrapeLocations() {
         setUp();
 
+        List<LocationInfo> locationInfos = locationInfoService.findAllLocationInfo();
+        for (LocationInfo locationInfo : locationInfos) {
+            LocationScrapingDto locationScrapingDto = scrapeLocation(locationInfo);
+
+            Location location = Location.builder()
+                    .name(locationInfo.getLogicalName())
+                    .star(locationScrapingDto.getStar())
+                    .roadNameAddress(locationScrapingDto.getAddress())
+                    .tel(locationScrapingDto.getTel())
+                    .region(locationInfo.getRegion())
+                    .build();
+
+            Location savedLocation = locationRepository.save(location);
+
+            locationImageService.saveImageUrl(locationScrapingDto.getImageUrl(), savedLocation);
+            businessHoursService.saveBusinessHours(locationScrapingDto.getBusinessHours(),
+                    savedLocation);
+            reviewService.saveReviews(locationScrapingDto.getReviews(), savedLocation);
+        }
+
+        tearDown();
+    }
+
+    private void setUp() {
+        // Chrome driver setup
+        WebDriverManager.chromedriver().setup();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("headless");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("disable-gpu");
+        options.addArguments("--remote-allow-origin=*");
+
+        driver = new ChromeDriver(options);
+    }
+
+    private LocationScrapingDto scrapeLocation(LocationInfo locationInfo) {
         /*
             `홈` 탭으로 이동
          */
-        driver.get(url + keyword + "/home");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
+        driver.get(BASE_URL + locationInfo.getScrapingId() + HOME_TAB);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
         // 별점
         double star = scrapeStar();
@@ -76,7 +122,7 @@ public class LocationScraper {
         /*
             `리뷰` 탭으로 이동 (최신순)
          */
-        driver.get(url + keyword + "/review/visitor?reviewSort=recent");
+        driver.get(BASE_URL + locationInfo.getScrapingId() + REVIEW_TAB);
 
         // 리뷰
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
@@ -85,7 +131,7 @@ public class LocationScraper {
         /*
             `사진` 탭으로 이동
          */
-        driver.get(url + keyword + "/photo");
+        driver.get(BASE_URL + locationInfo.getScrapingId() + PHOTO_TAB);
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
 
         // 사진
@@ -96,20 +142,14 @@ public class LocationScraper {
         String uploadedImageUrl = s3Manager.uploadFile(s3Manager.generateLocationKeyName(uuid),
                 image);
 
-        tearDown();
-    }
-
-    private void setUp() {
-        // Chrome driver setup
-        WebDriverManager.chromedriver().setup();
-
-        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("headless");
-        options.addArguments("window-size=1920x1080");
-        options.addArguments("disable-gpu");
-        options.addArguments("--remote-allow-origin=*");
-
-        driver = new ChromeDriver(options);
+        return LocationScrapingDto.builder()
+                .star(star)
+                .address(address)
+                .businessHours(businessHoursDtoMap)
+                .tel(tel)
+                .reviews(reviewDtos)
+                .imageUrl(uploadedImageUrl)
+                .build();
     }
 
     private double scrapeStar() {
@@ -177,13 +217,13 @@ public class LocationScraper {
                             .getText();
                     String content = e.findElement(By.xpath("div[3]/a/span"))
                             .getText();
-                    String visitDate = e.findElement(By.xpath("div[5]/div/div[2]/span[1]/time"))
+                    String reviewDate = e.findElement(By.xpath("div[5]/div/div[2]/span[1]/time"))
                             .getText();
 
                     return ReviewDto.builder()
                             .username(username)
                             .content(content)
-                            .visitDate(visitDate)
+                            .reviewDate(reviewDate)
                             .build();
                 })
                 .toList();
@@ -206,7 +246,7 @@ public class LocationScraper {
                         "jpeg", imageBytes.length);
             }
         } catch (URISyntaxException e) {
-            System.out.println("파일 다운로드 실패");
+            throw new RuntimeException("파일 다운로드 실패", e);
         }
         return null;
     }
