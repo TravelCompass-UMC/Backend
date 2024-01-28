@@ -1,5 +1,9 @@
 package com.travelcompass.api.location.dto;
 
+import com.travelcompass.api.location.domain.DayType;
+import java.util.List;
+import java.util.Map;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -9,9 +13,20 @@ import org.checkerframework.common.aliasing.qual.NonLeaked;
 
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class LocationScrapingDto {
 
+    Double star;
 
+    String address;
+
+    Map<DayType, BusinessHoursDto> businessHours;
+
+    String tel;
+
+    List<ReviewDto> reviews;
+
+    String imageUrl;
 
 }
