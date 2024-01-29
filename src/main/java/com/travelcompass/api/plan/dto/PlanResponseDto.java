@@ -52,8 +52,30 @@ public class PlanResponseDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class SimplePlanDto{
+        private Long id;
+        private String title;
+        private String startDate;
+        private String endDate;
+        private String vehicle;
+        private String region;
+        private Long hits;
+        private Long likeCount;
+
+        private List<String> hashtag;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PlanListResponseDto{
-        private List<DetailPlanResponseDto> plans;
+        private Boolean isLast;
+        private Boolean isFirst;
+        private Integer totalPage;
+        private Long totalElements;
+        private Integer listSize;
+        private List<SimplePlanDto> planList;
     }
 
     @Getter

@@ -1,22 +1,29 @@
 package com.travelcompass.api.plan.converter;
 
+import com.travelcompass.api.hashtag.domain.Hashtag;
+import com.travelcompass.api.hashtag.domain.HashtagPlan;
 import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
 import com.travelcompass.api.plan.domain.PlanVehicle;
 import com.travelcompass.api.plan.dto.PlanRequestDto.PlanReqDto;
 import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanLocationDto;
+import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
+import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.SimplePlanLocationDto;
 import com.travelcompass.api.region.domain.Region;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.travelcompass.api.plan.dto.PlanResponseDto.*;
 
 @NoArgsConstructor
 public class PlanConverter {
@@ -80,5 +87,38 @@ public class PlanConverter {
                 .plan(plan)
                 .planLocations(locationDtos)
                 .build();
+    }
+
+    public static SimplePlanDto simplePlanDto(Plan plan){
+        List<String> hashtags = plan.getHashtagPlans().stream().map(HashtagPlan::getHashtag).toList()
+                .stream().map(Hashtag::getName).toList();
+
+        return SimplePlanDto.builder()
+                .id(plan.getId())
+                .title(plan.getTitle())
+                .startDate(String.valueOf(plan.getStartDate()))
+                .endDate(String.valueOf(plan.getEndDate()))
+                .vehicle(String.valueOf(plan.getVehicle()))
+                .hits(plan.getHits())
+                .likeCount(plan.getLikeCount())
+                .region(plan.getRegion().getName())
+                .hashtag(hashtags)
+                .build();
+    }
+
+    public static PlanListResponseDto planListResponseDto(Page<Plan> plans){
+
+        List<SimplePlanDto> planDtos = plans.stream().map(PlanConverter::simplePlanDto).toList();
+
+        return PlanListResponseDto.builder()
+                .isLast(plans.isLast())
+                .isFirst(plans.isFirst())
+                .totalPage(plans.getTotalPages())
+                .totalElements(plans.getTotalElements())
+                .listSize(plans.getSize())
+                .planList(planDtos)
+                .build();
+
+
     }
 }
