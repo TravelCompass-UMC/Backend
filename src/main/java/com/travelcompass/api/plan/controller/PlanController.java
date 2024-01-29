@@ -10,10 +10,13 @@ import com.travelcompass.api.oauth.service.UserService;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.domain.PlanLocation;
+import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
+import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -110,6 +113,15 @@ public class PlanController {
 
         List<PlanLocation> planLocationByDay = planService.findPlanLocationByDay(plan, day);
         return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS, PlanConverter.planLocationListDto(planLocationByDay, planDto));
+    }
+
+    @GetMapping("/search")
+    private ApiResponse<PlanListResponseDto> getPlanList(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "way") Integer way
+    ){
+        Page<Plan> planList = planService.getPlanList(page, way);
+        return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS, PlanConverter.planListResponseDto(planList));
     }
 
 }
