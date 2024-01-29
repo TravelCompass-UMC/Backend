@@ -1,6 +1,7 @@
 package com.travelcompass.api.plan.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
+import com.travelcompass.api.hashtag.domain.HashtagPlan;
 import com.travelcompass.api.region.domain.Region;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -42,6 +44,9 @@ public class Plan extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+
+    @OneToMany(mappedBy = "plan")
+    private List<HashtagPlan> hashtagPlans;
 
     public void updateHits(Long hits) {
         this.hits = hits;
