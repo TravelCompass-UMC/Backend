@@ -36,6 +36,7 @@ public class PlanService {
     private final PlanLocationRepository planLocationRepository;
     private final ViewCountRepository viewCountRepository;
 
+    @Transactional
     public Plan createPlan(PlanReqDto requestDto, User user){
         Region region = regionService.findRegionByName(requestDto.getRegion());
         Plan plan = PlanConverter.toPlan(requestDto, region);
@@ -45,6 +46,7 @@ public class PlanService {
         return plan;
     }
 
+    @Transactional
     public List<PlanLocation> createPlanLocations(CreatePlanLocationListDto requestDto, Plan plan){
         List<PlanLocation> planLocationList = requestDto.getPlanLocationDtos()
                 .stream()
@@ -56,12 +58,14 @@ public class PlanService {
         return planLocationRepository.saveAll(planLocationList);
     }
 
+    @Transactional
     public List<PlanLocation> editPlanLocations(CreatePlanLocationListDto requestDto, Plan plan){
         planLocationRepository.deleteAllByPlan(plan);
 
         return createPlanLocations(requestDto, plan);
     }
 
+    @Transactional
     public Plan editPlan(PlanReqDto reqDto, Plan plan){
         plan.modifyPlan(reqDto.getTitle(), reqDto.getStartDate(), reqDto.getEndDate(),
                 reqDto.getAdultCount(), reqDto.getChildCount(), reqDto.getVehicle());
@@ -88,6 +92,7 @@ public class PlanService {
     }
 
     // 조회수 증가 시키고 plan 반환
+    @Transactional
     public Plan increaseViewCount(Plan plan){
         viewCountRepository.save(ViewCount.builder().build());
 
@@ -96,6 +101,7 @@ public class PlanService {
     }
 
     // 새로운 PlanUser 만들고 반환하는 메서드 추가
+    @Transactional
     public PlanUser createNewPlanUser(Plan plan, User user){
         return planUserRepository.save(PlanUser.builder().plan(plan).user(user).build());
     }
