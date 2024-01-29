@@ -118,9 +118,11 @@ public class PlanController {
     @GetMapping("/search")
     private ApiResponse<PlanListResponseDto> getPlanList(
             @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "regionId") Long regionId,
             @RequestParam(name = "way") Integer way
     ){
-        Page<Plan> planList = planService.getPlanList(page, way);
+        Page<Plan> planList = planService.getPlanList(page, regionId, way);
+
         return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS, PlanConverter.planListResponseDto(planList));
     }
 

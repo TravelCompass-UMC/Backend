@@ -114,17 +114,19 @@ public class PlanService {
                 .orElseThrow(() -> GeneralException.of(ErrorCode.WRONG_INVITE_CODE));
     }
 
-    public Page<Plan> getPlanList(Integer page, Integer way) {
+    public Page<Plan> getPlanList(Integer page, Long regionId, Integer way) {
+
+        Region region = regionService.findRegionById(regionId);
 
         if (way == 1){  // 좋아요 순
             return planRepository
-                    .findAll(PageRequest.of(page, 12, Sort.by("likeCount").descending()));
+                    .findAllByRegion(region, PageRequest.of(page, 12, Sort.by("likeCount").descending()));
         } else if (way == 2) {  // 조회 많은 순
             return planRepository
-                    .findAll(PageRequest.of(page, 12, Sort.by("hits").descending()));
+                    .findAllByRegion(region, PageRequest.of(page, 12, Sort.by("hits").descending()));
         } else if (way == 3) {  // 최신 순
             return planRepository
-                    .findAll(PageRequest.of(page, 12, Sort.by("createdAt").descending()));
+                    .findAllByRegion(region, PageRequest.of(page, 12, Sort.by("createdAt").descending()));
         } else {
             throw GeneralException.of(ErrorCode.WRONG_SORTING_WAY);
         }

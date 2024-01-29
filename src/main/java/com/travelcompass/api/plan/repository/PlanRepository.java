@@ -1,6 +1,7 @@
 package com.travelcompass.api.plan.repository;
 
 import com.travelcompass.api.plan.domain.Plan;
+import com.travelcompass.api.region.domain.Region;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,5 @@ import java.util.UUID;
 public interface PlanRepository extends JpaRepository<Plan, Long> {
     Optional<Plan> findByInviteCode(UUID inviteCode);
 
-    Page<Plan> findAll(PageRequest pageRequest);
+    Page<Plan> findAllByRegion(Region region, PageRequest pageRequest);
 }
