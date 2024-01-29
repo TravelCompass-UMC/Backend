@@ -34,6 +34,8 @@ public class Plan extends BaseEntity {
 
     private Long hits; // 조회수
 
+    private Long likeCount; // 좋아요 수
+
     @Enumerated(EnumType.STRING)
     private PlanVehicle vehicle;
 
@@ -44,6 +46,8 @@ public class Plan extends BaseEntity {
     public void updateHits(Long hits) {
         this.hits = hits;
     }
+
+    public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
 
     public void modifyPlan(String title, String startDate, String endDate,
                            Long adultCount, Long childCount, String vehicle

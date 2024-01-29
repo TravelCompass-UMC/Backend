@@ -43,8 +43,17 @@ public class PlanResponseDto {
         private Long adultCount;
         private Long childCount;
         private Long hits;
+        private Long likeCount;
 
         private List<String> hashtag;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlanListResponseDto{
+        private List<DetailPlanResponseDto> plans;
     }
 
     @Getter

@@ -32,6 +32,7 @@ public class PlanConverter {
                 .adultCount(request.getAdultCount())
                 .childCount(request.getChildCount())
                 .hits(0L)
+                .likeCount(0L)
                 .build();
     }
 
@@ -56,6 +57,7 @@ public class PlanConverter {
                 .adultCount(plan.getAdultCount())
                 .childCount(plan.getChildCount())
                 .hits(plan.getHits())
+                .likeCount(plan.getLikeCount())
                 .region(plan.getRegion().getName())
                 .hashtag(hashtag)
                 .build();
