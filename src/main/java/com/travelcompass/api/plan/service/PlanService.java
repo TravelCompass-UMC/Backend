@@ -18,6 +18,9 @@ import com.travelcompass.api.plan.repository.ViewCountRepository;
 import com.travelcompass.api.region.domain.Region;
 import com.travelcompass.api.region.service.RegionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,6 +112,22 @@ public class PlanService {
     public Plan findPlanByInviteCode(String inviteCode){
         return planRepository.findByInviteCode(UUID.fromString(inviteCode))
                 .orElseThrow(() -> GeneralException.of(ErrorCode.WRONG_INVITE_CODE));
+    }
+
+    public Page<Plan> getPlanList(Integer page, Integer way) {
+
+        if (way == 1){  // 좋아요 순
+            return planRepository
+                    .findAll(PageRequest.of(page, 12, Sort.by("likeCount").descending()));
+        } else if (way == 2) {  // 조회 많은 순
+            return planRepository
+                    .findAll(PageRequest.of(page, 12, Sort.by("hits").descending()));
+        } else if (way == 3) {  // 최신 순
+            return planRepository
+                    .findAll(PageRequest.of(page, 12, Sort.by("createdAt").descending()));
+        } else {
+            throw GeneralException.of(ErrorCode.WRONG_SORTING_WAY);
+        }
     }
 
 }
