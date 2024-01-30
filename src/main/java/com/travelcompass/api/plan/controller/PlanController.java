@@ -16,6 +16,8 @@ import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.service.PlanService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +68,7 @@ public class PlanController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2002", description = "계획 수정 성공")
     })
+    @Parameter(name = "plan-id", description = "여행계획의 아이디, path variable")
     @PatchMapping("{plan-id}")
     public ApiResponse<PlanLocationListDto> modifyMyPlan(
             @PathVariable(name = "plan-id") Long planId,
@@ -86,6 +89,7 @@ public class PlanController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2012", description = "계획 초대 성공")
     })
+    @Parameter(name = "invite-code", description = "여행계획의 초대코드, path variable")
     @PostMapping("/{invite-code}")
     public ApiResponse<DetailPlanResponseDto> inviteUserToPlan(
             @PathVariable(name = "invite-code") String inviteCode,
@@ -105,6 +109,7 @@ public class PlanController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2001", description = "계획 조회 성공")
     })
+    @Parameter(name = "plan-id", description = "여행계획의 아이디, path variable")
     @GetMapping("/{plan-id}")
     private ApiResponse<PlanLocationListDto> getAllPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
@@ -124,6 +129,10 @@ public class PlanController {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2001", description = "계획 조회 성공")
     })
+    @Parameters({
+            @Parameter(name = "plan-id", description = "여행계획의 아이디, path variable"),
+            @Parameter(name = "day", description = "조회하고 싶은 날, path variable")
+    })
     @GetMapping("/{plan-id}/{day}")
     private ApiResponse<PlanLocationListDto> getDayPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
@@ -142,6 +151,11 @@ public class PlanController {
     @Operation(summary = "여행계획 조회 메서드", description = "여행 계획 리스트를 조회하는 메서드입니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2001", description = "계획 조회 성공")
+    })
+    @Parameters({
+            @Parameter(name = "page", description = "페이지 번호, 0번이 1페이지 입니다."),
+            @Parameter(name = "regionId", description = "조회하고 싶은 지역의 아이디"),
+            @Parameter(name = "way", description = "정렬 방식,  1.좋아요순, 2.조회수순, 3.최신순 ")
     })
     @GetMapping("/search")
     private ApiResponse<PlanListResponseDto> getPlanList(
