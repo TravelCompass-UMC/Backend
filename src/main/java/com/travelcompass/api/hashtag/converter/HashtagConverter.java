@@ -7,4 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HashtagConverter {
+    public static Hashtag toHashtag(String tag){
+        return Hashtag.builder().name(tag).build();
+    }
 }

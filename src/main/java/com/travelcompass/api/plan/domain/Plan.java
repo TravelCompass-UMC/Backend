@@ -1,6 +1,7 @@
 package com.travelcompass.api.plan.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
+import com.travelcompass.api.hashtag.domain.HashtagPlan;
 import com.travelcompass.api.region.domain.Region;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +31,12 @@ public class Plan extends BaseEntity {
 
     private UUID inviteCode; // 초대를 위한 유니크한 코드
 
+    private Long adultCount;
+    private Long childCount;
+
     private Long hits; // 조회수
+
+    private Long likeCount; // 좋아요 수
 
     @Enumerated(EnumType.STRING)
     private PlanVehicle vehicle;
@@ -38,4 +45,23 @@ public class Plan extends BaseEntity {
     @JoinColumn(name = "region_id")
     private Region region;
 
+    @OneToMany(mappedBy = "plan")
+    private List<HashtagPlan> hashtagPlans;
+
+    public void updateHits(Long hits) {
+        this.hits = hits;
+    }
+
+    public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
+
+    public void modifyPlan(String title, LocalDate startDate, LocalDate endDate,
+                           Long adultCount, Long childCount, String vehicle
+    ){
+        this.title = title;
+        this.startDate = LocalDate.parse(startDate);
+        this.endDate = LocalDate.parse(endDate);
+        this.adultCount = adultCount;
+        this.childCount = childCount;
+        this.vehicle = PlanVehicle.valueOf(vehicle);
+    }
 }

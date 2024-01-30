@@ -1,4 +1,4 @@
-package com.travelcompass.api.hashtag.Service;
+package com.travelcompass.api.hashtag.service;
 
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
@@ -31,5 +31,37 @@ public class HashtagService {
     public List<Hashtag> findHashtagsByPlan(Plan plan){
         List<HashtagPlan> hashtagPlans = hashtagPlanRepository.findAllByPlan(plan);
         return hashtagPlans.stream().map(HashtagPlan::getHashtag).collect(Collectors.toList());
+    }
+
+    /*
+    들어온 태그명들을 보고 해쉬태그 디비에 없으면 새로 생성해서 저장 후
+    들어온 태그명들을 객체로 반환
+     */
+    public List<Hashtag> createNewHashtags(List<String> tags){
+        List<Hashtag> existingTags = hashtagRepository.findByNameIn(tags);
+
+        List<Hashtag> newHashtags = tags.stream()
+                .map(tag -> existingTags.stream()
+                        .filter(hashtag -> tag.equals(hashtag.getName()))
+                        .findFirst()
+                        .orElseGet(() -> HashtagConverter.toHashtag(tag)))
+                .collect(Collectors.toList());
+
+        hashtagRepository.saveAll(newHashtags);
+
+        return hashtagRepository.findByNameIn(tags);
+    }
+
+    // 해쉬태그들과 plan을 연결하기 위한 메서드
+    public List<HashtagPlan> createHashtagPlans(List<Hashtag> hashtags, Plan plan){
+        List<HashtagPlan> hashtagPlans = hashtags.stream()
+                .map(hashtag
+                        -> HashtagPlan.builder()
+                        .plan(plan)
+                        .hashtag(hashtag)
+                        .build())
+                .toList();
+
+        return hashtagPlanRepository.saveAll(hashtagPlans);
     }
 }
