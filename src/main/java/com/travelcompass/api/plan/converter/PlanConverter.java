@@ -47,7 +47,7 @@ public class PlanConverter {
 
     public static PlanLocation toPlanLocation(CreatePlanLocationDto request, Location location, Plan plan){
         return PlanLocation.builder()
-                .arrival(LocalTime.parse(request.getArrival()))
+                .arrival(request.getArrival())
                 .spendTime(request.getSpendTime())
                 .travelDay(request.getTravelDay())
                 .location(location)
@@ -75,7 +75,8 @@ public class PlanConverter {
     public static SimplePlanLocationDto simplePlanLocationDto(PlanLocation planLocation){
         return SimplePlanLocationDto.builder()
                 .id(planLocation.getId())
-                .arrival(String.valueOf(planLocation.getArrival()))
+                .arrival(planLocation.getArrival())
+                .spendTime(planLocation.getSpendTime())
                 .travelDay(planLocation.getTravelDay())
                 .locationId(planLocation.getLocation().getId())
                 .build();

@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -52,11 +53,13 @@ public class PlanRequestDto {
         @Schema(description = "추가하는 장소의 id")
         private Long locationId;
 
-        @Schema(description = "도착 시간", example = "13:00", pattern = "HH-MM") //
-        private String arrival;
+        @Schema(description = "도착 시간", example = "13:00", pattern = "HH-MM")
+        @DateTimeFormat(pattern = "HH:mm")
+        private LocalTime arrival;
 
-        @Schema(description = "소요 시간", example = "02:00", pattern = "HH-MM") //
-        private Long spendTime;
+        @Schema(description = "소요 시간", example = "02:00", pattern = "HH-MM")
+        @DateTimeFormat(pattern = "HH:mm")
+        private LocalTime spendTime;
 
         @Schema(description = "여행 일차 (첫날이 0)", example = "1")
         private Long travelDay;

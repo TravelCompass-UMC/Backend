@@ -22,7 +22,7 @@ public class PlanLocation extends BaseEntity {
 
     private LocalTime arrival;
 
-    private Long spendTime;
+    private LocalTime spendTime;
 
     private Long travelDay;
 
