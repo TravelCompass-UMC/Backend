@@ -10,6 +10,7 @@ import com.travelcompass.api.region.domain.Region;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -31,11 +32,13 @@ public class PlanResponseDto {
         @Schema(description = "여행계획 제목")
         private String title;
 
-        @Schema(description = "여행 시작일", example = "2024-01-01", pattern = "yyyy-MM-dd") //
-        private String startDate;
+        @Schema(description = "여행 시작일", example = "2024-01-01", pattern = "yyyy-MM-dd")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        private LocalDate startDate;
 
-        @Schema(description = "여행 종료일", example = "2024-01-03", pattern = "yyyy-MM-dd") //
-        private String endDate;
+        @Schema(description = "여행 종료일", example = "2024-01-03", pattern = "yyyy-MM-dd")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        private LocalDate endDate;
 
         @Schema(description = "초대를 위한 유니크한 코드")
         private String inviteCode;
@@ -75,11 +78,13 @@ public class PlanResponseDto {
         private String title;
 
 
-        @Schema(description = "여행 시작일", example = "2024-01-01", pattern = "yyyy-MM-dd") //
-        private String startDate;
+        @Schema(description = "여행 시작일", example = "2024-01-01", pattern = "yyyy-MM-dd")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        private LocalDate startDate;
 
-        @Schema(description = "여행 종료일", example = "2024-01-03", pattern = "yyyy-MM-dd") //
-        private String endDate;
+        @Schema(description = "여행 종료일", example = "2024-01-03", pattern = "yyyy-MM-dd")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        private LocalDate endDate;
 
         @Schema(description = "이동수단", example = "PUBLIC", allowableValues = {"PUBLIC", "PRIVATE"})
         private String vehicle;

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,8 +32,8 @@ public class PlanConverter {
     public static Plan toPlan(PlanReqDto request, Region region){
         return Plan.builder()
                 .title(request.getTitle())
-                .startDate(LocalDate.parse(request.getStartDate()))
-                .endDate(LocalDate.parse(request.getEndDate()))
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
                 .vehicle(PlanVehicle.valueOf(request.getVehicle()))
                 .region(region)
                 .inviteCode(UUID.randomUUID())
@@ -40,6 +41,7 @@ public class PlanConverter {
                 .childCount(request.getChildCount())
                 .hits(0L)
                 .likeCount(0L)
+                .hashtagPlans(new ArrayList<>())
                 .build();
     }
 
@@ -57,8 +59,8 @@ public class PlanConverter {
         return DetailPlanResponseDto.builder()
                 .id(plan.getId())
                 .title(plan.getTitle())
-                .startDate(String.valueOf(plan.getStartDate()))
-                .endDate(String.valueOf(plan.getEndDate()))
+                .startDate(plan.getStartDate())
+                .endDate(plan.getEndDate())
                 .inviteCode(String.valueOf(plan.getInviteCode()))
                 .vehicle(String.valueOf(plan.getVehicle()))
                 .adultCount(plan.getAdultCount())
@@ -96,8 +98,8 @@ public class PlanConverter {
         return SimplePlanDto.builder()
                 .id(plan.getId())
                 .title(plan.getTitle())
-                .startDate(String.valueOf(plan.getStartDate()))
-                .endDate(String.valueOf(plan.getEndDate()))
+                .startDate(plan.getStartDate())
+                .endDate(plan.getEndDate())
                 .vehicle(String.valueOf(plan.getVehicle()))
                 .hits(plan.getHits())
                 .likeCount(plan.getLikeCount())

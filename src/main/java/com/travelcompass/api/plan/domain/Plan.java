@@ -54,7 +54,7 @@ public class Plan extends BaseEntity {
 
     public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
 
-    public void modifyPlan(String title, String startDate, String endDate,
+    public void modifyPlan(String title, LocalDate startDate, LocalDate endDate,
                            Long adultCount, Long childCount, String vehicle
     ){
         this.title = title;
