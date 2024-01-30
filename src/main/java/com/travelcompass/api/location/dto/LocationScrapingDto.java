@@ -25,8 +25,6 @@ public class LocationScrapingDto {
 
     String tel;
 
-    List<ReviewDto> reviews;
-
     String imageUrl;
 
 }
