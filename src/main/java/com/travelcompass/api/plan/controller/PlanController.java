@@ -15,6 +15,9 @@ import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.service.PlanService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 
 import static com.travelcompass.api.plan.dto.PlanRequestDto.*;
 
+@Tag(name = "여행계획", description = "여행 계획 관련 api 입니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/plans")
@@ -35,6 +39,10 @@ public class PlanController {
     private final HashtagService hashtagService;
 
     // plan 새로 만들기
+    @Operation(summary = "여행 계획 생성 메서드", description = "여행 계획을 생성하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2011", description = "계획 생성 성공")
+    })
     @PostMapping ("")
     public ApiResponse<PlanLocationListDto> createNewPlan(
             @RequestBody CreatePlanDto createPlanDto,
@@ -54,6 +62,10 @@ public class PlanController {
     }
 
     // plan 수정하기
+    @Operation(summary = "여행 계획 수정 메서드", description = "여행 계획을 수정하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2002", description = "계획 수정 성공")
+    })
     @PatchMapping("{plan-id}")
     public ApiResponse<PlanLocationListDto> modifyMyPlan(
             @PathVariable(name = "plan-id") Long planId,
@@ -70,6 +82,10 @@ public class PlanController {
     }
 
     // 초대코드로 초대하기
+    @Operation(summary = "여행 계획 초대 메서드", description = "여행 계획에 초대하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2012", description = "계획 초대 성공")
+    })
     @PostMapping("/{invite-code}")
     public ApiResponse<DetailPlanResponseDto> inviteUserToPlan(
             @PathVariable(name = "invite-code") String inviteCode,
@@ -85,6 +101,10 @@ public class PlanController {
     }
 
     // 모든 일차 가져오기
+    @Operation(summary = "모든일자 조회 메서드", description = "여행 계획의 모든일자의 계획을 조회하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2001", description = "계획 조회 성공")
+    })
     @GetMapping("/{plan-id}")
     private ApiResponse<PlanLocationListDto> getAllPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
@@ -100,6 +120,10 @@ public class PlanController {
     }
 
     // day 일차 가져오기
+    @Operation(summary = "특정일자 조회 메서드", description = "여행 계획의 특정일자의 계획을 조회하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2001", description = "계획 조회 성공")
+    })
     @GetMapping("/{plan-id}/{day}")
     private ApiResponse<PlanLocationListDto> getDayPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
@@ -115,6 +139,10 @@ public class PlanController {
         return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS, PlanConverter.planLocationListDto(planLocationByDay, planDto));
     }
 
+    @Operation(summary = "여행계획 조회 메서드", description = "여행 계획 리스트를 조회하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PLAN_2001", description = "계획 조회 성공")
+    })
     @GetMapping("/search")
     private ApiResponse<PlanListResponseDto> getPlanList(
             @RequestParam(name = "page") Integer page,
