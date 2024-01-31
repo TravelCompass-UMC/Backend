@@ -25,9 +25,9 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authHttp -> authHttp
-                        .requestMatchers("/oauth2/authorization/naver", "/users/**", "/regions/**", "/locations/**", "/plans/**", "/me/**")
+                        .requestMatchers("/health", "/oauth2/authorization/naver", "/users/**", "/regions/**", "/locations/**", "/plans/**", "/me/**")
                         .permitAll()
-                        .anyRequest().authenticated()
+                        //.anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         //.loginPage("/users/login")
