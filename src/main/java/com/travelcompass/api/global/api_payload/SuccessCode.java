@@ -22,6 +22,9 @@ public enum SuccessCode implements BaseCode {
     PLAN_INVITE_SUCCESS(HttpStatus.CREATED, "PLAN_2012", "초대가 완료되었습니다."),
     PLAN_VIEW_SUCCESS(HttpStatus.OK, "PLAN_2001", "조회가 완료되었습니다."),
     PLAN_MODIFIED(HttpStatus.OK,"PLAN_2002", "수정이 완료되었습니다."),
+    PLAN_LIKE_SUCCESS(HttpStatus.OK, "PLAN_2021", "여행계획 좋아요가 완료되었습니다."),
+    PLAN_UNLIKE_SUCCESS(HttpStatus.OK, "PLAN_2022", "여행계획 좋아요 취소가 완료되었습니다."),
+    PLAN_LIKE_COUNT_SUCCESS(HttpStatus.OK, "PLAN_2023", "좋아요 수가 조회되었습니다."),
 
     ;
 
