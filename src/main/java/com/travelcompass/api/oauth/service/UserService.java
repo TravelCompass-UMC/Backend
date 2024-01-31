@@ -85,8 +85,8 @@ public class UserService {
         return jwtDto;
     }
 */
-    public User findUserById(Long userId){
-        return userRepository.findById(userId)
+    public User findUserByUserName(String userName){
+        return userRepository.findByUsername(userName)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
     }
 }
