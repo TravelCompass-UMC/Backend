@@ -58,8 +58,8 @@ public class Plan extends BaseEntity {
                            Long adultCount, Long childCount, String vehicle
     ){
         this.title = title;
-        this.startDate = LocalDate.parse(startDate);
-        this.endDate = LocalDate.parse(endDate);
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.adultCount = adultCount;
         this.childCount = childCount;
         this.vehicle = PlanVehicle.valueOf(vehicle);
