@@ -15,6 +15,8 @@ public class PlanRequestDto {
 
     @Schema(description = "PlanReqDto")
     @Getter
+    @Builder
+    @AllArgsConstructor
     @NoArgsConstructor
     public static class PlanReqDto {
         @Schema(description = "여행계획 제목", example = "예시 제목입니다.")
@@ -48,6 +50,8 @@ public class PlanRequestDto {
 
     @Schema(description = "CreatePlanLocationDto")
     @Getter
+    @Builder
+    @AllArgsConstructor
     @NoArgsConstructor
     public static class CreatePlanLocationDto {
         @Schema(description = "추가하는 장소의 id")
@@ -67,6 +71,8 @@ public class PlanRequestDto {
 
     @Schema(description = "CreatePlanLocationListDto")
     @Getter
+    @Builder
+    @AllArgsConstructor
     @NoArgsConstructor
     public static class CreatePlanLocationListDto {
         @Schema(description = "CreatePlanLocationDto의 리스트")
@@ -75,6 +81,8 @@ public class PlanRequestDto {
 
     @Schema(description = "CreatePlanDto")
     @Getter
+    @Builder
+    @AllArgsConstructor
     @NoArgsConstructor
     public static class CreatePlanDto {
 
