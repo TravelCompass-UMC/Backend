@@ -1,15 +1,17 @@
 package com.travelcompass.api.oauth.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
+import com.travelcompass.api.plan.domain.PlanLike;
 import jakarta.persistence.*;
-import lombok.Builder;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +30,7 @@ public class User {
     // Naver, Kakao 등에서 사용자를 식별하기 위해 제공한 값
     private String providerId;
 
-/*@Builder.Default
-    private Boolean isDeleted = false;*/
+    @OneToMany(mappedBy = "user")
+    private List<PlanLike> planLikes = new ArrayList<>();
 
 }
