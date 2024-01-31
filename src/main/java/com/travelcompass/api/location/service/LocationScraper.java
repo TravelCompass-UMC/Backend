@@ -13,8 +13,6 @@ import com.travelcompass.api.location.dto.LocationScrapingDto;
 import com.travelcompass.api.location.repository.LocationRepository;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -24,17 +22,14 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -45,7 +40,7 @@ public class LocationScraper {
 
     private static final String BASE_URL = "https://pcmap.place.naver.com/place/";
     private static final String HOME_TAB = "/home";
-//    private static final String REVIEW_TAB = "/review/visitor?reviewSort=recent";
+    //    private static final String REVIEW_TAB = "/review/visitor?reviewSort=recent";
     private static final String PHOTO_TAB = "/photo";
 
     private final UuidRepository uuidRepository;
@@ -139,9 +134,6 @@ public class LocationScraper {
         // 사진
         String src = scrapePhotoSrc();
 
-        // test
-        System.out.println(src);
-
         MultipartFile image = downloadImage(src);
 
         Uuid uuid = uuidRepository.save(Uuid.generateUuid());
@@ -158,10 +150,15 @@ public class LocationScraper {
     }
 
     private double scrapeStar() {
-        String starString = driver.findElement(
-                        By.xpath("//div[@class='place_section no_margin OP4V8']/div[1]/div[2]/span[1]"))
-                .getText()
-                .split("\n")[1];
+        String starString = "0.0";
+        try {
+            starString = driver.findElement(By.xpath(
+                    "//div[@class='place_section no_margin OP4V8']/div[1]/div[2]/span[@class='PXMot LXIwF']"))
+                    .getText()
+                    .split("\n")[1];
+        } catch (NoSuchElementException ignored) {
+        }
+
         return Double.parseDouble(starString);
     }
 
