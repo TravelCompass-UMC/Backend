@@ -37,6 +37,7 @@ public class HashtagService {
     들어온 태그명들을 보고 해쉬태그 디비에 없으면 새로 생성해서 저장 후
     들어온 태그명들을 객체로 반환
      */
+    @Transactional
     public List<Hashtag> createNewHashtags(List<String> tags){
         List<Hashtag> existingTags = hashtagRepository.findByNameIn(tags);
 
@@ -53,6 +54,7 @@ public class HashtagService {
     }
 
     // 해쉬태그들과 plan을 연결하기 위한 메서드
+    @Transactional
     public List<HashtagPlan> createHashtagPlans(List<Hashtag> hashtags, Plan plan){
         List<HashtagPlan> hashtagPlans = hashtags.stream()
                 .map(hashtag
