@@ -97,7 +97,7 @@ public class PlanService {
     // 조회수 증가 시키고 plan 반환
     @Transactional
     public Plan increaseViewCount(Plan plan){
-        viewCountRepository.save(ViewCount.builder().build());
+        viewCountRepository.save(ViewCount.builder().plan(plan).build());
 
         plan.updateHits(viewCountRepository.countAllByPlan(plan));
         return planRepository.save(plan);
