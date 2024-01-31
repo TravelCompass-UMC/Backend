@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         //.loginPage("/users/login")
-                        .loginPage("http://dev.enble.site/oauth2/authorization/naver") //비인증 사용자를 이동시킬 로그인 페이지
+                        //.loginPage("http://dev.enble.site/oauth2/authorization/naver") //비인증 사용자를 이동시킬 로그인 페이지
                         .successHandler(oAuth2SuccessHandler) //인증 성공 후 jwt 생성, 사용자 정보 db에 등록
                         //.defaultSuccessUrl("/users/main") //로그인(일정 부분) 성공하면 특정 화면으로 이동
                         .userInfoEndpoint(userInfo -> userInfo
