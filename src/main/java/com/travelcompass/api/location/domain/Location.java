@@ -40,7 +40,7 @@ public class Location extends BaseEntity {
 
     private Double longitude; // 경도
 
-    private String openHoursEtc; // 영업시간 추가정보
+    private String businessHoursEtc; // 영업시간 추가정보
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
