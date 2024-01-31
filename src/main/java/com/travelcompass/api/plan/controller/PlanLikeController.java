@@ -33,7 +33,7 @@ public class PlanLikeController {
     @PostMapping("/like")
     public ApiResponse<Long> toggleLike(@PathVariable(name = "plan-id") Long planId,
                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        User user = userService.findUserById(customUserDetails.getId());
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
         Plan plan = planService.findPlanById(planId);
 
         if (plan == null) {
@@ -53,7 +53,7 @@ public class PlanLikeController {
     @DeleteMapping("/like")
     public ApiResponse<Long> cancelLike(@PathVariable(name = "plan-id") Long planId,
                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        User user = userService.findUserById(customUserDetails.getId());
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
         Plan plan = planService.findPlanById(planId);
 
         if (plan == null) {

@@ -50,7 +50,7 @@ public class PlanController {
             @RequestBody CreatePlanDto createPlanDto,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
-        User user = userService.findUserById(customUserDetails.getId());
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
         Plan plan = planService.createPlan(createPlanDto.getPlanReqDto(), user);
         List<Hashtag> hashtags = hashtagService.createNewHashtags(createPlanDto.getPlanReqDto().getHashtags());
         hashtagService.createHashtagPlans(hashtags, plan);
@@ -75,7 +75,7 @@ public class PlanController {
             @RequestBody CreatePlanDto createPlanDto,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
-        User user = userService.findUserById(customUserDetails.getId());
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
         Plan plan = planService.editPlan(createPlanDto.getPlanReqDto(), planService.findPlanById(planId));
         List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
         List<PlanLocation> planLocations = planService.editPlanLocations(createPlanDto.getPlanLocationListDto(), plan);
@@ -95,7 +95,7 @@ public class PlanController {
             @PathVariable(name = "invite-code") String inviteCode,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
-        User user = userService.findUserById(customUserDetails.getId());
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
         Plan plan = planService.findPlanByInviteCode(inviteCode);
         planService.createNewPlanUser(plan, user);
         List<Hashtag> hashtags = hashtagService.findHashtagsByPlan(plan);
@@ -115,7 +115,7 @@ public class PlanController {
             @PathVariable(name = "plan-id") Long planId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
-        User user = userService.findUserById(customUserDetails.getId());
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
         Plan plan = planService.increaseViewCount(planService.findPlanById(planId));
         List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
         DetailPlanResponseDto planDto = PlanConverter.detailPlanResponseDto(plan, hashtags);
@@ -139,7 +139,7 @@ public class PlanController {
             @PathVariable(name = "day") Long day,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
-        User user = userService.findUserById(customUserDetails.getId());
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
         Plan plan = planService.increaseViewCount(planService.findPlanById(planId));
         List<String> hashtags = hashtagService.findHashtagsByPlan(plan).stream().map(Hashtag::getName).toList();
         DetailPlanResponseDto planDto = PlanConverter.detailPlanResponseDto(plan, hashtags);
