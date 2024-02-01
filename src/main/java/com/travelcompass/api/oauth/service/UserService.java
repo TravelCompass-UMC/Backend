@@ -1,6 +1,5 @@
 package com.travelcompass.api.oauth.service;
 
-//import com.nimbusds.oauth2.sdk.token.RefreshToken;
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.oauth.domain.User;
@@ -10,7 +9,6 @@ import com.travelcompass.api.oauth.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,8 +18,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
-    private final PasswordEncoder passwordEncoder;
-    private final JpaUserDetailsManager manager;
+//    private final PasswordEncoder passwordEncoder;
+//    private final JpaUserDetailsManager manager;
     private final JwtTokenUtils jwtTokenUtils;
 
     // 로그인 - OAuth2SuccessHandler

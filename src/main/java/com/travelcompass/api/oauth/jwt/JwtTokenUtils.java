@@ -6,8 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -37,36 +35,36 @@ public class JwtTokenUtils {
     }
 
     // 주어진 사용자 정보를 바탕으로 JWT를 문자열로 생성
-    public JwtDto generateToken(UserDetails userDetails) {
-        log.info("\"{}\" jwt 발급", userDetails.getUsername());
-        String authorities = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
-
-        // Claims: JWT에 담기는 정보의 단위를 Claim이라 부른다.
-        //         Claims는 Claim들을 담기위한 Map의 상속 interface
-        Claims accessTokenClaims = Jwts.claims()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(java.sql.Date.from(Instant.now()))
-                .setExpiration(java.sql.Date.from(Instant.now().plusSeconds(accessExpirationTime)));
-        String accessToken = Jwts.builder()
-                .setClaims(accessTokenClaims)
-                .claim("authorities", authorities)
-                .signWith(signingKey)
-                .compact();
-
-        Claims refreshTokenClaims = Jwts.claims()
-                .setIssuedAt(java.sql.Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(refreshExpirationTime)));
-        String refreshToken = Jwts.builder()
-                .setClaims(refreshTokenClaims)
-                .signWith(signingKey)
-                .compact();
-
-        return JwtDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
+//    public JwtDto generateToken(UserDetails userDetails) {
+//        log.info("\"{}\" jwt 발급", userDetails.getUsername());
+//        String authorities = userDetails.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+//
+//        // Claims: JWT에 담기는 정보의 단위를 Claim이라 부른다.
+//        //         Claims는 Claim들을 담기위한 Map의 상속 interface
+//        Claims accessTokenClaims = Jwts.claims()
+//                .setSubject(userDetails.getUsername())
+//                .setIssuedAt(java.sql.Date.from(Instant.now()))
+//                .setExpiration(java.sql.Date.from(Instant.now().plusSeconds(accessExpirationTime)));
+//        String accessToken = Jwts.builder()
+//                .setClaims(accessTokenClaims)
+//                .claim("authorities", authorities)
+//                .signWith(signingKey)
+//                .compact();
+//
+//        Claims refreshTokenClaims = Jwts.claims()
+//                .setIssuedAt(java.sql.Date.from(Instant.now()))
+//                .setExpiration(Date.from(Instant.now().plusSeconds(refreshExpirationTime)));
+//        String refreshToken = Jwts.builder()
+//                .setClaims(refreshTokenClaims)
+//                .signWith(signingKey)
+//                .compact();
+//
+//        return JwtDto.builder()
+//                .accessToken(accessToken)
+//                .refreshToken(refreshToken)
+//                .build();
+//    }
 
     // JWT가 유효한지 판단
     // jjwt 라이브러리에서는 JWT를 해석하는 과정에서 유효하지 않으면 예외가 발생
