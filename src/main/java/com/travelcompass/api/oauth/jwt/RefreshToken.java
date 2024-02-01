@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 @Builder
@@ -23,7 +22,7 @@ public class RefreshToken {
 
     private String ip;
 
-    private Collection<? extends GrantedAuthority> authorities;
+//    private Collection<? extends GrantedAuthority> authorities;
 
     @Indexed
     private String refreshToken;
