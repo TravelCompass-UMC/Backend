@@ -6,7 +6,7 @@ import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
 import com.travelcompass.api.oauth.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.security.core.Authentication;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +29,6 @@ public class UserController {
         userService.deleteUser(auth.getName());
         return ApiResponse.onSuccess(SuccessCode.USER_DELETE_SUCCESS, 1);
     }
-
 /*
     // 토큰 재발급
     @PostMapping("/reissue")

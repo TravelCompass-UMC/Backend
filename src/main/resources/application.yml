@@ -24,7 +24,7 @@ spring:
             # 서비스 제공자측에 저희가 어떤 서비스인지 인증하기 위한 값
             client-id: 3tVKSO15tNGbkeZJf8eE #서비스 제공자측에 저희가 어떤 서비스인지 인증하기 위한 값
             client-secret: zHvANLwWHH
-            redirect-uri: https://dev.enble.site/login/oauth2/code/naver
+            redirect-uri: https://localhost:8080/login/oauth2/code/naver #https://dev.enble.site/login/oauth2/code/naver
             authorization-grant-type: authorization_code # 어떤 방식으로 access token을 받을지 정의
             client-authentication-method: client_secret_post # Client Id, Client Secret를 요청의 어디에 포함할지 정의. Body
             client-name: Naver

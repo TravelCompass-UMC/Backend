@@ -67,7 +67,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     .password(providerId)
                     .email(email)
                     .nickname(nickname)
-                    .profile_image(profile_image)
                     .provider(provider)
                     .providerId(providerId)
                     .build());

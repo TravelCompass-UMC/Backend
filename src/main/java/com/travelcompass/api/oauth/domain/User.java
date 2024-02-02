@@ -23,7 +23,6 @@ public class User{
 
     private String email;
     private String nickname;
-    private String profile_image;
 
     // Naver, Kakao 등 소셜 로그인 제공자 문자값
     private String provider;

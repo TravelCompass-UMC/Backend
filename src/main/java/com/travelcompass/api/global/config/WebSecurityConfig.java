@@ -27,6 +27,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authHttp -> authHttp
                         .requestMatchers("/health", "/oauth2/authorization/naver", "/users/**", "/regions/**", "/locations/**", "/plans/**", "/me/**")
                         .permitAll()
+                        .anyRequest().permitAll()
                         //.anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
