@@ -7,9 +7,6 @@ import static org.assertj.core.api.Assertions.*;
 
 class AddressDomainTest {
 
-    /*
-     * 리가 없는경우
-     * */
     @Test
     @DisplayName("주소가 생성되었는지 확인하는 테스트 1")
     void createAddress1(){
