@@ -37,7 +37,6 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
             Map<String, Object> responseMap = oAuth2User.getAttribute("response");
             attributes.put("id", responseMap.get("id"));
             attributes.put("email", responseMap.get("email"));
-            attributes.put("profile_image", responseMap.get("profile_image"));
             attributes.put("nickname", responseMap.get("nickname"));
             nameAttribute = "email";
         }

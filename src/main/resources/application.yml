@@ -31,7 +31,6 @@ spring:
             scope:
               - nickname
               - email
-              - profile_image
 
   data:
     redis:

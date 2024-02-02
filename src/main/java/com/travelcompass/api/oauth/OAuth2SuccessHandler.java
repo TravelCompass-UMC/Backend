@@ -54,7 +54,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 소셜 로그인을 한 새로운 사용자를 우리의 UserEntity로 전환
         String email = oAuth2User.getAttribute("email");
         String nickname = oAuth2User.getAttribute("nickname");
-        String profile_image = oAuth2User.getAttribute("profile_image");
         String provider = oAuth2User.getAttribute("provider");
         String username
                 = String.format("{%s}%s", provider, email.split("@")[0]);
