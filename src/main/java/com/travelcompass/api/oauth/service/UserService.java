@@ -4,11 +4,13 @@ import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.oauth.domain.User;
 //import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
+import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
 import com.travelcompass.api.oauth.repository.RefreshTokenRedisRepository;
 import com.travelcompass.api.oauth.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,27 +20,27 @@ public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
-//    private final PasswordEncoder passwordEncoder;
-//    private final JpaUserDetailsManager manager;
-//    private final JwtTokenUtils jwtTokenUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final JpaUserDetailsManager manager;
+    private final JwtTokenUtils jwtTokenUtils;
 
     // 로그인 - OAuth2SuccessHandler
 
     // 로그아웃
-//    public void logout(HttpServletRequest request) {
-//        // 1. 레디스에 해당 토큰 있는 지 확인
-//        String accessToken = request.getHeader("Authorization").split(" ")[1];
-//
-//        // 2. 리프레시 토큰을 username으로 찾아 삭제
-//        String username = jwtTokenUtils.parseClaims(accessToken).getSubject();
-//        log.info("access token에서 추출한 username : {}", username);
-//        if (refreshTokenRedisRepository.existsById(username)) {
-//            refreshTokenRedisRepository.deleteById(username);
-//            log.info("레디스에서 리프레시 토큰 삭제 완료");
-//        } else {
-//            throw GeneralException.of(ErrorCode.WRONG_REFRESH_TOKEN);
-//        }
-//    }
+    public void logout(HttpServletRequest request) {
+        // 1. 레디스에 해당 토큰 있는 지 확인
+        String accessToken = request.getHeader("Authorization").split(" ")[1];
+
+        // 2. 리프레시 토큰을 username으로 찾아 삭제
+        String username = jwtTokenUtils.parseClaims(accessToken).getSubject();
+        log.info("access token에서 추출한 username : {}", username);
+        if (refreshTokenRedisRepository.existsById(username)) {
+            refreshTokenRedisRepository.deleteById(username);
+            log.info("레디스에서 리프레시 토큰 삭제 완료");
+        } else {
+            throw GeneralException.of(ErrorCode.WRONG_REFRESH_TOKEN);
+        }
+    }
     // 회원 탈퇴
     public void deleteUser(String username) {
         User user = userRepository.findByUsername(username)
