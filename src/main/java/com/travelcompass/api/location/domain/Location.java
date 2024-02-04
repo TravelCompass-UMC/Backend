@@ -39,6 +39,11 @@ public class Location extends BaseEntity {
 
     private Double longitude; // 경도
 
+    private Long likeCount; // 좋아요 수
+
+    public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
