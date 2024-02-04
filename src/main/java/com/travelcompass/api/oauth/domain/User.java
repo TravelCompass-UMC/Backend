@@ -1,6 +1,7 @@
 package com.travelcompass.api.oauth.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
+import com.travelcompass.api.location.domain.LocationLike;
 import com.travelcompass.api.plan.domain.PlanLike;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -32,4 +33,6 @@ public class User{
     @OneToMany(mappedBy = "user")
     private List<PlanLike> planLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<LocationLike> locaionLikes = new ArrayList<>();
 }
