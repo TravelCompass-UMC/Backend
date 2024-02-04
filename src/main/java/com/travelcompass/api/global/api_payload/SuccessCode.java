@@ -17,7 +17,7 @@ public enum SuccessCode implements BaseCode {
     //USER_PASSWORD_CHANGE_SUCCESS(HttpStatus.OK, "USER_200", "비밀번호가 변경되었습니다."),
     USER_DELETE_SUCCESS(HttpStatus.OK, "USER_200", "회원탈퇴가 완료되었습니다."),
 
-    //Plan
+    // Plan
     PLAN_CREATED(HttpStatus.CREATED, "PLAN_2011", "여행계획이 생성되었습니다."),
     PLAN_INVITE_SUCCESS(HttpStatus.CREATED, "PLAN_2012", "초대가 완료되었습니다."),
     PLAN_VIEW_SUCCESS(HttpStatus.OK, "PLAN_2001", "조회가 완료되었습니다."),
@@ -25,6 +25,11 @@ public enum SuccessCode implements BaseCode {
     PLAN_LIKE_SUCCESS(HttpStatus.OK, "PLAN_2021", "여행계획 좋아요가 완료되었습니다."),
     PLAN_UNLIKE_SUCCESS(HttpStatus.OK, "PLAN_2022", "여행계획 좋아요 취소가 완료되었습니다."),
     PLAN_LIKE_COUNT_SUCCESS(HttpStatus.OK, "PLAN_2023", "좋아요 수가 조회되었습니다."),
+
+    // Location
+    LOCATION_LIKE_SUCCESS(HttpStatus.OK, "LOCATION_2021", "장소 좋아요가 완료되었습니다."),
+    LOCATION_UNLIKE_SUCCESS(HttpStatus.OK, "LOCATION_2022", "장소 좋아요 취소가 완료되었습니다."),
+    LOCATION_LIKE_COUNT_SUCCESS(HttpStatus.OK, "LOCATION_2023", "좋아요 수가 조회되었습니다."),
 
     ;
 
