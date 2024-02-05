@@ -2,24 +2,20 @@ package com.travelcompass.api.mypage.controller;
 
 import com.travelcompass.api.global.api_payload.ApiResponse;
 import com.travelcompass.api.global.api_payload.SuccessCode;
+import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.mypage.converter.MypageConverter;
-import com.travelcompass.api.mypage.dto.MypageResponseDto;
 import com.travelcompass.api.mypage.dto.MypageResponseDto.MyInfoDto;
+import com.travelcompass.api.mypage.dto.MypageResponseDto.MyLocationListResponseDto;
 import com.travelcompass.api.mypage.service.MypageService;
 import com.travelcompass.api.oauth.domain.User;
 import com.travelcompass.api.oauth.jwt.CustomUserDetails;
 import com.travelcompass.api.oauth.service.UserService;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
-import com.travelcompass.api.plan.domain.PlanLike;
-import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.travelcompass.api.plan.dto.PlanResponseDto.*;
 
 @Tag(name = "마이페이지", description = "마이페이지 관련 api 입니다.")
 @RequiredArgsConstructor
@@ -51,7 +44,7 @@ public class MypageController {
 
     // 나의 계획 조회
     @GetMapping("/plans")
-    public ApiResponse<PlanListResponseDto> findMyPlans(
+    public ApiResponse<PlanListResponseDto> searchMyPlans(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam(name = "page") Integer page
     ){
@@ -64,7 +57,7 @@ public class MypageController {
 
     // 내가 좋아요한 여행계획 조회
     @GetMapping("/plans/like")
-    public ApiResponse<PlanResponseDto.PlanListResponseDto> findLikedPlans(
+    public ApiResponse<PlanListResponseDto> searchLikedPlans(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam(name = "page") Integer page
     ){
@@ -73,5 +66,22 @@ public class MypageController {
         Page<Plan> plans = mypageService.convertPlanToPage(likedPlans, page, 12);
 
         return ApiResponse.onSuccess(SuccessCode.MYPAGE_LIKED_PLAN_VIEW_SUCCESS, PlanConverter.planListResponseDto(plans));
+    }
+
+    // 내가 좋아요한 장소 조회
+    @GetMapping("locations/like")
+    public ApiResponse<MyLocationListResponseDto> searchLikedLocations(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "type") String locationType,
+            @RequestParam(name = "way") String way
+    ){
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
+        List<Location> likedLocations = mypageService.findLikedLocations(user);
+        List<Location> filteredLocations = mypageService.filterLocationsByType(likedLocations, locationType);
+        List<Location> sortedLocations = mypageService.sortLocationsByWay(filteredLocations, way);
+        Page<Location> locations = mypageService.convertLocationToPage(sortedLocations, page, 12);
+
+        return ApiResponse.onSuccess(SuccessCode.MYPAGE_LIKED_LOCATION_VIEW_SUCCESS, MypageConverter.myLocationListResponseDto(locations));
     }
 }
