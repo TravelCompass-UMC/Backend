@@ -19,16 +19,15 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class MypageService {
 
-    public Page<Plan> findPlansByUser(User user, Integer page, Integer pageSize) {
-        List<Plan> plans = user.getPlanUsers().stream().map(PlanUser::getPlan).toList();
+    public List<Plan> findPlansByUser(User user) {
+        return user.getPlanUsers().stream().map(PlanUser::getPlan).toList();
+    }
 
+    public Page<Plan> convertPlanToPage(List<Plan> plans, Integer page, Integer pageSize){
         int start = page * pageSize;
         int end = Math.min(start + pageSize, plans.size());
         List<Plan> pagedPlans = plans.subList(start, end);
 
         return new PageImpl<>(pagedPlans, PageRequest.of(page, pageSize), plans.size());
-    }
-
-
     }
 }
