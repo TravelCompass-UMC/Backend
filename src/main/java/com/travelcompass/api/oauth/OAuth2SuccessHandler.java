@@ -2,7 +2,7 @@ package com.travelcompass.api.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travelcompass.api.oauth.jwt.*;
-import com.travelcompass.api.oauth.repository.RefreshTokenRedisRepository;
+//import com.travelcompass.api.oauth.repository.RefreshTokenRedisRepository;
 import com.travelcompass.api.oauth.utils.IpUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
@@ -29,16 +29,16 @@ import java.nio.charset.StandardCharsets;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenUtils tokenUtils;
     private final UserDetailsManager userDetailsManager;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+//    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     public OAuth2SuccessHandler(
             JwtTokenUtils tokenUtils,
-            UserDetailsManager userDetailsManager,
-            RefreshTokenRedisRepository refreshTokenRedisRepository
+            UserDetailsManager userDetailsManager
+//            RefreshTokenRedisRepository refreshTokenRedisRepository
     ) {
         this.tokenUtils = tokenUtils;
         this.userDetailsManager = userDetailsManager;
-        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
+//        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
 
     @Override
@@ -79,18 +79,18 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         log.info("refreshToken: {} ", jwt.getRefreshToken());
 
         // 유효기간 초단위 설정 후 redis에 refresh token save
-        Claims refreshTokenClaims = tokenUtils.parseClaims(jwt.getRefreshToken());
-        Long validPeriod
-                = refreshTokenClaims.getExpiration().toInstant().getEpochSecond()
-                - refreshTokenClaims.getIssuedAt().toInstant().getEpochSecond();
-        refreshTokenRedisRepository.save(
-                RefreshToken.builder()
-                        .id(username)
-                        .ip(IpUtil.getClientIp(request))
-                        .ttl(validPeriod)
-                        .refreshToken(jwt.getRefreshToken())
-                        .build()
-        );
+//        Claims refreshTokenClaims = tokenUtils.parseClaims(jwt.getRefreshToken());
+//        Long validPeriod
+//                = refreshTokenClaims.getExpiration().toInstant().getEpochSecond()
+//                - refreshTokenClaims.getIssuedAt().toInstant().getEpochSecond();
+//        refreshTokenRedisRepository.save(
+//                RefreshToken.builder()
+//                        .id(username)
+//                        .ip(IpUtil.getClientIp(request))
+//                        .ttl(validPeriod)
+//                        .refreshToken(jwt.getRefreshToken())
+//                        .build()
+//        );
 
         // 목적지 URL 설정 - 토큰 던짐
         String targetUrl = String.format(
