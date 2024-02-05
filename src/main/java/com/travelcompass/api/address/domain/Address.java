@@ -35,4 +35,14 @@ public class Address {
         this.umdCode = umdCode;
         this.riCode = riCode;
     }
+
+    @Override
+    public String toString() {
+        return "" +
+                addressCode + ' '
+                + sidoCode + ' '
+                + sigunguCode + ' '
+                + umdCode + ' '
+                + riCode;
+    }
 }
