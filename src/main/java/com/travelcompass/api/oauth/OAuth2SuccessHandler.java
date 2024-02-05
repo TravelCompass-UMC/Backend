@@ -94,7 +94,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 목적지 URL 설정 - 토큰 던짐
         String targetUrl = String.format(
-                "http://localhost:8080/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
+                "http://dev.enble.site:8080/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
         );
         // 실제 Redirect 응답 생성
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
