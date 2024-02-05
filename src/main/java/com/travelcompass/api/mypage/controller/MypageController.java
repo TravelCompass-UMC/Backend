@@ -11,13 +11,19 @@ import com.travelcompass.api.oauth.jwt.CustomUserDetails;
 import com.travelcompass.api.oauth.service.UserService;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
+import com.travelcompass.api.plan.domain.PlanLike;
 import com.travelcompass.api.plan.dto.PlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -45,14 +51,15 @@ public class MypageController {
 
     // 나의 계획 조회
     @GetMapping("/plans")
-    public ApiResponse<List<SimplePlanDto>> findMyPlans(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    public ApiResponse<PlanListResponseDto> findMyPlans(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(name = "page") Integer page
     ){
         User user = userService.findUserByUserName(customUserDetails.getUsername());
-        List<Plan> plans = mypageService.findUserPlans(user);
-        List<SimplePlanDto> planDtos = plans.stream().map(PlanConverter::simplePlanDto).toList();
+        List<Plan> plansByUser = mypageService.findPlansByUser(user);
+        Page<Plan> plans = mypageService.convertPlanToPage(plansByUser, page, 12);
 
-        return ApiResponse.onSuccess(SuccessCode.MYPAGE_PLAN_LIST_VIEW_SUCCESS, planDtos);
+        return ApiResponse.onSuccess(SuccessCode.MYPAGE_PLAN_LIST_VIEW_SUCCESS, PlanConverter.planListResponseDto(plans));
     }
 
 
