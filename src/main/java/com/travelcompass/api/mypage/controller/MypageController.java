@@ -62,5 +62,16 @@ public class MypageController {
         return ApiResponse.onSuccess(SuccessCode.MYPAGE_PLAN_LIST_VIEW_SUCCESS, PlanConverter.planListResponseDto(plans));
     }
 
+    // 내가 좋아요한 여행계획 조회
+    @GetMapping("/plans/like")
+    public ApiResponse<PlanResponseDto.PlanListResponseDto> findLikedPlans(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(name = "page") Integer page
+    ){
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
+        List<Plan> likedPlans = mypageService.findLikedPlans(user);
+        Page<Plan> plans = mypageService.convertPlanToPage(likedPlans, page, 12);
 
+        return ApiResponse.onSuccess(SuccessCode.MYPAGE_LIKED_PLAN_VIEW_SUCCESS, PlanConverter.planListResponseDto(plans));
+    }
 }
