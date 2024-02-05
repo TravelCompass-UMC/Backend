@@ -39,6 +39,10 @@ public enum ErrorCode implements BaseCode {
     //Hashtag
     HASHTAG_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAG_404", "해시태그를 찾을 수 없습니다."),
 
+    //Mypage
+    MYPAGE_WRONG_LOCATION_TYPE(HttpStatus.BAD_REQUEST, "MYPAGE_4001", "유효하지 않은 locationType 입니다."),
+    MYPAGE_WRONG_SORTING_WAY(HttpStatus.BAD_REQUEST, "MYPAGE_4002", "유효하지 않은 정렬 방법입니다.")
+
     ;
 
     private final HttpStatus httpStatus;
