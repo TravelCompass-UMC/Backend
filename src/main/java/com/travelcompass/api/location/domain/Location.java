@@ -1,11 +1,8 @@
 package com.travelcompass.api.location.domain;
 
-import com.travelcompass.api.address.domain.Address;
 import com.travelcompass.api.global.entity.BaseEntity;
 import com.travelcompass.api.region.domain.Region;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +36,11 @@ public class Location extends BaseEntity {
     private Double latitude; // 위도
 
     private Double longitude; // 경도
+
+    private Long likeCount; // 좋아요 수
+
+    public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
+
 
     private String businessHoursEtc; // 영업시간 추가정보
 
