@@ -40,7 +40,6 @@ public class LocationScraper {
 
     private static final String BASE_URL = "https://pcmap.place.naver.com/place/";
     private static final String HOME_TAB = "/home";
-    //    private static final String REVIEW_TAB = "/review/visitor?reviewSort=recent";
     private static final String PHOTO_TAB = "/photo";
 
     private final UuidRepository uuidRepository;
@@ -54,7 +53,7 @@ public class LocationScraper {
     // selenium driver 설정
     private WebDriver driver;
 
-    @Scheduled(fixedRate = 6 * 60 * 60 * 1000)
+//    @Scheduled(fixedRate = 6 * 60 * 60 * 1000)
     public void scrapeLocations() {
         setUp();
 
@@ -115,15 +114,6 @@ public class LocationScraper {
 
         // 전화 번호
         String tel = scrapeTel();
-
-//        /*
-//            `리뷰` 탭으로 이동 (최신순)
-//         */
-//        driver.get(BASE_URL + locationInfo.getScrapingId() + REVIEW_TAB);
-//
-//        // 리뷰
-//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
-//        List<ReviewDto> reviewDtos = scrapeReviews();
 
         /*
             `사진` 탭으로 이동
