@@ -33,10 +33,6 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     // 실제로 Spring Security 내부에서 사용하는 반드시 구현해야 정상동작을 기대할 수 있는 메소드
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         User user = userRepository.findByUsername(username).orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));;
-        /*if(user.getIsDeleted()){
-            log.info("회원 없음");
-            throw new GeneralException(ErrorCode.USER_NOT_FOUND);
-        }*/
         return CustomUserDetails.fromEntity(user);
     }
 

@@ -20,4 +20,9 @@ public class RegionService {
                 .orElseThrow(() -> GeneralException.of(ErrorCode.REGION_NOT_FOUND));
     }
 
+    public Region findRegionByName(String name){
+        return repository.findByName(name)
+                .orElseThrow(() -> GeneralException.of(ErrorCode.REGION_NOT_FOUND));
+    }
+
 }

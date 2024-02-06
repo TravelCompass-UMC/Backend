@@ -24,7 +24,6 @@ public class CustomUserDetails implements UserDetails {
     @Getter
     private String email;
     private String nickname;
-    private String profile_image;
     @Getter
     private String provider;
     @Getter
@@ -76,7 +75,6 @@ public class CustomUserDetails implements UserDetails {
                 .password(entity.getPassword())
                 .email(entity.getEmail())
                 .nickname(entity.getNickname())
-                .profile_image(entity.getProfile_image())
                 .provider(entity.getProvider())
                 .providerId(entity.getProviderId())
                 .build();
@@ -88,7 +86,6 @@ public class CustomUserDetails implements UserDetails {
         entity.setPassword(password);
         entity.setEmail(email);
         entity.setNickname(nickname);
-        entity.setProfile_image(profile_image);
         entity.setProvider(provider);
         entity.setProviderId(providerId);
         return entity;
@@ -102,8 +99,6 @@ public class CustomUserDetails implements UserDetails {
                 ", password='[PROTECTED]'" +
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
-                ", profile_image='" + profile_image + '\'' +
-
                 '}';
     }
 }

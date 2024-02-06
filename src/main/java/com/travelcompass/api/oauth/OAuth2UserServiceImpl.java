@@ -16,15 +16,17 @@ import java.util.Map;
 @Slf4j
 @Service
 public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
+    // 1. DefaultOAuth2UserService 객체를 성공정보를 바탕으로 만듦
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        // 2. 생성된 Service 객체로부터 user 받음
         OAuth2User oAuth2User = super.loadUser(userRequest);
+        // 3. 받은 User로부터 user 정보를 받음
         String registrationId = userRequest
-                .getClientRegistration()
-                // application.yaml에 등록한 id
+                .getClientRegistration() // application.yaml에 등록한 id
                 .getRegistrationId();
         String nameAttribute = "";
-        // 사용할 데이터를 다시 정리하는 목적의 Map
+        // 4. SuccessHandler가 사용할 수 있도록 데이터를 다시 정리해줌
         Map<String, Object> attributes = new HashMap<>();
 
         // Naver 로직
@@ -35,7 +37,6 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
             Map<String, Object> responseMap = oAuth2User.getAttribute("response");
             attributes.put("id", responseMap.get("id"));
             attributes.put("email", responseMap.get("email"));
-            attributes.put("profile_image", responseMap.get("profile_image"));
             attributes.put("nickname", responseMap.get("nickname"));
             nameAttribute = "email";
         }

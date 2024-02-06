@@ -24,19 +24,22 @@ spring:
             # 서비스 제공자측에 저희가 어떤 서비스인지 인증하기 위한 값
             client-id: 3tVKSO15tNGbkeZJf8eE #서비스 제공자측에 저희가 어떤 서비스인지 인증하기 위한 값
             client-secret: zHvANLwWHH
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver #왜 환경변수 처리하면 안됨
+            redirect-uri: http://dev.enble.site:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code # 어떤 방식으로 access token을 받을지 정의
             client-authentication-method: client_secret_post # Client Id, Client Secret를 요청의 어디에 포함할지 정의. Body
             client-name: Naver
             scope:
               - nickname
               - email
-              - profile_image
 
   data:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+
+kakao:
+  local:
+    key: ${KAKAO_LOCAL_KEY}
 
 jwt:
   secret: ${JWT_SECRET}
@@ -54,8 +57,8 @@ cloud:
     stack:
       auto: false
     credentials:
-      accessKey: ${aws.s3.access-key}
-      secretKey: ${aws.s3.secret-key}
+      accessKey: ${aws.s3.access.key}
+      secretKey: ${aws.s3.secret.key}
 
 springdoc:
   swagger-ui:
@@ -63,9 +66,6 @@ springdoc:
   cache:
     disabled: true
   use-fqn: true
-
-server:
-  port: 8080
 
 ---
 
@@ -90,7 +90,7 @@ spring:
         #        show_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: create
+          auto: update
         default_batch_fetch_size: 1000
 
 ---
@@ -116,5 +116,5 @@ spring:
         #        show_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: create
+          auto: update
         default_batch_fetch_size: 1000

@@ -1,23 +1,29 @@
 package com.travelcompass.api.global.controller;
 
-import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
-import io.jsonwebtoken.Claims;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-// 토큰 확인 - 주소값으로 던지기
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping("token")
 public class TokenController {
-    private final JwtTokenUtils jwtTokenUtils;
-
-    public TokenController(
-            JwtTokenUtils jwtTokenUtils
+    @GetMapping("/token")
+    public ResponseEntity<Map<String, String>> tokenPagge(
+            @RequestParam(name = "access-token") String accessToken,
+            @RequestParam(name = "refresh-token") String refreshToken
     ) {
-        this.jwtTokenUtils = jwtTokenUtils;
-    }
+        // 여기에서 accessToken, refreshToken을 사용하여 원하는 로직 수행
+        // 예를 들어, 사용자 정보 조회 등의 비즈니스 로직을 수행할 수 있습니다.
 
-    @GetMapping("/val")
-    public Claims val(@RequestParam("token") String jwt) {
-        return jwtTokenUtils.parseClaims(jwt);
+        // 결과 데이터를 Map에 담아 반환
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("accessToken", accessToken);
+        responseData.put("refreshToken", refreshToken);
+
+        // JSON 형태로 응답
+        return ResponseEntity.ok(responseData);
     }
 }

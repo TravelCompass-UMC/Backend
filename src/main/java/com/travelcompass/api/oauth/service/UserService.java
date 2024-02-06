@@ -1,11 +1,11 @@
 package com.travelcompass.api.oauth.service;
 
-//import com.nimbusds.oauth2.sdk.token.RefreshToken;
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.oauth.domain.User;
+//import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
 import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
-import com.travelcompass.api.oauth.repository.RefreshTokenRedisRepository;
+//import com.travelcompass.api.oauth.repository.RefreshTokenRedisRepository;
 import com.travelcompass.api.oauth.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+//    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final JpaUserDetailsManager manager;
@@ -34,21 +34,21 @@ public class UserService {
         // 2. 리프레시 토큰을 username으로 찾아 삭제
         String username = jwtTokenUtils.parseClaims(accessToken).getSubject();
         log.info("access token에서 추출한 username : {}", username);
-        if (refreshTokenRedisRepository.existsById(username)) {
-            refreshTokenRedisRepository.deleteById(username);
-            log.info("레디스에서 리프레시 토큰 삭제 완료");
-        } else {
-            throw GeneralException.of(ErrorCode.WRONG_REFRESH_TOKEN);
-        }
+//        if (refreshTokenRedisRepository.existsById(username)) {
+//            refreshTokenRedisRepository.deleteById(username);
+//            log.info("레디스에서 리프레시 토큰 삭제 완료");
+//        } else {
+//            throw GeneralException.of(ErrorCode.WRONG_REFRESH_TOKEN);
+//        }
     }
     // 회원 탈퇴
     public void deleteUser(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
-        if (refreshTokenRedisRepository.existsById(username)) {
-            refreshTokenRedisRepository.deleteById(username);
-            log.info("레디스에서 리프레시 토큰 삭제 완료");
-        }
+//        if (refreshTokenRedisRepository.existsById(username)) {
+//            refreshTokenRedisRepository.deleteById(username);
+//            log.info("레디스에서 리프레시 토큰 삭제 완료");
+//        }
         userRepository.delete(user);
         log.info("{} 회원 탈퇴 완료", username);
     }
@@ -85,8 +85,8 @@ public class UserService {
         return jwtDto;
     }
 */
-    public User findUserById(Long userId){
-        return userRepository.findById(userId)
+    public User findUserByUserName(String userName){
+        return userRepository.findByUsername(userName)
                 .orElseThrow(() -> new GeneralException(ErrorCode.USER_NOT_FOUND));
     }
 }

@@ -13,4 +13,6 @@ public interface PlanLocationRepository extends JpaRepository<PlanLocation, Long
 
     List<PlanLocation> findAllByPlanAndTravelDay(Plan plan, Long day);
     List<PlanLocation> findAllByPlan(Plan plan);
+
+    void deleteAllByPlan(Plan plan);
 }
