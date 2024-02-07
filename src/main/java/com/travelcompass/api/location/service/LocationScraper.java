@@ -27,7 +27,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,7 +71,7 @@ public class LocationScraper {
             Location savedLocation = locationRepository.save(location);
 
             locationImageService.saveImageUrl(locationScrapingDto.getImageUrl(), savedLocation);
-            businessHoursService.saveBusinessHours(locationScrapingDto.getBusinessHours(),
+            businessHoursService.save(locationScrapingDto.getBusinessHours(),
                     savedLocation);
         }
 
@@ -109,7 +108,7 @@ public class LocationScraper {
         WebElement businessHoursElement = driver.findElement(
                 By.xpath("//div[contains(@class, 'O8qbU pSavy')]/div"));
         businessHoursElement.click();
-        Map<DayType, BusinessHoursDto> businessHoursDtoMap = scrapeBusinessHours(
+        Map<DayType, BusinessHoursDto.CreateBusinessHoursDto> businessHoursDtoMap = scrapeBusinessHours(
                 businessHoursElement);
 
         // 전화 번호
@@ -157,13 +156,13 @@ public class LocationScraper {
                 .findElement(By.xpath("div/a/span[1]")).getText();
     }
 
-    private Map<DayType, BusinessHoursDto> scrapeBusinessHours(WebElement element) {
+    private Map<DayType, BusinessHoursDto.CreateBusinessHoursDto> scrapeBusinessHours(WebElement element) {
         WebElement businessHoursElement = element.findElement(By.xpath("//div/a"));
 
         List<WebElement> businessHoursElements = businessHoursElement.findElements(
                 By.xpath("div[@class='w9QyJ']/div/span"));
 
-        Map<DayType, BusinessHoursDto> businessHoursDtoMap = new EnumMap<>(DayType.class);
+        Map<DayType, BusinessHoursDto.CreateBusinessHoursDto> businessHoursDtoMap = new EnumMap<>(DayType.class);
         for (WebElement e : businessHoursElements) {
             String weekString = e.findElement(By.xpath("span")).getText();
             String businessHours = e.findElement(By.xpath("div")).getText();
@@ -175,9 +174,9 @@ public class LocationScraper {
     }
 
     // "07:00 - 19:00"을 LocalTime 2개로 분리
-    private BusinessHoursDto splitBusinessHours(String businessHours) {
+    private BusinessHoursDto.CreateBusinessHoursDto splitBusinessHours(String businessHours) {
         String[] split = businessHours.split(" - ");
-        return BusinessHoursDto.builder()
+        return BusinessHoursDto.CreateBusinessHoursDto.builder()
                 .openTime(LocalTime.parse(split[0]))
                 .closeTime(LocalTime.parse(split[1]))
                 .build();
