@@ -61,7 +61,7 @@ public class MypageService {
                 || LocationType.valueOf(locationType).equals(LocationType.RESTAURANT))
         {
             return locations.stream()
-                    .filter(location -> location.getLocationType() == LocationType.valueOf(locationType))
+//                    .filter(location -> location.getLocationType() == LocationType.valueOf(locationType))
                     .toList();
         } else {
             throw GeneralException.of(ErrorCode.MYPAGE_WRONG_LOCATION_TYPE);
