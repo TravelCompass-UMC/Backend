@@ -46,9 +46,6 @@ public class Location extends BaseEntity {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToOne(mappedBy = "location")
-    private LocationInfo locationInfo;
-
     public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
 
 //    @ManyToOne(fetch = FetchType.LAZY)
