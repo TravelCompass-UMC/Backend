@@ -1,6 +1,6 @@
 package com.travelcompass.api.location.domain;
 
-import com.travelcompass.api.global.entity.BaseEntity;
+import com.travelcompass.api.region.domain.Region;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalTime;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,21 +21,25 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BusinessHours extends BaseEntity {
+public class LocationInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String logicalName;
+
+    private String scrapingId;
+
     @Enumerated(EnumType.STRING)
-    private DayType dayType;
+    private LocationType locationType;
 
-    private LocalTime openTime;
-
-    private LocalTime closeTime;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    private Region region;
 
 }
