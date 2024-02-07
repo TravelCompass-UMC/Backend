@@ -21,7 +21,7 @@ public class LocationScrapingDto {
 
     String address;
 
-    Map<DayType, BusinessHoursDto> businessHours;
+    Map<DayType, BusinessHoursDto.CreateBusinessHoursDto> businessHours;
 
     String tel;
 
