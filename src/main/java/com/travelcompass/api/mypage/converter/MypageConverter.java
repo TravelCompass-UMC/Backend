@@ -29,9 +29,9 @@ public class MypageConverter {
         return MypageLocationDto.builder()
                 .id(location.getId())
                 .name(location.getName())
-                .locationType(String.valueOf(location.getLocationType()))
+//                .locationType(String.valueOf(location.getLocationType()))
                 .likeCount(location.getLikeCount())
-                .address(location.getAddress().toString())
+//                .address(location.getAddress().toString())
                 .build();
     }
 
