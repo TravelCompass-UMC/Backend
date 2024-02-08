@@ -1,11 +1,12 @@
 package com.travelcompass.api.location.service;
 
-import com.travelcompass.api.oauth.domain.User;
-import com.travelcompass.api.oauth.repository.UserRepository;
 import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.location.domain.LocationLike;
 import com.travelcompass.api.location.repository.LocationLikeRepository;
 import com.travelcompass.api.location.repository.LocationRepository;
+import com.travelcompass.api.oauth.domain.User;
+import com.travelcompass.api.oauth.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +63,12 @@ public class LocationLikeService {
     private void updateLikeCount(Location location) {
         Long likeCount = locationLikeRepository.countAllByLocation(location);
         location.updateLikeCount(likeCount);
+    }
+
+    // 특정 사용자가 좋아요한 장소 조회
+    public List<Location> findLocationsByUser(User user) {
+        return locationLikeRepository.findAllByUser(user).stream()
+                .map(LocationLike::getLocation)
+                .toList();
     }
 }
