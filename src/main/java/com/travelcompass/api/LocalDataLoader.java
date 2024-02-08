@@ -41,7 +41,7 @@ public class LocalDataLoader implements ApplicationRunner {
         Location location1 = locationRepository.save(Location.builder()
                 .id(1L)
                 .name("서울숲")
-                .star(4.5)
+                .star(4.2)
                 .roadNameAddress("서울특별시 성동구 뚝섬로 273")
                 .tel("02-460-2905")
                 .latitude(37.543072)
