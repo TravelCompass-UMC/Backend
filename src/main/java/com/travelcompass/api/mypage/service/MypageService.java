@@ -58,10 +58,16 @@ public class MypageService {
         if (locationType.equals("ALL")){
             return locations;
         } else if (LocationType.valueOf(locationType).equals(LocationType.ATTRACTION)
-                || LocationType.valueOf(locationType).equals(LocationType.RESTAURANT))
+                || LocationType.valueOf(locationType).equals(LocationType.ACCOMMODATION))
         {
             return locations.stream()
-//                    .filter(location -> location.getLocationType() == LocationType.valueOf(locationType))
+                    .filter(location -> location.getLocationInfo().getLocationType()
+                            == LocationType.valueOf(locationType))
+                    .toList();
+        } else if (LocationType.valueOf(locationType).equals(LocationType.RESTAURANT)) {
+            return locations.stream()
+                    .filter(location -> location.getLocationInfo().getLocationType() == LocationType.RESTAURANT ||
+                            location.getLocationInfo().getLocationType() == LocationType.CAFE)
                     .toList();
         } else {
             throw GeneralException.of(ErrorCode.MYPAGE_WRONG_LOCATION_TYPE);
