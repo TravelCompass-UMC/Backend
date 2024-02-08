@@ -3,6 +3,7 @@ package com.travelcompass.api.location.service;
 import com.travelcompass.api.global.api_payload.ErrorCode;
 import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.location.domain.Location;
+import com.travelcompass.api.location.domain.LocationType;
 import com.travelcompass.api.location.repository.LocationRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,10 @@ public class LocationService {
 
     public List<Location> findListByRegionId(Long regionId) {
         return locationRepository.findAllByRegionId(regionId);
+    }
+
+    public List<Location> findListByRegionIdAndLocationType(Long regionId, LocationType locationType) {
+        return locationRepository.findAllByRegionIdAndLocationType(regionId, locationType);
     }
 
     public Location findByName(String name) {
