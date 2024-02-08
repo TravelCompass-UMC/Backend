@@ -38,7 +38,7 @@ public class LocalDataLoader implements ApplicationRunner {
                 .build());
 
         // 장소 초기화
-        Location location = locationRepository.save(Location.builder()
+        Location location1 = locationRepository.save(Location.builder()
                 .id(1L)
                 .name("서울숲")
                 .star(4.5)
@@ -51,7 +51,7 @@ public class LocalDataLoader implements ApplicationRunner {
 
         // 장소정보 초기화
         locationInfoRepository.save(LocationInfo.builder()
-                .location(location)
+                .location(location1)
                 .logicalName("서울숲")
                 .scrapingId("11636039")
                 .locationType(LocationType.ATTRACTION)
@@ -60,43 +60,43 @@ public class LocalDataLoader implements ApplicationRunner {
 
         // 영업시간 초기화
         businessHoursRepository.save(BusinessHours.builder()
-                .location(location)
+                .location(location1)
                 .dayType(DayType.MONDAY)
                 .openTime(LocalTime.of(9, 0))
                 .closeTime(LocalTime.of(21, 0))
                 .build());
         businessHoursRepository.save(BusinessHours.builder()
-                .location(location)
+                .location(location1)
                 .dayType(DayType.TUESDAY)
                 .openTime(LocalTime.of(9, 0))
                 .closeTime(LocalTime.of(21, 0))
                 .build());
         businessHoursRepository.save(BusinessHours.builder()
-                .location(location)
+                .location(location1)
                 .dayType(DayType.WEDNESDAY)
                 .openTime(LocalTime.of(9, 0))
                 .closeTime(LocalTime.of(21, 0))
                 .build());
         businessHoursRepository.save(BusinessHours.builder()
-                .location(location)
+                .location(location1)
                 .dayType(DayType.THURSDAY)
                 .openTime(LocalTime.of(9, 0))
                 .closeTime(LocalTime.of(21, 0))
                 .build());
         businessHoursRepository.save(BusinessHours.builder()
-                .location(location)
+                .location(location1)
                 .dayType(DayType.FRIDAY)
                 .openTime(LocalTime.of(9, 0))
                 .closeTime(LocalTime.of(21, 0))
                 .build());
         businessHoursRepository.save(BusinessHours.builder()
-                .location(location)
+                .location(location1)
                 .dayType(DayType.SATURDAY)
                 .openTime(LocalTime.of(9, 0))
                 .closeTime(LocalTime.of(21, 0))
                 .build());
         businessHoursRepository.save(BusinessHours.builder()
-                .location(location)
+                .location(location1)
                 .dayType(DayType.SUNDAY)
                 .openTime(LocalTime.of(9, 0))
                 .closeTime(LocalTime.of(21, 0))
@@ -104,8 +104,81 @@ public class LocalDataLoader implements ApplicationRunner {
 
         // 이미지 초기화
         locationImageRepository.save(LocationImage.builder()
-                .location(location)
-                .url("testUrl")
+                .location(location1)
+                .url("testUrl1")
+                .build());
+
+        // @@@@@@@@@@@@@@@@@@@@@@@@@
+
+        // 장소 초기화
+        Location location2 = locationRepository.save(Location.builder()
+                .id(2L)
+                .name("강남 파이브가이즈")
+                .star(4.5)
+                .roadNameAddress("서울특별시 성동구 뚝섬로 273")
+                .tel("02-460-2905")
+                .latitude(37.543072)
+                .longitude(127.041808)
+                .region(region)
+                .build());
+
+        // 장소정보 초기화
+        locationInfoRepository.save(LocationInfo.builder()
+                .location(location2)
+                .logicalName("강남 파이브가이즈")
+                .scrapingId("11636039")
+                .locationType(LocationType.RESTAURANT)
+                .region(region)
+                .build());
+
+        // 영업시간 초기화
+        businessHoursRepository.save(BusinessHours.builder()
+                .location(location2)
+                .dayType(DayType.MONDAY)
+                .openTime(LocalTime.of(9, 0))
+                .closeTime(LocalTime.of(21, 0))
+                .build());
+        businessHoursRepository.save(BusinessHours.builder()
+                .location(location2)
+                .dayType(DayType.TUESDAY)
+                .openTime(LocalTime.of(9, 0))
+                .closeTime(LocalTime.of(21, 0))
+                .build());
+        businessHoursRepository.save(BusinessHours.builder()
+                .location(location2)
+                .dayType(DayType.WEDNESDAY)
+                .openTime(LocalTime.of(9, 0))
+                .closeTime(LocalTime.of(21, 0))
+                .build());
+        businessHoursRepository.save(BusinessHours.builder()
+                .location(location2)
+                .dayType(DayType.THURSDAY)
+                .openTime(LocalTime.of(9, 0))
+                .closeTime(LocalTime.of(21, 0))
+                .build());
+        businessHoursRepository.save(BusinessHours.builder()
+                .location(location2)
+                .dayType(DayType.FRIDAY)
+                .openTime(LocalTime.of(9, 0))
+                .closeTime(LocalTime.of(21, 0))
+                .build());
+        businessHoursRepository.save(BusinessHours.builder()
+                .location(location2)
+                .dayType(DayType.SATURDAY)
+                .openTime(LocalTime.of(9, 0))
+                .closeTime(LocalTime.of(21, 0))
+                .build());
+        businessHoursRepository.save(BusinessHours.builder()
+                .location(location2)
+                .dayType(DayType.SUNDAY)
+                .openTime(LocalTime.of(9, 0))
+                .closeTime(LocalTime.of(21, 0))
+                .build());
+
+        // 이미지 초기화
+        locationImageRepository.save(LocationImage.builder()
+                .location(location2)
+                .url("testUrl2")
                 .build());
 
         // 장소 정보 초기화
