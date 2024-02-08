@@ -10,13 +10,21 @@ public class BusinessHoursConverter {
     private BusinessHoursConverter() {
     }
 
-    public static BusinessHours toBusinessHours(DayType dayType, BusinessHoursDto businessHoursDto,
+    public static BusinessHours toBusinessHours(DayType dayType, BusinessHoursDto.CreateBusinessHoursDto businessHoursDto,
             Location location) {
         return BusinessHours.builder()
                 .dayType(dayType)
                 .openTime(businessHoursDto.getOpenTime())
                 .closeTime(businessHoursDto.getCloseTime())
                 .location(location)
+                .build();
+    }
+
+    public static BusinessHoursDto.BusinessHoursResponseDto toBusinessHoursDto(BusinessHours businessHours) {
+        return BusinessHoursDto.BusinessHoursResponseDto.builder()
+                .dayType(businessHours.getDayType())
+                .openTime(businessHours.getOpenTime())
+                .closeTime(businessHours.getCloseTime())
                 .build();
     }
 
