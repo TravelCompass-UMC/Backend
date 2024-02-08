@@ -5,6 +5,7 @@ import com.travelcompass.api.location.converter.LocationConverter;
 import com.travelcompass.api.location.domain.BusinessHours;
 import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.location.domain.LocationInfo;
+import com.travelcompass.api.location.domain.LocationType;
 import com.travelcompass.api.location.dto.LocationResponseDto.DetailLocationDto;
 import com.travelcompass.api.location.service.BusinessHoursService;
 import com.travelcompass.api.location.service.LocationImageService;
@@ -22,6 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -49,8 +51,16 @@ public class LocationController {
     }
 
     @GetMapping("/regions/{regionId}")
-    public ApiResponse<List<DetailLocationDto>> getLocationsByRegion(@PathVariable Long regionId) {
-        List<Location> locations = locationService.findListByRegionId(regionId);
+    public ApiResponse<List<DetailLocationDto>> getLocationsByRegion(
+            @PathVariable Long regionId,
+            @RequestParam(name = "type", required = false) LocationType locationType) {
+        List<Location> locations;
+        if (locationType == null) {
+            locations = locationService.findListByRegionId(regionId);
+        } else {
+            locations = locationService.findListByRegionIdAndLocationType(regionId, locationType);
+        }
+
         return ApiResponse.onSuccess(
                 locations.stream()
                         .map(this::convertToDetailLocationDto)
@@ -60,11 +70,19 @@ public class LocationController {
     @GetMapping("/regions/{regionId}/like")
     public ApiResponse<List<DetailLocationDto>> getLikeLocationsByRegion(
             @PathVariable Long regionId,
+            @RequestParam(name = "type", required = false) LocationType locationType,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         User user = userService.findUserByUserName(customUserDetails.getUsername());
         Region region = regionService.findRegionById(regionId);
-        List<Location> locations = locationLikeService.findLocationsByUser(user, region);
+
+        List<Location> locations;
+        if (locationType == null) {
+            locations = locationLikeService.findLocationsByUser(user, region);
+        } else {
+            locations = locationLikeService.findLocationsByUserAndLocationType(user, region, locationType);
+        }
+
         return ApiResponse.onSuccess(
                 locations.stream()
                         .map(this::convertToDetailLocationDto)
