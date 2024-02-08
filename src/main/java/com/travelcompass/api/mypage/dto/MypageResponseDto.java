@@ -39,6 +39,9 @@ public class MypageResponseDto {
 
         @Schema(description = "장소 좋아요 수")
         private Long likeCount;
+
+        @Schema(description = "장소 별점")
+        private Double star;
     }
 
 
