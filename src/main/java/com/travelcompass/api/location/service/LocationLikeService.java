@@ -2,6 +2,7 @@ package com.travelcompass.api.location.service;
 
 import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.location.domain.LocationLike;
+import com.travelcompass.api.location.domain.LocationType;
 import com.travelcompass.api.location.repository.LocationLikeRepository;
 import com.travelcompass.api.location.repository.LocationRepository;
 import com.travelcompass.api.oauth.domain.User;
@@ -67,6 +68,13 @@ public class LocationLikeService {
     // 특정 사용자가 좋아요한 장소 조회
     public List<Location> findLocationsByUser(User user, Region region) {
         return locationLikeRepository.findAllByUserAndRegion(user, region).stream()
+                .map(LocationLike::getLocation)
+                .toList();
+    }
+
+    // 특정 사용자가 특정 지역의 특정 타입의 장소를 좋아요한 장소 조회
+    public List<Location> findLocationsByUserAndLocationType(User user, Region region, LocationType locationType) {
+        return locationLikeRepository.findAllByUserAndRegionAndLocationType(user, region, locationType).stream()
                 .map(LocationLike::getLocation)
                 .toList();
     }
