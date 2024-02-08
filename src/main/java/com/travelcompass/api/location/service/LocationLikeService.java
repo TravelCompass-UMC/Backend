@@ -5,7 +5,7 @@ import com.travelcompass.api.location.domain.LocationLike;
 import com.travelcompass.api.location.repository.LocationLikeRepository;
 import com.travelcompass.api.location.repository.LocationRepository;
 import com.travelcompass.api.oauth.domain.User;
-import com.travelcompass.api.oauth.repository.UserRepository;
+import com.travelcompass.api.region.domain.Region;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class LocationLikeService {
     private final LocationLikeRepository locationLikeRepository;
     private final LocationRepository locationRepository;
-    private final UserRepository userRepository;
 
     // 좋아요 토글 및 좋아요 수 조회
     @Transactional
@@ -66,8 +65,8 @@ public class LocationLikeService {
     }
 
     // 특정 사용자가 좋아요한 장소 조회
-    public List<Location> findLocationsByUser(User user) {
-        return locationLikeRepository.findAllByUser(user).stream()
+    public List<Location> findLocationsByUser(User user, Region region) {
+        return locationLikeRepository.findAllByUserAndRegion(user, region).stream()
                 .map(LocationLike::getLocation)
                 .toList();
     }
