@@ -74,10 +74,10 @@ public class MypageService {
             return locations.stream()
                     .sorted(Comparator.comparingLong(Location::getLikeCount).reversed())
                     .toList();
-        } else if (way.equals("rate")) {
+        } else if (way.equals("star")) {
             // location 에 별점이 없어서 일단 id의 역순, 즉 최신순으로 정렬함
             return locations.stream()
-                    .sorted(Comparator.comparingLong(Location::getId).reversed())
+                    .sorted(Comparator.comparingDouble(Location::getStar).reversed())
                     .toList();
         } else {
             throw GeneralException.of(ErrorCode.MYPAGE_WRONG_SORTING_WAY);
