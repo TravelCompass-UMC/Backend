@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "장소 좋아요", description = "장소 좋아요 관련 api 입니다.")
 @RestController
-@RequestMapping("/location/{location-id}")
+@RequestMapping("/locations/{location-id}")
 @RequiredArgsConstructor
 public class LocationLikeController {
     private final UserService userService;
