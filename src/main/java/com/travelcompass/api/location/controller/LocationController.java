@@ -89,6 +89,27 @@ public class LocationController {
                         .toList());
     }
 
+    @GetMapping("/like")
+    public ApiResponse<List<DetailLocationDto>> getLikeLocations(
+            @RequestParam(name = "type", required = false) LocationType locationType,
+            @RequestParam(name = "sort") String sort,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
+
+        List<Location> locations;
+        if (locationType == null) {
+            locations = locationLikeService.findLocationsByUser(user, sort);
+        } else {
+            locations = locationLikeService.findLocationsByUserAndLocationType(user, locationType, sort);
+        }
+
+        return ApiResponse.onSuccess(
+                locations.stream()
+                        .map(this::convertToDetailLocationDto)
+                        .toList());
+    }
+
     private DetailLocationDto convertToDetailLocationDto(Location location) {
         LocationInfo locationInfo = locationInfoService.findLocationInfoByLocationId(location.getId());
         String imageUrl = locationImageService.findImageUrlByLocationId(location.getId());
