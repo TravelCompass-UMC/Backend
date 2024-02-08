@@ -9,9 +9,16 @@ import com.travelcompass.api.location.dto.LocationResponseDto.DetailLocationDto;
 import com.travelcompass.api.location.service.BusinessHoursService;
 import com.travelcompass.api.location.service.LocationImageService;
 import com.travelcompass.api.location.service.LocationInfoService;
+import com.travelcompass.api.location.service.LocationLikeService;
 import com.travelcompass.api.location.service.LocationService;
+import com.travelcompass.api.oauth.domain.User;
+import com.travelcompass.api.oauth.jwt.CustomUserDetails;
+import com.travelcompass.api.oauth.service.UserService;
+import com.travelcompass.api.region.domain.Region;
+import com.travelcompass.api.region.service.RegionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +33,9 @@ public class LocationController {
     private final LocationInfoService locationInfoService;
     private final LocationImageService locationImageService;
     private final BusinessHoursService businessHoursService;
+    private final LocationLikeService locationLikeService;
+    private final UserService userService;
+    private final RegionService regionService;
 
     @GetMapping("/{locationId}")
     public ApiResponse<DetailLocationDto> getLocationDetail(@PathVariable Long locationId) {
@@ -40,20 +50,33 @@ public class LocationController {
 
     @GetMapping("/regions/{regionId}")
     public ApiResponse<List<DetailLocationDto>> getLocationsByRegion(@PathVariable Long regionId) {
-        List<Location> findLocations = locationService.findListByRegionId(regionId);
+        List<Location> locations = locationService.findListByRegionId(regionId);
         return ApiResponse.onSuccess(
-                findLocations.stream()
-                        .map(location -> {
-                            LocationInfo locationInfo = locationInfoService.findLocationInfoByLocationId(
-                                    location.getId());
-                            String imageUrl = locationImageService.findImageUrlByLocationId(location.getId());
-                            List<BusinessHours> businessHoursList = businessHoursService.findListByLocationId(
-                                    location.getId());
-
-                            return LocationConverter.toDetailLocationDto(location, locationInfo, imageUrl,
-                                    businessHoursList);
-                        })
+                locations.stream()
+                        .map(this::convertToDetailLocationDto)
                         .toList());
+    }
+
+    @GetMapping("/regions/{regionId}/like")
+    public ApiResponse<List<DetailLocationDto>> getLikeLocationsByRegion(
+            @PathVariable Long regionId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        User user = userService.findUserByUserName(customUserDetails.getUsername());
+        Region region = regionService.findRegionById(regionId);
+        List<Location> locations = locationLikeService.findLocationsByUser(user, region);
+        return ApiResponse.onSuccess(
+                locations.stream()
+                        .map(this::convertToDetailLocationDto)
+                        .toList());
+    }
+
+    private DetailLocationDto convertToDetailLocationDto(Location location) {
+        LocationInfo locationInfo = locationInfoService.findLocationInfoByLocationId(location.getId());
+        String imageUrl = locationImageService.findImageUrlByLocationId(location.getId());
+        List<BusinessHours> businessHoursList = businessHoursService.findListByLocationId(location.getId());
+
+        return LocationConverter.toDetailLocationDto(location, locationInfo, imageUrl, businessHoursList);
     }
 
 }
