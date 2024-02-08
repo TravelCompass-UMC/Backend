@@ -17,7 +17,7 @@ public interface LocationLikeRepository extends JpaRepository<LocationLike, Long
     // 사용자와 장소에 대한 좋아요 정보 조회
     LocationLike findByUserAndLocation(User user, Location location);
 
-    // 특정 사용자의 좋아요한 LocationLike 목록 조회
+    // 특정 사용자의 특정 지역에 좋아요한 LocationLike 목록 조회
     @Query("select ll from LocationLike ll join ll.location l where ll.user = :user and l.region = :region")
     List<LocationLike> findAllByUserAndRegion(User user, Region region);
 
@@ -26,4 +26,22 @@ public interface LocationLikeRepository extends JpaRepository<LocationLike, Long
             + "from LocationLike ll join ll.location l join l.locationInfo li "
             + "where ll.user = :user and l.region = :region and li.locationType = :locationType")
     List<LocationLike> findAllByUserAndRegionAndLocationType(User user, Region region, LocationType locationType);
+
+    @Query("select ll from LocationLike ll join ll.location l where ll.user = :user order by l.likeCount desc")
+    List<LocationLike> findAllByUserOrderByLikeDesc(User user);
+
+    @Query("select ll from LocationLike ll join ll.location l where ll.user = :user order by l.star desc")
+    List<LocationLike> findAllByUserOrderByStarDesc(User user);
+
+    @Query("select ll "
+            + "from LocationLike ll join ll.location l join l.locationInfo li "
+            + "where ll.user = :user and li.locationType = :locationType "
+            + "order by l.likeCount desc")
+    List<LocationLike> findAllByUserAndLocationTypeOrderByLikeDesc(User user, LocationType locationType);
+
+    @Query("select ll "
+            + "from LocationLike ll join ll.location l join l.locationInfo li "
+            + "where ll.user = :user and li.locationType = :locationType "
+            + "order by l.star desc")
+    List<LocationLike> findAllByUserAndLocationTypeOrderByStarDesc(User user, LocationType locationType);
 }
