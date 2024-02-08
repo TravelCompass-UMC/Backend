@@ -1,4 +1,4 @@
-package com.travelcompass.api.global.controller;
+package com.travelcompass.api.oauth.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +15,6 @@ public class TokenController {
             @RequestParam(name = "access-token") String accessToken,
             @RequestParam(name = "refresh-token") String refreshToken
     ) {
-        // 여기에서 accessToken, refreshToken을 사용하여 원하는 로직 수행
-        // 예를 들어, 사용자 정보 조회 등의 비즈니스 로직을 수행할 수 있습니다.
-
         // 결과 데이터를 Map에 담아 반환
         Map<String, String> responseData = new HashMap<>();
         responseData.put("accessToken", accessToken);
