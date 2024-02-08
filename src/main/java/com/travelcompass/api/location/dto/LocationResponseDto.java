@@ -36,7 +36,7 @@ public class LocationResponseDto {
         private String roadNameAddress;
 
         @Schema(description = "영업시간 리스트")
-        private List<BusinessHoursDto> businessHoursDtos;
+        private List<BusinessHoursDto.BusinessHoursResponseDto> businessHoursDtos;
 
         @Schema(description = "전화번호")
         private String tel;
