@@ -68,11 +68,11 @@ public class LocationLikeService {
 
     // 특정 사용자가 좋아요한 장소 조회
     public List<Location> findLocationsByUser(User user, String sort) {
-        if (sort.equals("like")) {
+        if (sort.equals("LIKE")) {
             return locationLikeRepository.findAllByUserOrderByLikeDesc(user).stream()
                     .map(LocationLike::getLocation)
                     .toList();
-        } else if (sort.equals("star")) {
+        } else if (sort.equals("STAR")) {
             return locationLikeRepository.findAllByUserOrderByStarDesc(user).stream()
                     .map(LocationLike::getLocation)
                     .toList();
@@ -89,11 +89,11 @@ public class LocationLikeService {
 
     // 특정 사용자가 특정 타입의 장소를 좋아요한 장소 조회
     public List<Location> findLocationsByUserAndLocationType(User user, LocationType locationType, String sort) {
-        if (sort.equals("like")) {
+        if (sort.equals("LIKE")) {
             return locationLikeRepository.findAllByUserAndLocationTypeOrderByLikeDesc(user, locationType).stream()
                     .map(LocationLike::getLocation)
                     .toList();
-        } else if (sort.equals("star")) {
+        } else if (sort.equals("STAR")) {
             return locationLikeRepository.findAllByUserAndLocationTypeOrderByStarDesc(user, locationType).stream()
                     .map(LocationLike::getLocation)
                     .toList();
