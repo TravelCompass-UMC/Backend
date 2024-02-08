@@ -13,6 +13,10 @@ import com.travelcompass.api.oauth.service.UserService;
 import com.travelcompass.api.plan.converter.PlanConverter;
 import com.travelcompass.api.plan.domain.Plan;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,6 +38,10 @@ public class MypageController {
     private final UserService userService;
 
     // 나의 정보 조회
+    @Operation(summary = "나의 정보 조회 메서드", description = "나의 정보를 조회하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2001", description = "나의 정보 조회 성공")
+    })
     @GetMapping("/info")
     public ApiResponse<MyInfoDto> findMyInfo(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
@@ -43,6 +51,13 @@ public class MypageController {
     }
 
     // 나의 계획 조회
+    @Operation(summary = "나의 여행계획 조회 메서드", description = "나의 여행계획을 조회하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2002", description = "나의 계획 조회 성공")
+    })
+    @Parameters({
+            @Parameter(name = "page", description = "페이지 번호, 0번이 1페이지 입니다."),
+    })
     @GetMapping("/plans")
     public ApiResponse<PlanListResponseDto> searchMyPlans(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -56,6 +71,13 @@ public class MypageController {
     }
 
     // 내가 좋아요한 여행계획 조회
+    @Operation(summary = "좋아요한 여행계획 조회", description = "내가 좋아요한 여행계획을 조회하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2003", description = "좋아요한 계획 조회 성공")
+    })
+    @Parameters({
+            @Parameter(name = "page", description = "페이지 번호, 0번이 1페이지 입니다."),
+    })
     @GetMapping("/plans/like")
     public ApiResponse<PlanListResponseDto> searchLikedPlans(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -69,6 +91,15 @@ public class MypageController {
     }
 
     // 내가 좋아요한 장소 조회
+    @Operation(summary = "좋아요한 장소 조회", description = "내가 좋아요한 장소를 조회하는 메서드입니다.")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2004", description = "좋아요한 장소 조회 성공")
+    })
+    @Parameters({
+            @Parameter(name = "page", description = "페이지 번호, 0번이 1페이지 입니다."),
+            @Parameter(name = "type", description = "조회하고 싶은 장소의 타입, ALL: 전체 조회, ACCOMMODATION: 숙소, RESTAURANT: 식당/카페, ATTRACTION: 명소"),
+            @Parameter(name = "way", description = "정렬 방식,  like: 좋아요순, star: 별점순")
+    })
     @GetMapping("locations/like")
     public ApiResponse<MyLocationListResponseDto> searchLikedLocations(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
