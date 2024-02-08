@@ -15,12 +15,17 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
 
-    public Location findLocationById(Long id) {
+    public Location findById(Long id) {
         return locationRepository.findById(id)
                 .orElseThrow(() -> GeneralException.of(ErrorCode.LOCATION_NOT_FOUND));
     }
 
-    public Location findLocationByName(String name) {
+    public Location findListByRegionId(Long regionId) {
+        return locationRepository.findByRegionId(regionId)
+                .orElseThrow(() -> GeneralException.of(ErrorCode.LOCATION_NOT_FOUND));
+    }
+
+    public Location findByName(String name) {
         return locationRepository.findByName(name)
                 .orElseThrow(() -> GeneralException.of(ErrorCode.LOCATION_NOT_FOUND));
     }
