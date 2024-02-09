@@ -18,9 +18,7 @@ public class BusinessHoursDto {
     @AllArgsConstructor
     public static class CreateBusinessHoursDto {
 
-        LocalTime openTime;
-
-        LocalTime closeTime;
+        String time;
     }
 
     @Getter
@@ -31,9 +29,7 @@ public class BusinessHoursDto {
 
         DayType dayType;
 
-        LocalTime openTime;
-
-        LocalTime closeTime;
+        String time;
     }
 
 

@@ -14,8 +14,7 @@ public class BusinessHoursConverter {
             Location location) {
         return BusinessHours.builder()
                 .dayType(dayType)
-                .openTime(businessHoursDto.getOpenTime())
-                .closeTime(businessHoursDto.getCloseTime())
+                .time(businessHoursDto.getTime())
                 .location(location)
                 .build();
     }
@@ -23,8 +22,7 @@ public class BusinessHoursConverter {
     public static BusinessHoursDto.BusinessHoursResponseDto toBusinessHoursDto(BusinessHours businessHours) {
         return BusinessHoursDto.BusinessHoursResponseDto.builder()
                 .dayType(businessHours.getDayType())
-                .openTime(businessHours.getOpenTime())
-                .closeTime(businessHours.getCloseTime())
+                .time(businessHours.getTime())
                 .build();
     }
 
