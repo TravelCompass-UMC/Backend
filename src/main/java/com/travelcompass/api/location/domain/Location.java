@@ -14,8 +14,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Getter
 @Builder
 @NoArgsConstructor
@@ -38,6 +43,7 @@ public class Location extends BaseEntity {
 
     private Double longitude; // 경도
 
+    @ColumnDefault("0")
     private Long likeCount; // 좋아요 수
 
     private String businessHoursEtc; // 영업시간 추가정보
