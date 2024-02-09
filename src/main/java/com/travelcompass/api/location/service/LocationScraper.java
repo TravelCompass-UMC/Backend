@@ -9,13 +9,13 @@ import com.travelcompass.api.location.domain.DayType;
 import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.location.domain.LocationInfo;
 import com.travelcompass.api.location.dto.BusinessHoursDto;
+import com.travelcompass.api.location.dto.BusinessHoursDto.CreateBusinessHoursDto;
 import com.travelcompass.api.location.dto.LocationScrapingDto;
 import com.travelcompass.api.location.repository.LocationRepository;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +27,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,7 +53,7 @@ public class LocationScraper {
     // selenium driver 설정
     private WebDriver driver;
 
-//    @Scheduled(fixedRate = 6 * 60 * 60 * 1000)
+    @Scheduled(fixedRate = 6 * 60 * 60 * 1000)
     public void scrapeLocations() {
         setUp();
 
@@ -126,8 +127,7 @@ public class LocationScraper {
         MultipartFile image = downloadImage(src);
 
         Uuid uuid = uuidRepository.save(Uuid.generateUuid());
-        String uploadedImageUrl = s3Manager.uploadFile(s3Manager.generateLocationKeyName(uuid),
-                image);
+        String uploadedImageUrl = s3Manager.uploadFile(s3Manager.generateLocationKeyName(uuid), image);
 
         return LocationScrapingDto.builder()
                 .star(star)
@@ -142,7 +142,7 @@ public class LocationScraper {
         String starString = "0.0";
         try {
             starString = driver.findElement(By.xpath(
-                    "//div[@class='place_section no_margin OP4V8']/div[1]/div[2]/span[@class='PXMot LXIwF']"))
+                            "//div[@class='place_section no_margin OP4V8']/div[1]/div[2]/span[@class='PXMot LXIwF']"))
                     .getText()
                     .split("\n")[1];
         } catch (NoSuchElementException ignored) {
@@ -157,34 +157,50 @@ public class LocationScraper {
     }
 
     private Map<DayType, BusinessHoursDto.CreateBusinessHoursDto> scrapeBusinessHours(WebElement element) {
-        WebElement businessHoursElement = element.findElement(By.xpath("//div/a"));
+        List<WebElement> businessHoursElements = element.findElements(
+                By.xpath("//div[@class='w9QyJ']/div/*[@class='A_cdD']"));
 
-        List<WebElement> businessHoursElements = businessHoursElement.findElements(
-                By.xpath("div[@class='w9QyJ']/div/span"));
+        // TODO : TEST
+        System.out.println("엘리먼트 개수 : " + businessHoursElements.size());
 
         Map<DayType, BusinessHoursDto.CreateBusinessHoursDto> businessHoursDtoMap = new EnumMap<>(DayType.class);
-        for (WebElement e : businessHoursElements) {
-            String weekString = e.findElement(By.xpath("span")).getText();
-            String businessHours = e.findElement(By.xpath("div")).getText();
+        if (businessHoursElements.isEmpty()) {
+            log.info("운영 시간 정보가 없습니다.");
+            return businessHoursDtoMap;
+        }
+        // "매일"과 같은 형태로 적혀있는 경우 모든 요일에 대해 같은 운영 시간이 적혀있는 것으로 간주
+        else if (businessHoursElements.size() == 1) {
+            for (DayType dayType : DayType.values()) {
+                businessHoursDtoMap.put(dayType,
+                        CreateBusinessHoursDto.builder()
+                                .time(businessHoursElements.get(0).getText())
+                                .build());
+            }
+        }
+        // "월", "화" 등의 요일로 적혀있는 경우
+        else {
+            for (WebElement e : businessHoursElements) {
+                String weekString = e.findElement(By.xpath("*[1]")).getText();
+                String businessHours = e.findElement(By.xpath("*[2]")).getText();
 
-            businessHoursDtoMap.put(DayType.getWeek(weekString), splitBusinessHours(businessHours));
+                businessHoursDtoMap.put(DayType.getWeek(weekString),
+                        CreateBusinessHoursDto.builder()
+                                .time(businessHours)
+                                .build());
+            }
+        }
+
+        // TODO: print all items in businessHoursDtoMap
+        System.out.println("운영 시간 테스트 출력");
+        for (Map.Entry<DayType, BusinessHoursDto.CreateBusinessHoursDto> entry : businessHoursDtoMap.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue().getTime());
         }
 
         return businessHoursDtoMap;
     }
 
-    // "07:00 - 19:00"을 LocalTime 2개로 분리
-    private BusinessHoursDto.CreateBusinessHoursDto splitBusinessHours(String businessHours) {
-        String[] split = businessHours.split(" - ");
-        return BusinessHoursDto.CreateBusinessHoursDto.builder()
-                .openTime(LocalTime.parse(split[0]))
-                .closeTime(LocalTime.parse(split[1]))
-                .build();
-    }
-
     private String scrapeTel() {
-        return driver.findElement(By.xpath("//div[@class='O8qbU nbXkr']/div/span[1]"))
-                .getText();
+        return driver.findElement(By.xpath("//div[@class='O8qbU nbXkr']/div/span[1]")).getText();
     }
 
     /*
@@ -218,10 +234,6 @@ public class LocationScraper {
 //                    } catch (NoSuchElementException ex) {
 //                        log.error("리뷰 내용이 없습니다.", ex);
 //                    }
-//
-//                    // test
-//                    System.out.println(username);
-//                    // end test
 //
 //                    String reviewDate = e.findElement(By.xpath("div[@class='qM6I7']/div/div[2]/span[1]/time"))
 //                            .getText();
