@@ -1,6 +1,5 @@
 package com.travelcompass.api.address.service;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,8 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Coordinates {
-    private String x; // longitude
-    private String y; // latitude
+    private String longitude;
+    private String latitude;
+
+    public Coordinates(String longitude, String latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 }
