@@ -1,6 +1,8 @@
 package com.travelcompass.api.location.service;
 
 import com.amazonaws.util.IOUtils;
+import com.travelcompass.api.address.service.AddressService;
+import com.travelcompass.api.address.service.Coordinates;
 import com.travelcompass.api.global.entity.Uuid;
 import com.travelcompass.api.global.repository.UuidRepository;
 import com.travelcompass.api.global.s3.AmazonS3Manager;
@@ -49,6 +51,7 @@ public class LocationScraper {
     private final LocationInfoService locationInfoService;
     private final LocationImageService locationImageService;
     private final BusinessHoursService businessHoursService;
+    private final AddressService addressService;
 
     // selenium driver 설정
     private WebDriver driver;
@@ -61,12 +64,17 @@ public class LocationScraper {
         for (LocationInfo locationInfo : locationInfos) {
             LocationScrapingDto locationScrapingDto = scrapeLocation(locationInfo);
 
+            // 주소를 통해 좌표를 가져옴
+            Coordinates coordinate = addressService.getCoordinate(locationScrapingDto.getAddress());
+
             Location location = Location.builder()
                     .name(locationInfo.getLogicalName())
                     .star(locationScrapingDto.getStar())
                     .roadNameAddress(locationScrapingDto.getAddress())
                     .tel(locationScrapingDto.getTel())
                     .region(locationInfo.getRegion())
+                    .latitude(Double.parseDouble(coordinate.getLatitude()))
+                    .longitude(Double.parseDouble(coordinate.getLongitude()))
                     .build();
 
             Location savedLocation = locationRepository.save(location);
