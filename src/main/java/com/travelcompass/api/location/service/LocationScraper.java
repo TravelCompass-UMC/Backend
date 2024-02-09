@@ -179,9 +179,11 @@ public class LocationScraper {
         // "매일"과 같은 형태로 적혀있는 경우 모든 요일에 대해 같은 운영 시간이 적혀있는 것으로 간주
         else if (businessHoursElements.size() == 1) {
             for (DayType dayType : DayType.values()) {
+                String businessHours = businessHoursElements.get(0).findElement(By.xpath("*[2]")).getText();
+
                 businessHoursDtoMap.put(dayType,
                         CreateBusinessHoursDto.builder()
-                                .time(businessHoursElements.get(0).getText())
+                                .time(businessHours)
                                 .build());
             }
         }
