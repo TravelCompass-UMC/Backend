@@ -30,9 +30,7 @@ public class BusinessHours extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private DayType dayType;
 
-    private LocalTime openTime;
-
-    private LocalTime closeTime;
+    private String time;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
