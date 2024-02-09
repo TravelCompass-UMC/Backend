@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,14 +40,18 @@ public class Location extends BaseEntity {
 
     private Long likeCount; // 좋아요 수
 
-    public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
-
-
     private String businessHoursEtc; // 영업시간 추가정보
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+
+    @OneToOne(mappedBy = "location")
+    private LocationInfo locationInfo;
+
+    public void updateLikeCount(Long likeCount) {
+        this.likeCount = likeCount;
+    }
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "ADDRESS_CODE")

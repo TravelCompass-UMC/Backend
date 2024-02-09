@@ -15,11 +15,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "장소 좋아요", description = "장소 좋아요 관련 api 입니다.")
 @RestController
-@RequestMapping("/location/{location-id}")
+@RequestMapping("/locations/{location-id}")
 @RequiredArgsConstructor
 public class LocationLikeController {
     private final UserService userService;
@@ -34,7 +39,7 @@ public class LocationLikeController {
     public ApiResponse<Long> toggleLike(@PathVariable(name = "location-id") Long locationId,
                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         User user = userService.findUserByUserName(customUserDetails.getUsername());
-        Location location = locationService.findLocationById(locationId);
+        Location location = locationService.findById(locationId);
 
         if (location == null) {
             throw GeneralException.of(ErrorCode.LOCATION_NOT_FOUND);
@@ -54,7 +59,7 @@ public class LocationLikeController {
     public ApiResponse<Long> cancelLike(@PathVariable(name = "location-id") Long locationId,
                                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         User user = userService.findUserByUserName(customUserDetails.getUsername());
-        Location location = locationService.findLocationById(locationId);
+        Location location = locationService.findById(locationId);
 
         if (location == null) {
             throw GeneralException.of(ErrorCode.LOCATION_NOT_FOUND);
@@ -72,7 +77,7 @@ public class LocationLikeController {
     })
     @GetMapping("/like/count")
     public ApiResponse<Long> getLikeCount(@PathVariable(name = "location-id") Long locationId) {
-        Location location = locationService.findLocationById(locationId);
+        Location location = locationService.findById(locationId);
 
         if (location == null) {
             throw GeneralException.of(ErrorCode.LOCATION_NOT_FOUND);
