@@ -2,7 +2,14 @@ package com.travelcompass.api.location.domain;
 
 import com.travelcompass.api.global.entity.BaseEntity;
 import com.travelcompass.api.region.domain.Region;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,18 +40,18 @@ public class Location extends BaseEntity {
 
     private Long likeCount; // 좋아요 수
 
-    public void updateLikeCount(Long likeCount) { this.likeCount = likeCount; }
-
-
     private String businessHoursEtc; // 영업시간 추가정보
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_info_id")
+    @OneToOne(mappedBy = "location", fetch = FetchType.LAZY)
     private LocationInfo locationInfo;
+
+    public void updateLikeCount(Long likeCount) {
+        this.likeCount = likeCount;
+    }
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "ADDRESS_CODE")

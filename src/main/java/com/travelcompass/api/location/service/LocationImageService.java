@@ -1,5 +1,7 @@
 package com.travelcompass.api.location.service;
 
+import com.travelcompass.api.global.api_payload.ErrorCode;
+import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.location.converter.LocationImageConverter;
 import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.location.domain.LocationImage;
@@ -19,8 +21,10 @@ public class LocationImageService {
         locationImageRepository.save(LocationImageConverter.toLocationImage(url, location));
     }
 
-    public LocationImage findLocationImageByLocationId(Location location) {
-        return locationImageRepository.findByLocation(location).orElseThrow();
+    public String findImageUrlByLocationId(Long locationId) {
+        LocationImage locationImage = locationImageRepository.findByLocationId(locationId)
+                .orElseThrow(() -> GeneralException.of(ErrorCode.LOCATION_IMAGE_NOT_FOUND));
+        return locationImage.getUrl();
     }
 
 }

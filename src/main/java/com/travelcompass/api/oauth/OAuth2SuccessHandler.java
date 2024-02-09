@@ -1,23 +1,24 @@
 package com.travelcompass.api.oauth;
 
-import com.travelcompass.api.oauth.jwt.*;
+import com.travelcompass.api.oauth.jwt.CustomUserDetails;
+import com.travelcompass.api.oauth.jwt.JwtDto;
+import com.travelcompass.api.oauth.jwt.JwtTokenUtils;
+import com.travelcompass.api.oauth.jwt.RefreshToken;
 import com.travelcompass.api.oauth.repository.RefreshTokenRepository;
 import com.travelcompass.api.oauth.utils.IpUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -28,13 +29,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtTokenUtils tokenUtils;
     private final UserDetailsManager userDetailsManager;
     private final RefreshTokenRepository refreshTokenRepository;
-//    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+//    private final RefreshTokenRedisRepository;
 
     public OAuth2SuccessHandler(
             JwtTokenUtils tokenUtils,
             UserDetailsManager userDetailsManager,
             RefreshTokenRepository refreshTokenRepository
-//            RefreshTokenRedisRepository refreshTokenRedisRepository
+//            RefreshTokenRedisRepository
     ) {
         this.tokenUtils = tokenUtils;
         this.userDetailsManager = userDetailsManager;
@@ -61,7 +62,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String providerId = oAuth2User.getAttribute("id").toString();
 
         // 처음으로 소셜 로그인한 사용자를 데이터베이스에 등록
-        if(!userDetailsManager.userExists(username)) { //1. 최초 로그인인지 확인
+        if (!userDetailsManager.userExists(username)) { //1. 최초 로그인인지 확인
             userDetailsManager.createUser(CustomUserDetails.builder()
                     .username(username)
                     .password(providerId)
@@ -100,10 +101,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                         .build()
         );
 
-
         // 목적지 URL 설정 - 토큰 던짐
         String targetUrl = String.format(
-                "http://travel-compass.netlify.app/oauth/callback?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
+                "http://travel-compass.netlify.app/oauth/callback?access-token=%s&refresh-token=%s",
+                jwt.getAccessToken(), jwt.getRefreshToken()
 //                "http://localhost:8080/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
         );
         // 실제 Redirect 응답 생성

@@ -1,11 +1,14 @@
 package com.travelcompass.api.location.service;
 
-import com.travelcompass.api.oauth.domain.User;
-import com.travelcompass.api.oauth.repository.UserRepository;
 import com.travelcompass.api.location.domain.Location;
 import com.travelcompass.api.location.domain.LocationLike;
+import com.travelcompass.api.location.domain.LocationType;
 import com.travelcompass.api.location.repository.LocationLikeRepository;
 import com.travelcompass.api.location.repository.LocationRepository;
+import com.travelcompass.api.oauth.domain.User;
+import com.travelcompass.api.region.domain.Region;
+import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class LocationLikeService {
     private final LocationLikeRepository locationLikeRepository;
     private final LocationRepository locationRepository;
-    private final UserRepository userRepository;
 
     // 좋아요 토글 및 좋아요 수 조회
     @Transactional
@@ -63,4 +65,47 @@ public class LocationLikeService {
         Long likeCount = locationLikeRepository.countAllByLocation(location);
         location.updateLikeCount(likeCount);
     }
+
+    // 특정 사용자가 좋아요한 장소 조회
+    public List<Location> findLocationsByUser(User user, String sort) {
+        if (sort.equals("LIKE")) {
+            return locationLikeRepository.findAllByUserOrderByLikeDesc(user).stream()
+                    .map(LocationLike::getLocation)
+                    .toList();
+        } else if (sort.equals("STAR")) {
+            return locationLikeRepository.findAllByUserOrderByStarDesc(user).stream()
+                    .map(LocationLike::getLocation)
+                    .toList();
+        }
+        return Collections.emptyList();
+    }
+
+    // 지역별 특정 사용자가 좋아요한 장소 조회
+    public List<Location> findLocationsByUser(User user, Region region) {
+        return locationLikeRepository.findAllByUserAndRegion(user, region).stream()
+                .map(LocationLike::getLocation)
+                .toList();
+    }
+
+    // 특정 사용자가 특정 타입의 장소를 좋아요한 장소 조회
+    public List<Location> findLocationsByUserAndLocationType(User user, LocationType locationType, String sort) {
+        if (sort.equals("LIKE")) {
+            return locationLikeRepository.findAllByUserAndLocationTypeOrderByLikeDesc(user, locationType).stream()
+                    .map(LocationLike::getLocation)
+                    .toList();
+        } else if (sort.equals("STAR")) {
+            return locationLikeRepository.findAllByUserAndLocationTypeOrderByStarDesc(user, locationType).stream()
+                    .map(LocationLike::getLocation)
+                    .toList();
+        }
+        return Collections.emptyList();
+    }
+
+    // 지역별 특정 사용자가 특정 지역의 특정 타입의 장소를 좋아요한 장소 조회
+    public List<Location> findLocationsByUserAndLocationType(User user, Region region, LocationType locationType) {
+        return locationLikeRepository.findAllByUserAndRegionAndLocationType(user, region, locationType).stream()
+                .map(LocationLike::getLocation)
+                .toList();
+    }
+
 }

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LocationImageRepository extends JpaRepository<LocationImage, Long> {
 
-    Optional<LocationImage> findByLocation(Location location);
+    Optional<LocationImage> findByLocationId(Long locationId);
 }
