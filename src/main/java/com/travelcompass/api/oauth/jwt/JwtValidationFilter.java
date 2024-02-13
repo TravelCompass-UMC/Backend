@@ -42,19 +42,19 @@ public class JwtValidationFilter extends OncePerRequestFilter {
             } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
                 log.info("JWT 서명이 잘못되었습니다.");
                 jwtExceptionHandler(response, ErrorCode.TOKEN_INVALID);
-//                throw new GeneralException(ErrorCode.TOKEN_INVALID);
+                return;
             } catch (ExpiredJwtException e) {
                 log.info("JWT 토큰이 만료되었습니다.");
                 jwtExceptionHandler(response, ErrorCode.TOKEN_EXPIRED);
-//                throw new GeneralException(ErrorCode.TOKEN_EXPIRED);
+                return;
             } catch (UnsupportedJwtException e) {
                 log.info("지원되지 않는 토큰입니다.");
                 jwtExceptionHandler(response, ErrorCode.TOKEN_INVALID);
-//                throw new GeneralException(ErrorCode.TOKEN_INVALID);
+                return;
             } catch (IllegalArgumentException e) {
                 log.info("잘못된 토큰입니다.");
                 jwtExceptionHandler(response, ErrorCode.TOKEN_INVALID);
-//                throw new GeneralException(ErrorCode.TOKEN_INVALID);
+                return;
             }
         }
         filterChain.doFilter(request, response);

@@ -28,10 +28,20 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authHttp -> authHttp
-                                .requestMatchers("/health", "/oauth2/authorization/naver", "/users/**", "/regions/**", "/locations/**", "/plans/**", "/me/**")
+                                .requestMatchers(
+                                        "/health",
+                                        "/oauth2/authorization/naver", // 로그인
+                                        "/getCarDuration", // 자가용 소요시간 api
+                                        "/locations/regions/**", // 지역별 장소 리스트 조회
+                                        "/locations/**", // 장소 상세 조회
+                                        "/plans/search", // 여행계획 조회
+
+                                        "/users/**", // 로그아웃, 회원탈퇴
+                                        "/me/**" // 마이페이지
+                                )
                                 .permitAll()
                                 .anyRequest().permitAll()
-                        //.anyRequest().authenticated()
+                                //.anyRequest().authenticated()
 
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
