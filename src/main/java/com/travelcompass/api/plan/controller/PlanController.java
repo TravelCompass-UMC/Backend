@@ -15,12 +15,14 @@ import com.travelcompass.api.plan.dto.PlanResponseDto.DetailPlanResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanListResponseDto;
 import com.travelcompass.api.plan.dto.PlanResponseDto.PlanLocationListDto;
 import com.travelcompass.api.plan.service.PlanService;
+import com.travelcompass.api.region.service.RegionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.description.type.TypeList;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,7 @@ public class PlanController {
     private final UserService userService;
     private final PlanService planService;
     private final HashtagService hashtagService;
+    private final RegionService regionService;
 
     // plan 새로 만들기
     @Operation(summary = "여행 계획 생성 메서드", description = "여행 계획을 생성하는 메서드입니다.")
@@ -111,7 +114,7 @@ public class PlanController {
     })
     @Parameter(name = "plan-id", description = "여행계획의 아이디, path variable")
     @GetMapping("/{plan-id}")
-    private ApiResponse<PlanLocationListDto> getAllPlanDetails(
+    public ApiResponse<PlanLocationListDto> getAllPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
@@ -134,7 +137,7 @@ public class PlanController {
             @Parameter(name = "day", description = "조회하고 싶은 날, path variable")
     })
     @GetMapping("/{plan-id}/{day}")
-    private ApiResponse<PlanLocationListDto> getDayPlanDetails(
+    public ApiResponse<PlanLocationListDto> getDayPlanDetails(
             @PathVariable(name = "plan-id") Long planId,
             @PathVariable(name = "day") Long day,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
@@ -158,14 +161,17 @@ public class PlanController {
             @Parameter(name = "way", description = "정렬 방식,  1.좋아요순, 2.조회수순, 3.최신순 ")
     })
     @GetMapping("/search")
-    private ApiResponse<PlanListResponseDto> getPlanList(
+    public ApiResponse<PlanListResponseDto> getPlanList(
             @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "regionId") Long regionId,
-            @RequestParam(name = "way") Integer way
+            @RequestParam(name = "days", required = false) Integer days,
+            @RequestParam(name = "regionId", required = false) Long regionId,
+            @RequestParam(name = "vehicle", required = false) String vehicle,
+            @RequestParam(name = "way", defaultValue = "3") Integer way,
+            @RequestParam(name = "hashtags", required = false) List<String> hashtags
     ){
-        Page<Plan> planList = planService.getPlanList(page, regionId, way);
-
-        return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS, PlanConverter.planListResponseDto(planList));
+        Page<Plan> plans = planService.searchPlans(page, 12, way, days, regionId, vehicle, hashtags);
+        PlanConverter.planListResponseDto(plans);
+        return ApiResponse.onSuccess(SuccessCode.PLAN_VIEW_SUCCESS, PlanConverter.planListResponseDto(plans));
     }
 
 }
