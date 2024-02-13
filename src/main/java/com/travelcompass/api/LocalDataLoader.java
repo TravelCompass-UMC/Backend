@@ -44,8 +44,8 @@ public class LocalDataLoader implements ApplicationRunner {
                 .star(4.2)
                 .roadNameAddress("서울특별시 성동구 뚝섬로 273")
                 .tel("02-460-2905")
-                .latitude(37.543072)
-                .longitude(127.041808)
+                .latitude(37.123451)
+                .longitude(128.123451)
                 .region(region)
                 .build());
 

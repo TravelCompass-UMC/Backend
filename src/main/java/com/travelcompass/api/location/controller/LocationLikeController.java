@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "장소 좋아요", description = "장소 좋아요 관련 api 입니다.")
+@Tag(name = "장소 좋아요", description = "장소 좋아요 관련 api 입니다. - 양지원")
 @RestController
 @RequestMapping("/locations/{location-id}")
 @RequiredArgsConstructor

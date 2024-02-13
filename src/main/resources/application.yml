@@ -33,15 +33,19 @@ spring:
               - nickname
               - email
 
-#  data:
-#    redis:
-#      host: ${REDIS_HOST}
-#      port: ${REDIS_PORT}
+# 네이버 경로 api
+naver:
+  directions:
+    api-url: https://naveropenapi.apigw.ntruss.com/map-direction
+    client-id: ${NAVER_DIRECTIONS_CLIENT_ID}
+    client-secret: ${NAVER_DIRECTIONS_CLIENT_SECRET}
 
+# 도로명 주소 -> 좌표
 kakao:
   local:
     key: ${KAKAO_LOCAL_KEY}
 
+# 로그인 jwt
 jwt:
   secret: ${JWT_SECRET}
   accessExpirationTime: ${JWT_EXPIRATION}
