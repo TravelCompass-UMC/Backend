@@ -38,7 +38,7 @@ public class MypageController {
     private final UserService userService;
 
     // 나의 정보 조회
-    @Operation(summary = "나의 정보 조회 메서드", description = "나의 정보를 조회하는 메서드입니다.")
+    @Operation(summary = "나의 정보 조회 메서드", description = "나의 정보를 조회하는 메서드입니다. - 김현우")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2001", description = "나의 정보 조회 성공")
     })
@@ -51,7 +51,7 @@ public class MypageController {
     }
 
     // 나의 계획 조회
-    @Operation(summary = "나의 여행계획 조회 메서드", description = "나의 여행계획을 조회하는 메서드입니다.")
+    @Operation(summary = "나의 여행계획 조회 메서드", description = "나의 여행계획을 조회하는 메서드입니다. - 김현우")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2002", description = "나의 계획 조회 성공")
     })
@@ -71,7 +71,7 @@ public class MypageController {
     }
 
     // 내가 좋아요한 여행계획 조회
-    @Operation(summary = "좋아요한 여행계획 조회", description = "내가 좋아요한 여행계획을 조회하는 메서드입니다.")
+    @Operation(summary = "좋아요한 여행계획 조회", description = "내가 좋아요한 여행계획을 조회하는 메서드입니다. - 김현우")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2003", description = "좋아요한 계획 조회 성공")
     })
@@ -91,7 +91,7 @@ public class MypageController {
     }
 
     // 내가 좋아요한 장소 조회
-    @Operation(summary = "좋아요한 장소 조회", description = "내가 좋아요한 장소를 조회하는 메서드입니다.")
+    @Operation(summary = "좋아요한 장소 조회", description = "내가 좋아요한 장소를 조회하는 메서드입니다. - 김현우")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPAGE_2004", description = "좋아요한 장소 조회 성공")
     })
