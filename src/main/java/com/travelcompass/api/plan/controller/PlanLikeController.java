@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-@Tag(name = "여행 계획 좋아요", description = "여행 계획 좋아요 관련 api 입니다.")
+@Tag(name = "여행 계획 좋아요", description = "여행 계획 좋아요 관련 api 입니다. - 양지원")
 @RestController
 @RequestMapping("/plans/{plan-id}")
 @RequiredArgsConstructor
