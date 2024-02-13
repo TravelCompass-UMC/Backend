@@ -5,10 +5,7 @@ import com.travelcompass.api.global.exception.GeneralException;
 import com.travelcompass.api.location.service.LocationService;
 import com.travelcompass.api.oauth.domain.User;
 import com.travelcompass.api.plan.converter.PlanConverter;
-import com.travelcompass.api.plan.domain.Plan;
-import com.travelcompass.api.plan.domain.PlanLocation;
-import com.travelcompass.api.plan.domain.PlanUser;
-import com.travelcompass.api.plan.domain.ViewCount;
+import com.travelcompass.api.plan.domain.*;
 import com.travelcompass.api.plan.dto.PlanRequestDto.CreatePlanLocationListDto;
 import com.travelcompass.api.plan.dto.PlanRequestDto.PlanReqDto;
 import com.travelcompass.api.plan.repository.PlanLocationRepository;
@@ -22,7 +19,9 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,22 +113,30 @@ public class PlanService {
                 .orElseThrow(() -> GeneralException.of(ErrorCode.WRONG_INVITE_CODE));
     }
 
-    public Page<Plan> getPlanList(Integer page, Long regionId, Integer way) {
+    public Page<Plan> searchPlans(Integer page, Integer pageSize, Integer way, Integer days, Long regionId, String vehicle, List<String> hashtags){
+        Pageable pageable = createPageable(page, pageSize, way);
+        return planRepository.findAll(PlanSpecification.filteredByParameters(days, regionId, vehicle, hashtags), pageable);
+    }
 
-        Region region = regionService.findRegionById(regionId);
+    private Pageable createPageable(Integer page, Integer pageSize, Integer way){
+        Sort sort;
 
-        if (way == 1) {  // 좋아요 순
-            return planRepository
-                    .findAllByRegion(region, PageRequest.of(page, 12, Sort.by("likeCount").descending()));
-        } else if (way == 2) {  // 조회 많은 순
-            return planRepository
-                    .findAllByRegion(region, PageRequest.of(page, 12, Sort.by("hits").descending()));
-        } else if (way == 3) {  // 최신 순
-            return planRepository
-                    .findAllByRegion(region, PageRequest.of(page, 12, Sort.by("createdAt").descending()));
+        if (way != null){
+            switch (way){
+                case 1:
+                    sort = Sort.by(Sort.Direction.DESC, "likeCount");
+                    break;
+                case 2:
+                    sort = Sort.by(Sort.Direction.DESC, "hits");
+                    break;
+                default:
+                    sort = Sort.by(Sort.Direction.DESC, "id");
+            }
         } else {
-            throw GeneralException.of(ErrorCode.WRONG_SORTING_WAY);
+            sort = Sort.by(Sort.Direction.DESC, "id");
         }
+
+        return PageRequest.of(page, pageSize, sort);
     }
 
 }
