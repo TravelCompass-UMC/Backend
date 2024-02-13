@@ -38,6 +38,8 @@ public class Plan extends BaseEntity {
 
     private Long likeCount; // 좋아요 수
 
+    private Long days; // 총 일수, 당일치기는 0
+
     @Enumerated(EnumType.STRING)
     private PlanVehicle vehicle;
 

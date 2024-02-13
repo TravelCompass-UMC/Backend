@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +31,9 @@ import static com.travelcompass.api.plan.dto.PlanResponseDto.*;
 public class PlanConverter {
 
     public static Plan toPlan(PlanReqDto request, Region region){
+
+        Long days = ChronoUnit.DAYS.between(request.getStartDate(), request.getEndDate());
+
         return Plan.builder()
                 .title(request.getTitle())
                 .startDate(request.getStartDate())
@@ -40,6 +44,7 @@ public class PlanConverter {
                 .adultCount(request.getAdultCount())
                 .childCount(request.getChildCount())
                 .hits(0L)
+                .days(days)
                 .likeCount(0L)
                 .hashtagPlans(new ArrayList<>())
                 .build();
