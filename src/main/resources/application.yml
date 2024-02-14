@@ -25,7 +25,7 @@ spring:
             client-id: 3tVKSO15tNGbkeZJf8eE #서비스 제공자측에 저희가 어떤 서비스인지 인증하기 위한 값
             client-secret: zHvANLwWHH
             redirect-uri: http://dev.enble.site:8080/login/oauth2/code/naver
-            #redirect-uri: http://localhost:8080/login/oauth2/code/naver
+#            redirect-uri: http://localhost:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code # 어떤 방식으로 access token을 받을지 정의
             client-authentication-method: client_secret_post # Client Id, Client Secret를 요청의 어디에 포함할지 정의. Body
             client-name: Naver
@@ -39,6 +39,11 @@ naver:
     api-url: https://naveropenapi.apigw.ntruss.com/map-direction
     client-id: ${NAVER_DIRECTIONS_CLIENT_ID}
     client-secret: ${NAVER_DIRECTIONS_CLIENT_SECRET}
+
+odsay:
+  directions:
+    api-url: https://api.odsay.com/v1/api/searchPubTransPathT
+    api-key: ${ODSAY_API_KEY}
 
 # 도로명 주소 -> 좌표
 kakao:
