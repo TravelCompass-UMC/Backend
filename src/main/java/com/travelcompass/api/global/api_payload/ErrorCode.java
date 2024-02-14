@@ -39,6 +39,7 @@ public enum ErrorCode implements BaseCode {
     WRONG_INVITE_CODE(HttpStatus.NOT_FOUND, "PLAN_4043", "유효하지 않은 초대코드입니다."),
     WRONG_SORTING_WAY(HttpStatus.BAD_REQUEST, "PLAN_4001", "유효하지 않은 정렬 방법입니다."),
     WRONG_VEHICLE_PARAM(HttpStatus.BAD_REQUEST, "PLAN_4002", "유효하지 않은 교통수단 입니다."),
+    FAIL_TO_PARSE_JSON(HttpStatus.INTERNAL_SERVER_ERROR, "PLAN_500", "json 파싱을 실패했습니다."),
 
     //Hashtag
     HASHTAG_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAG_404", "해시태그를 찾을 수 없습니다."),

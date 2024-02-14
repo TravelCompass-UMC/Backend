@@ -27,6 +27,7 @@ public enum SuccessCode implements BaseCode {
     PLAN_UNLIKE_SUCCESS(HttpStatus.OK, "PLAN_2022", "여행계획 좋아요 취소가 완료되었습니다."),
     PLAN_LIKE_COUNT_SUCCESS(HttpStatus.OK, "PLAN_2023", "좋아요 수가 조회되었습니다."),
     PLAN_NAVER_GET_DURATION(HttpStatus.OK, "PLAN_2031", "네이버 경로탐색이 완료되었습니다.(단위: 1/1000초)"),
+    PLAN_PUBLIC_GET_DURATION(HttpStatus.OK, "PLAN_2003", "대중교통 경로탐색이 완료되었습니다."),
 
     // Location
     LOCATION_LIKE_SUCCESS(HttpStatus.OK, "LOCATION_2021", "장소 좋아요가 완료되었습니다."),
