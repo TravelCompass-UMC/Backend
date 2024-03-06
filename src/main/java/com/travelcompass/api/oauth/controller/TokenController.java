@@ -19,7 +19,7 @@ public class TokenController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON_200", description = "Success"),
     })
-    @GetMapping("/token")
+    @GetMapping("/token/token")
     public ResponseEntity<Map<String, String>> tokenPagge(
             @RequestParam(name = "access-token") String accessToken,
             @RequestParam(name = "refresh-token") String refreshToken

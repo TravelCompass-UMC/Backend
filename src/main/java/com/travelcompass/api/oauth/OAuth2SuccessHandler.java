@@ -105,7 +105,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String targetUrl = String.format(
                 "http://travel-compass.netlify.app/oauth/callback?access-token=%s&refresh-token=%s",
                 jwt.getAccessToken(), jwt.getRefreshToken()
-//                "http://localhost:8080/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
+//                "http://localhost:8080/token/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
         );
         // 실제 Redirect 응답 생성
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
