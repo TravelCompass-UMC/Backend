@@ -95,7 +95,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         refreshTokenRepository.save(
                 RefreshToken.builder()
                         .id(username)
-                        .ip(IpUtil.getClientIp(request))
                         .ttl(validPeriod)
                         .refreshToken(jwt.getRefreshToken())
                         .build()
