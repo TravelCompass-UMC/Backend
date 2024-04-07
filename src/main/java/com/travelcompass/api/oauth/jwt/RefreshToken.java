@@ -17,12 +17,6 @@ public class RefreshToken {
     @Id
     private String id;
 
-    private String ip;
-
-    @ElementCollection
-    private Collection<String> authorities; // 권한을 문자열 형태로 저장
-//    private Collection<? extends GrantedAuthority> authorities;
-
     private String refreshToken;
 
     private Long ttl;

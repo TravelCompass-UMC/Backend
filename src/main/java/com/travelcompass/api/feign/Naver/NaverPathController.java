@@ -25,7 +25,7 @@ public class NaverPathController {
             @Parameter(name = "start", description = "출발지의 location-id"),
             @Parameter(name = "goal", description = "도착지의 location-id"),
     })
-    @GetMapping("/getCarDuration") // http://dev.enble.site:8080/getCarDuration?start=1&goal=2
+    @GetMapping("/getCarDuration")
     public ApiResponse<Integer> getDuration(@RequestParam("start") Long startLocationId,
                                               @RequestParam("goal") Long goalLocationId) {
 
