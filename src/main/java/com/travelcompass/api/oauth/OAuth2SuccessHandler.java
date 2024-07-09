@@ -29,18 +29,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtTokenUtils tokenUtils;
     private final UserDetailsManager userDetailsManager;
     private final RefreshTokenRepository refreshTokenRepository;
-//    private final RefreshTokenRedisRepository;
 
     public OAuth2SuccessHandler(
             JwtTokenUtils tokenUtils,
             UserDetailsManager userDetailsManager,
             RefreshTokenRepository refreshTokenRepository
-//            RefreshTokenRedisRepository
     ) {
         this.tokenUtils = tokenUtils;
         this.userDetailsManager = userDetailsManager;
         this.refreshTokenRepository = refreshTokenRepository;
-//        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
     }
 
     @Override
@@ -102,9 +99,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 목적지 URL 설정 - 토큰 던짐
         String targetUrl = String.format(
-                "http://travel-compass.netlify.app/oauth/callback?access-token=%s&refresh-token=%s",
-                jwt.getAccessToken(), jwt.getRefreshToken()
-//                "http://localhost:8080/token/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
+                // 로컬
+                "http://localhost:8080/token/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
+                // 프론트 도메인
+//                "http://travel-compass.netlify.app/oauth/callback?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
+                // 백 도메인
+//                "http://umc.persi0815:8080/token/token?access-token=%s&refresh-token=%s", jwt.getAccessToken(), jwt.getRefreshToken()
+
         );
         // 실제 Redirect 응답 생성
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
