@@ -41,6 +41,10 @@ public class WebSecurityConfig {
                                         "/token/**", // 로컬에게 토큰 반환
                                         "/oauth/**", // 프론트에게 토큰 반환
 
+                                        "/swagger-ui/**", // Swagger UI
+                                        "/v3/api-docs/**", // Swagger API docs
+                                        "/swagger-resources/**", // Swagger resources
+
                                         "/locations/regions/**", // 지역별 장소 리스트 조회
                                         "/locations/**", // 장소 상세 조회
 
