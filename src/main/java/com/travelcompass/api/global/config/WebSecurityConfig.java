@@ -34,7 +34,8 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authHttp -> authHttp
                                 .requestMatchers(
-                                        "/health",
+                                        "/health", // health check
+                                        "/", // root
 
                                         "/oauth2/authorization/naver", // 로그인
                                         "/login/oauth2/code/**", // code, state 반환
@@ -48,7 +49,7 @@ public class WebSecurityConfig {
                                         "/locations/regions/**", // 지역별 장소 리스트 조회
                                         "/locations/**", // 장소 상세 조회
 
-                                        "/plans/search" // 여행계획 조회
+                                        "/plans/search/**" // 여행계획 조회
                                 )
                                 .permitAll()
                                 //.anyRequest().permitAll()
