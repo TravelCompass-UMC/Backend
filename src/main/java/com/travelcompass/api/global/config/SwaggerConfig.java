@@ -39,6 +39,7 @@ public class SwaggerConfig {
                 .components(components);
     }
 
+    // 사용자 auth -> swagger 사용 가능
     @Bean
     public GroupedOpenApi allGroup(){
         return GroupedOpenApi.builder()
