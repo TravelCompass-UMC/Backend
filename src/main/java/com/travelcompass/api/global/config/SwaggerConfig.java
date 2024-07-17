@@ -1,5 +1,7 @@
 package com.travelcompass.api.global.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -8,9 +10,14 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@OpenAPIDefinition(
+        servers = {
+                @Server(url = "https://travel-compass.persi0815.site", description = "umc https 서버입니다."),
+                @Server(url = "http://travel-compass.persi0815.site", description = "umc http 서버입니다."),
+                @Server(url = "http://localhost:8080", description = "umc local 서버입니다.")
+        }
+)
 @Configuration
 public class SwaggerConfig {
     @Bean

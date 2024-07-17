@@ -76,13 +76,19 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    /*
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080", "https://travel-compass.netlify.app", "http://travel-compass.netlify.app", "https://travel-compass.persi0815.site", "http://travel-compass.persi0815.site"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000", "http://localhost:8080", "https://travel-compass.netlify.app", "http://travel-compass.netlify.app", "https://travel-compass.persi0815.site", "http://travel-compass.persi0815.site"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+     */
 }
