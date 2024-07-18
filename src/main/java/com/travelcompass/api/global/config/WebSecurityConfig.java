@@ -32,35 +32,33 @@ public class WebSecurityConfig {
     ) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authHttp -> authHttp
-                                .requestMatchers(
-                                        "/health", // health check
-                                        "/", // root
+                        .requestMatchers(
+                                "/health", // health check
+                                "/", // root
 
-                                        "/oauth2/authorization/naver", // 로그인
-                                        "/login/oauth2/code/**", // code, state 반환
-                                        "/token/**", // 로컬에게 토큰 반환
-                                        "/oauth/**", // 프론트에게 토큰 반환
+                                "/oauth2/authorization/naver", // 로그인
+                                "/login/oauth2/code/**", // code, state 반환
+                                "/token/**", // 로컬에게 토큰 반환
+                                "/oauth/**", // 프론트에게 토큰 반환
 
-                                        "/swagger-ui/**", // Swagger UI
-                                        "/v3/api-docs/**", // Swagger API docs
-                                        "/swagger-resources/**", // Swagger resources
+                                "/swagger-ui/**", // Swagger UI
+                                "/v3/api-docs/**", // Swagger API docs
+                                "/swagger-resources/**", // Swagger resources
 
-                                        "/locations/regions/**", // 지역별 장소 리스트 조회
-                                        "/locations/**", // 장소 상세 조회
+                                "/locations/regions/**", // 지역별 장소 리스트 조회
+                                "/locations/**", // 장소 상세 조회
 
-                                        "/plans/search/**" // 여행계획 조회
-                                )
-                                .permitAll()
-                                //.anyRequest().permitAll()
-                                .anyRequest().authenticated()
+                                "/plans/search/**" // 여행계획 조회
+                        )
+                        .permitAll()
+                        //.anyRequest().permitAll()
+                        .anyRequest().authenticated()
 
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
-                        //.loginPage("/users/login")
-                        //.loginPage("http://umc.persi0815.site:8080/oauth2/authorization/naver") //비인증 사용자를 이동시킬 로그인 페이지
                         .successHandler(oAuth2SuccessHandler) //인증 성공 후 jwt 생성, 사용자 정보 db에 등록
-                        //.defaultSuccessUrl("/users/main") //로그인(일정 부분) 성공하면 특정 화면으로 이동
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserService) //사용자 데이터 처리
                         )
